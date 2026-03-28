@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TORI — Architecture Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #050810;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .blueprint-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 60px 20px 30px;
+    border-bottom: 1px solid rgba(59,130,246,0.2);
+  }
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(59,130,246,0.3);
+  }
+  .header .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #64748b;
+    letter-spacing: 4px;
+    margin-top: 8px;
+  }
+  .header .classification {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 20px;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+  .header .stack-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #3b82f6;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    opacity: 0.7;
+  }
+
+  /* FLOW */
+  .flow-section {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* STEP MARKER */
+  .step-marker {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 0 20px;
+    position: relative;
+  }
+  .step-number {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 22px;
+    color: #050810;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  .step-time {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 2px;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  /* COLOR CLASSES */
+  .s-gray { background: #94a3b8; }
+  .s-blue { background: #3b82f6; }
+  .s-cyan { background: #06b6d4; }
+  .s-green { background: #10b981; }
+  .s-amber { background: #f59e0b; }
+  .s-red { background: #ef4444; }
+  .s-purple { background: #8b5cf6; }
+  .s-pink { background: #ec4899; }
+
+  /* EXPLODED VIEW */
+  .exploded-view {
+    position: relative;
+    padding-left: 55px;
+    display: grid;
+    gap: 12px;
+  }
+  .exploded-view::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(100,116,139,0.2);
+  }
+
+  /* COMPONENT CARDS */
+  .component {
+    --comp-color: #94a3b8;
+    --comp-rgb: 148,163,184;
+    position: relative;
+    background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+    border: 1px solid rgba(100,116,139,0.15);
+    border-radius: 4px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  .component:hover {
+    border-color: var(--comp-color);
+    box-shadow: 0 0 20px rgba(var(--comp-rgb), 0.15), inset 0 0 20px rgba(var(--comp-rgb), 0.03);
+    transform: translateX(4px);
+  }
+  .component::before {
+    content: '';
+    position: absolute;
+    left: -45px;
+    top: 50%;
+    width: 44px;
+    height: 1px;
+    background: linear-gradient(to right, rgba(100,116,139,0.3), var(--comp-color));
+  }
+  .component::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--comp-color);
+  }
+
+  .c-gray { --comp-color: #94a3b8; --comp-rgb: 148,163,184; }
+  .c-blue { --comp-color: #3b82f6; --comp-rgb: 59,130,246; }
+  .c-cyan { --comp-color: #06b6d4; --comp-rgb: 6,182,212; }
+  .c-green { --comp-color: #10b981; --comp-rgb: 16,185,129; }
+  .c-amber { --comp-color: #f59e0b; --comp-rgb: 245,158,11; }
+  .c-red { --comp-color: #ef4444; --comp-rgb: 239,68,68; }
+  .c-purple { --comp-color: #8b5cf6; --comp-rgb: 139,92,246; }
+  .c-pink { --comp-color: #ec4899; --comp-rgb: 236,72,153; }
+
+  .comp-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 14px;
+    color: #050810;
+  }
+  .comp-info h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--comp-color);
+  }
+  .comp-info p {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .comp-info code {
+    background: rgba(59,130,246,0.1);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #3b82f6;
+  }
+  .comp-meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #64748b;
+  }
+  .dep-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid #334155;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #64748b;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+  .time {
+    color: #94a3b8;
+    font-weight: 700;
+  }
+
+  /* CONNECTOR */
+  .connector {
+    width: 2px;
+    height: 40px;
+    margin-left: 27px;
+    position: relative;
+  }
+  .connector::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--conn-color), transparent);
+  }
+  .connector::after {
+    content: '▼';
+    position: absolute;
+    bottom: -8px;
+    left: -5px;
+    font-size: 10px;
+    color: var(--conn-color);
+  }
+
+  /* DECISION CALLOUT */
+  .decision-callout {
+    margin: 30px 0 10px 55px;
+    padding: 16px 24px;
+    border-left: 3px solid #ef4444;
+    background: rgba(239,68,68,0.04);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #ef4444;
+  }
+  .decision-callout .dc-title {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .decision-callout .dc-body {
+    color: #94a3b8;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0;
+    line-height: 1.6;
+  }
+  .decision-callout .dc-kill {
+    color: #ef4444;
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+  .decision-callout .dc-live {
+    color: #10b981;
+    font-weight: 700;
+  }
+
+  /* DATA FLOW DIAGRAM */
+  .flow-diagram {
+    margin: 30px 0 20px 55px;
+    padding: 24px;
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 4px;
+    background: rgba(15,23,42,0.6);
+  }
+  .flow-diagram .fd-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 8px 0;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 0 8px;
+    color: #334155;
+  }
+  .fn-gray { background: rgba(148,163,184,0.08); border-color: rgba(148,163,184,0.3); color: #94a3b8; }
+  .fn-blue { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.3); color: #3b82f6; }
+  .fn-cyan { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.3); color: #06b6d4; }
+  .fn-green { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3); color: #10b981; }
+  .fn-amber { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.3); color: #f59e0b; }
+  .fn-red { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .fn-purple { background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.3); color: #8b5cf6; }
+
+  /* TOPOLOGY */
+  .topology {
+    margin: 20px 0 10px 55px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .topo-box {
+    padding: 16px 20px;
+    border: 1px solid rgba(100,116,139,0.15);
+    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+  }
+  .topo-box .tb-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .topo-box .tb-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .topo-box .tb-detail {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-top: 1px solid rgba(59,130,246,0.1);
+    margin-top: 60px;
+  }
+  .footer .quote {
+    font-size: 16px;
+    font-weight: 300;
+    color: #94a3b8;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+  .footer .quote em {
+    color: #3b82f6;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .footer .sig {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #334155;
+    margin-top: 30px;
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .topology { grid-template-columns: 1fr; }
+    .component { grid-template-columns: 1fr; }
+    .comp-meta { text-align: left; margin-top: 8px; }
+    .flow-row { gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="blueprint-bg"></div>
+<div class="content">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>TORI</h1>
+  <div class="subtitle">ARCHITECTURE BLUEPRINT &mdash; INFRASTRUCTURE TOPOLOGY</div>
+  <div class="classification">REDMOND DOCTRINE &bull; INFRA LAYER &bull; MARCH 2026</div>
+  <div class="stack-label">AZURE &rarr; GITHUB &rarr; TORI UI &rarr; FLEET MASTER</div>
+</div>
+
+<!-- DECISION CALLOUT -->
+<div style="max-width:1200px;margin:0 auto;padding:0 20px;">
+<div class="decision-callout" style="margin-left:0;margin-top:30px;">
+  <div class="dc-title">ARCHITECTURE DECISION RECORD</div>
+  <div class="dc-body">
+    <span class="dc-kill">Linear Workspace (PL-030)</span> &mdash; KILLED<br>
+    <span class="dc-kill">Azure DevOps Dashboards / Boards / Calendar</span> &mdash; KILLED<br>
+    <span class="dc-live">Tori</span> &mdash; Custom UI wired to Azure APIs. Single pane of glass. You own the interface.<br>
+    <span class="dc-live">GitHub &rarr; Azure Repos</span> &mdash; Sync pipeline. One version control pipe.<br>
+    <span class="dc-live">Fleet Master VM</span> &mdash; Single Azure VM runs all agents. One throat to choke.
+  </div>
+</div>
+</div>
+
+<div class="flow-section">
+
+<!-- ═══════════════════════ LAYER 0: AZURE BACKBONE ═══════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-gray">00</div>
+  <div>
+    <div class="step-title" style="color:#94a3b8">AZURE BACKBONE</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Microsoft infrastructure &mdash; the substrate. Everything bolts here.</div>
+  </div>
+  <div class="step-time">PROVISIONED</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">VM</div>
+    <div class="comp-info">
+      <h3>AZURE VM (FLEET MASTER)</h3>
+      <p>Ubuntu 24 LTS. Single VM that runs all agents, all processes, all automation. Cursor SSH pipeline already wired. Node 20, Python 3.12, <code>az</code> CLI installed. This is the one machine. Everything else is a service it talks to.</p>
+    </div>
+    <div class="comp-meta"><span class="time">LIVE</span><br><span class="dep-tag">SSH</span> <span class="dep-tag">CURSOR</span></div>
+  </div>
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">BL</div>
+    <div class="comp-info">
+      <h3>BLOB STORAGE (EVIDENCE LAKE)</h3>
+      <p>427GB discovery, Five9 exports, Paycor, ERC filings, Malcolm Smith letter. SHA-256 hashed on ingest. Immutable append-only audit log. Organized: <code>/case-id/doc-type/filename</code></p>
+    </div>
+    <div class="comp-meta"><span class="time">LIVE</span><br><span class="dep-tag">VM</span></div>
+  </div>
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">PG</div>
+    <div class="comp-info">
+      <h3>POSTGRESQL (51 + 6 TABLES)</h3>
+      <p>Existing 51 tables from Menagerie build. 6 new: <code>argument_graph</code>, <code>evidence_nodes</code>, <code>contradiction_map</code>, <code>probability_model</code>, <code>adversary_profiles</code>, <code>filing_sequence</code>. Supabase-hosted, Azure-accessible.</p>
+    </div>
+    <div class="comp-meta"><span class="time">LIVE</span><br><span class="dep-tag">SUPABASE</span></div>
+  </div>
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">AI</div>
+    <div class="comp-info">
+      <h3>AZURE AI SEARCH</h3>
+      <p>Hybrid vector + keyword search across Blob. Custom skills: assertion extraction, materiality scoring, legal element taxonomy. Makes 427GB searchable in milliseconds. The brain behind Tori's search bar.</p>
+    </div>
+    <div class="comp-meta"><span class="time">READY</span><br><span class="dep-tag">BLOB</span></div>
+  </div>
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">CS</div>
+    <div class="comp-info">
+      <h3>AZURE COMMUNICATION SERVICES</h3>
+      <p>SMS, email, notifications. Wired to Tori for alert routing. Trial calendar reminders, filing deadline alerts, team notifications. Replaces all third-party comms.</p>
+    </div>
+    <div class="comp-meta"><span class="time">PROVISIONED</span><br><span class="dep-tag">VM</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#3b82f6"></div>
+
+<!-- ═══════════════════════ LAYER 1: GITHUB SYNC ═══════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-cyan">01</div>
+  <div>
+    <div class="step-title" style="color:#06b6d4">VERSION CONTROL PIPE</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">GitHub &rarr; Azure. One pipe. No branching workflows to manage separately.</div>
+  </div>
+  <div class="step-time">30 MIN</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">GH</div>
+    <div class="comp-info">
+      <h3>GITHUB (SOURCE OF TRUTH)</h3>
+      <p>Repo: <code>alanredmond23-bit/GITBrain</code> + new <code>redmond-doctrine</code> repo. All code lives here. Push triggers sync to Azure. GitHub Actions for CI. PAT: <code>ghp_zYu...5W</code></p>
+    </div>
+    <div class="comp-meta"><span class="time">LIVE</span><br><span class="dep-tag">PAT</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">SY</div>
+    <div class="comp-info">
+      <h3>GITHUB &rarr; AZURE SYNC</h3>
+      <p>GitHub Actions workflow: on push to <code>main</code>, sync to Azure Repos mirror. Azure DevOps uses this as read-only source for pipeline triggers. No manual Azure repo management.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">GH</span> <span class="dep-tag">AZURE</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">CI</div>
+    <div class="comp-info">
+      <h3>CI/CD PIPELINE</h3>
+      <p>GitHub Actions handles tests + build. Azure Pipelines handles deployment to VM. Two-stage: GitHub validates, Azure deploys. Cursor SSH for hot-reload during dev.</p>
+    </div>
+    <div class="comp-meta"><span class="time">READY</span><br><span class="dep-tag">GH</span> <span class="dep-tag">VM</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#10b981"></div>
+
+<!-- ═══════════════════════ LAYER 2: TORI ═══════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-green">02</div>
+  <div>
+    <div class="step-title" style="color:#10b981">TORI &mdash; THE INTERFACE</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Custom UI replacing Azure DevOps dashboards. You own every pixel.</div>
+  </div>
+  <div class="step-time">1 HOUR</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-green">
+    <div class="comp-icon s-green">TR</div>
+    <div class="comp-info">
+      <h3>TORI CORE (NEXT.JS 14+)</h3>
+      <p>App Router. TypeScript. Server Components for data-heavy views, Client Components for interactivity. Deployed on Azure VM via PM2 or Docker. Redmond Blueprint design system baked in. No Azure DevOps UI touches human eyes again.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">VM</span> <span class="dep-tag">NEXT.JS</span></div>
+  </div>
+  <div class="component c-green">
+    <div class="comp-icon s-green">KB</div>
+    <div class="comp-info">
+      <h3>KANBAN / TASK ENGINE</h3>
+      <p>Replaces Azure Boards. Work items, sprints, backlog. Wired to Azure DevOps REST API (<code>dev.azure.com/shannykelly23/Menagerie</code>) for data — but rendered in Tori. Drag-drop, priority sorting, time-block assignments.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">TORI</span> <span class="dep-tag">AZURE API</span></div>
+  </div>
+  <div class="component c-green">
+    <div class="comp-icon s-green">CL</div>
+    <div class="comp-info">
+      <h3>CALENDAR / TIMELINE</h3>
+      <p>Replaces Azure DevOps calendar. Trial dates, filing deadlines, sprint boundaries, personal blocks. Pulls from Azure + injects legal calendar (Schmehl schedule, EDPA deadlines). Single timeline view.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">TORI</span> <span class="dep-tag">AZURE API</span></div>
+  </div>
+  <div class="component c-green">
+    <div class="comp-icon s-green">EV</div>
+    <div class="comp-info">
+      <h3>EVIDENCE EXPLORER</h3>
+      <p>Search bar wired to Azure AI Search. Browse Blob storage visually. Tag, annotate, flag contradictions. Preview documents inline. This is where 427GB becomes navigable by a human.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">AI SEARCH</span> <span class="dep-tag">BLOB</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">WR</div>
+    <div class="comp-info">
+      <h3>WAR ROOM (EMBEDDED)</h3>
+      <p>The existing War Room JSX (Arsenal, Game Tree, PSY-OPS, Actors, Scenarios) rendered as a Tori route. Not a standalone artifact — a tab inside the command center. All data from PostgreSQL.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">TORI</span> <span class="dep-tag">PG</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">DA</div>
+    <div class="comp-info">
+      <h3>DASHBOARD / COMMAND CENTER</h3>
+      <p>Landing page. Case vitals: days to trial, open motions, gap register status, next deadlines, fleet agent health, Five9 stats (1.18M files, 77.6% failed, 10.9x inflation). One screen, full situational awareness.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL SOURCES</span></div>
+  </div>
+</div>
+
+<!-- DATA FLOW -->
+<div class="flow-diagram">
+  <div class="fd-title">TORI DATA FLOW</div>
+  <div class="flow-row">
+    <span class="flow-node fn-cyan">GITHUB</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-blue">AZURE REPOS</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-gray">VM DEPLOY</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-green">TORI UI</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-node fn-gray">BLOB (427GB)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-blue">AI SEARCH</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-green">EVIDENCE EXPLORER</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-node fn-gray">POSTGRESQL</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-green">WAR ROOM</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">DASHBOARD</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">KANBAN</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-node fn-blue">AZURE DevOps API</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-green">KANBAN</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">CALENDAR</span>
+  </div>
+  <div class="flow-row">
+    <span class="flow-node fn-purple">CURSOR SSH</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-gray">VM</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-node fn-amber">HOT RELOAD</span>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#f59e0b"></div>
+
+<!-- ═══════════════════════ LAYER 3: FLEET MASTER ═══════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-amber">03</div>
+  <div>
+    <div class="step-title" style="color:#f59e0b">FLEET MASTER</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">One VM. One process manager. All agents report here.</div>
+  </div>
+  <div class="step-time">30 MIN</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">PM</div>
+    <div class="comp-info">
+      <h3>PROCESS MANAGER (PM2 / SYSTEMD)</h3>
+      <p>Manages all long-running processes on the VM: Tori server, scraper crons, agent workers, webhook listeners. Auto-restart on crash. Log aggregation. Health checks piped to Tori dashboard.</p>
+    </div>
+    <div class="comp-meta"><span class="time">10 min</span><br><span class="dep-tag">VM</span></div>
+  </div>
+  <div class="component c-red">
+    <div class="comp-icon s-red">AV</div>
+    <div class="comp-info">
+      <h3>ANVIL AGENT FLEET</h3>
+      <p>All agents run as PM2 processes on Fleet Master. Scout (PACER/DocketBird scraper), CourtListener poller, evidence indexer, contradiction detector. Tori monitors their status. One throat to choke.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">PM2</span> <span class="dep-tag">PG</span></div>
+  </div>
+  <div class="component c-red">
+    <div class="comp-icon s-red">MK</div>
+    <div class="comp-info">
+      <h3>MARK-I (ORCHESTRATOR)</h3>
+      <p>The slave process. Receives task queue from Tori Kanban, dispatches to appropriate agent, reports completion back. Handles retry logic, failure escalation, and priority sorting. Mark-I runs everything — you tell Tori what to do, Mark-I makes it happen.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">PM2</span> <span class="dep-tag">TORI</span> <span class="dep-tag">ALL AGENTS</span></div>
+  </div>
+  <div class="component c-purple">
+    <div class="comp-icon s-purple">MCP</div>
+    <div class="comp-info">
+      <h3>MCP SERVER LAYER</h3>
+      <p>Filesystem, GitHub, Memory MCP servers already configured in <code>~/.mcp.json</code>. Fleet Master exposes these to Claude Code CLI for agentic coding sessions via Cursor SSH.</p>
+    </div>
+    <div class="comp-meta"><span class="time">LIVE</span><br><span class="dep-tag">VM</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#8b5cf6"></div>
+
+<!-- ═══════════════════════ LAYER 4: ACCESS POINTS ═══════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-purple">04</div>
+  <div>
+    <div class="step-title" style="color:#8b5cf6">ACCESS TOPOLOGY</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">How you touch the system &mdash; every entry point mapped</div>
+  </div>
+  <div class="step-time">REFERENCE</div>
+</div>
+
+<div class="topology">
+  <div class="topo-box" style="border-left:3px solid #8b5cf6;">
+    <div class="tb-label">DEV ACCESS</div>
+    <div class="tb-value" style="color:#8b5cf6;">Cursor SSH &rarr; VM</div>
+    <div class="tb-detail">Remote SSH extension. Direct terminal. Hot reload. Claude Code CLI available on VM.</div>
+  </div>
+  <div class="topo-box" style="border-left:3px solid #10b981;">
+    <div class="tb-label">OPERATOR ACCESS</div>
+    <div class="tb-value" style="color:#10b981;">Tori UI (Browser)</div>
+    <div class="tb-detail">Dashboard, Kanban, Calendar, Evidence Explorer, War Room. All in one tab. Blueprint aesthetic.</div>
+  </div>
+  <div class="topo-box" style="border-left:3px solid #06b6d4;">
+    <div class="tb-label">CODE MANAGEMENT</div>
+    <div class="tb-value" style="color:#06b6d4;">GitHub &rarr; Azure Mirror</div>
+    <div class="tb-detail">Push to GitHub. Auto-sync to Azure. Deploy to VM. No Azure portal for code ops.</div>
+  </div>
+  <div class="topo-box" style="border-left:3px solid #f59e0b;">
+    <div class="tb-label">AGENT CONTROL</div>
+    <div class="tb-value" style="color:#f59e0b;">Mark-I via Tori</div>
+    <div class="tb-detail">Task queue in Tori Kanban dispatches to Mark-I. Mark-I runs agents. Status reports back to dashboard.</div>
+  </div>
+</div>
+
+<!-- TOPOLOGY SUMMARY -->
+<div class="flow-diagram" style="margin-top:20px;">
+  <div class="fd-title">WHAT GETS KILLED</div>
+  <div class="flow-row">
+    <span class="flow-node fn-red" style="text-decoration:line-through;opacity:0.5;">LINEAR</span>
+    <span class="flow-arrow" style="color:#ef4444;">&times;</span>
+    <span class="flow-node fn-red" style="text-decoration:line-through;opacity:0.5;">AZURE BOARDS UI</span>
+    <span class="flow-arrow" style="color:#ef4444;">&times;</span>
+    <span class="flow-node fn-red" style="text-decoration:line-through;opacity:0.5;">AZURE CALENDAR</span>
+    <span class="flow-arrow" style="color:#ef4444;">&times;</span>
+    <span class="flow-node fn-red" style="text-decoration:line-through;opacity:0.5;">AZURE DASHBOARDS</span>
+  </div>
+  <div style="margin-top:12px;">
+    <div class="fd-title" style="color:#10b981;">WHAT REPLACES THEM</div>
+  </div>
+  <div class="flow-row">
+    <span class="flow-node fn-green" style="font-weight:700;">TORI</span>
+    <span class="flow-arrow">=</span>
+    <span class="flow-node fn-green">KANBAN</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">CALENDAR</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">DASHBOARD</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">WAR ROOM</span>
+    <span class="flow-arrow">+</span>
+    <span class="flow-node fn-green">EVIDENCE</span>
+  </div>
+</div>
+
+</div><!-- end flow-section -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="quote">
+    One VM. One interface. One pipe.<br>
+    Azure is the <em>backbone</em>. GitHub is the <em>repo</em>. Tori is the <em>eyes</em>.<br>
+    Mark-I is the <em>hands</em>.
+  </div>
+  <div class="sig">REDMOND DOCTRINE &bull; TORI ARCHITECTURE &bull; v1.0 &bull; MARCH 2026</div>
+</div>
+
+</div><!-- end content -->
+</body>
+</html>

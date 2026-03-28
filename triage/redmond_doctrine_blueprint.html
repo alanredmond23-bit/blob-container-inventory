@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE REDMOND DOCTRINE — Engineering Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;700;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: #050810;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* GRID PAPER BACKGROUND */
+  .blueprint-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+    background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    z-index: 0;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 60px 20px 30px;
+    border-bottom: 1px solid rgba(59,130,246,0.2);
+  }
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #fff;
+    text-shadow: 0 0 40px rgba(59,130,246,0.3);
+  }
+  .header .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #64748b;
+    letter-spacing: 4px;
+    margin-top: 8px;
+  }
+  .header .classification {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 20px;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  /* FLOW CONNECTOR LINES */
+  .flow-section {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* STEP MARKER */
+  .step-marker {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 0 20px;
+    position: relative;
+  }
+  .step-number {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 22px;
+    color: #050810;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .step-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  .step-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 1px;
+    margin-left: auto;
+    border: 1px solid #334155;
+    padding: 4px 12px;
+  }
+
+  /* CONNECTOR LINE between steps */
+  .connector {
+    width: 2px;
+    height: 40px;
+    margin-left: 27px;
+    position: relative;
+  }
+  .connector::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--conn-color), transparent);
+  }
+  .connector::after {
+    content: '▼';
+    position: absolute;
+    bottom: -8px;
+    left: -5px;
+    font-size: 10px;
+    color: var(--conn-color);
+  }
+
+  /* EXPLODED COMPONENT */
+  .exploded-view {
+    display: grid;
+    gap: 12px;
+    padding: 0 0 10px 72px;
+    position: relative;
+  }
+  .exploded-view::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(100,116,139,0.2);
+  }
+
+  .component {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+    border: 1px solid rgba(100,116,139,0.15);
+    border-radius: 4px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .component:hover {
+    border-color: var(--comp-color);
+    box-shadow: 0 0 20px rgba(var(--comp-rgb), 0.15), inset 0 0 20px rgba(var(--comp-rgb), 0.03);
+    transform: translateX(4px);
+  }
+
+  /* Connection arm from vertical line to component */
+  .component::before {
+    content: '';
+    position: absolute;
+    left: -45px;
+    top: 50%;
+    width: 44px;
+    height: 1px;
+    background: linear-gradient(to right, rgba(100,116,139,0.3), var(--comp-color));
+  }
+  .component::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--comp-color);
+  }
+
+  .comp-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: #050810;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .comp-info h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--comp-color);
+    margin-bottom: 4px;
+  }
+  .comp-info p {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+  .comp-meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #475569;
+    line-height: 1.6;
+    flex-shrink: 0;
+  }
+  .comp-meta .time {
+    color: var(--comp-color);
+    font-weight: 700;
+  }
+
+  /* DEPENDENCY TAG */
+  .dep-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid #334155;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #64748b;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+
+  /* COLOR THEMES */
+  .c-gray { --comp-color: #94a3b8; --comp-rgb: 148,163,184; }
+  .c-blue { --comp-color: #3b82f6; --comp-rgb: 59,130,246; }
+  .c-cyan { --comp-color: #06b6d4; --comp-rgb: 6,182,212; }
+  .c-green { --comp-color: #10b981; --comp-rgb: 16,185,129; }
+  .c-amber { --comp-color: #f59e0b; --comp-rgb: 245,158,11; }
+  .c-red { --comp-color: #ef4444; --comp-rgb: 239,68,68; }
+  .c-purple { --comp-color: #8b5cf6; --comp-rgb: 139,92,246; }
+  .c-pink { --comp-color: #ec4899; --comp-rgb: 236,72,153; }
+
+  .s-gray { background: #94a3b8; }
+  .s-blue { background: #3b82f6; }
+  .s-cyan { background: #06b6d4; }
+  .s-green { background: #10b981; }
+  .s-amber { background: #f59e0b; }
+  .s-red { background: #ef4444; }
+  .s-purple { background: #8b5cf6; }
+  .s-pink { background: #ec4899; }
+
+  /* INTEGRATION SECTION */
+  .integration-block {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 30px 20px;
+    border-top: 1px solid rgba(59,130,246,0.2);
+  }
+  .integration-block h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: #ef4444;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .assembly-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .assembly-card {
+    background: rgba(30,41,59,0.5);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .assembly-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #ef4444;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .assembly-card p {
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-top: 1px solid rgba(59,130,246,0.1);
+    margin-top: 60px;
+  }
+  .footer .quote {
+    font-size: 18px;
+    font-weight: 300;
+    color: #94a3b8;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+  .footer .quote em {
+    color: #ef4444;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .footer .sig {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #334155;
+    margin-top: 30px;
+    letter-spacing: 3px;
+  }
+
+  /* TWO-COL for wider components */
+  .exploded-2col {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 900px) {
+    .exploded-2col { grid-template-columns: 1fr; }
+    .component { grid-template-columns: 1fr; }
+    .comp-meta { text-align: left; margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="blueprint-bg"></div>
+<div class="content">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>THE REDMOND DOCTRINE</h1>
+  <div class="subtitle">ENGINEERING BLUEPRINT &mdash; EXPLODED ASSEMBLY VIEW</div>
+  <div class="classification">US v. REDMOND &bull; EDPA 24-CR-376 &bull; TRIAL SEPT 2026</div>
+</div>
+
+<div class="flow-section">
+
+<!-- ═══════════════════════════════ STEP 1 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-gray">01</div>
+  <div>
+    <div class="step-title" style="color:#94a3b8">FOUNDATION</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Azure infrastructure — the bedrock everything bolts to</div>
+  </div>
+  <div class="step-time">30 MIN</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">BL</div>
+    <div class="comp-info">
+      <h3>BLOB STORAGE (EVIDENCE LAKE)</h3>
+      <p>Single container for all case data. 427GB discovery, Five9 exports, Paycor, ERC filings, Malcolm Smith letter. Organized: <code>/case-id/doc-type/filename</code></p>
+    </div>
+    <div class="comp-meta"><span class="time">10 min</span><br>No deps</div>
+  </div>
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">PG</div>
+    <div class="comp-info">
+      <h3>POSTGRESQL (51 + 6 NEW TABLES)</h3>
+      <p>Existing 51 tables + argument_graph, evidence_nodes, contradiction_map, probability_model, adversary_profiles, filing_sequence</p>
+    </div>
+    <div class="comp-meta"><span class="time">15 min</span><br>No deps</div>
+  </div>
+  <div class="component c-gray">
+    <div class="comp-icon s-gray">IM</div>
+    <div class="comp-info">
+      <h3>IMMUTABLE STORAGE (SOVEREIGN RECORD)</h3>
+      <p>SHA-256 hash on every file at ingest. Append-only audit log. Timestamps all evidence. Catches gov tampering. Legend 10.</p>
+    </div>
+    <div class="comp-meta"><span class="time">5 min</span><br><span class="dep-tag">BLOB</span></div>
+  </div>
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">CS</div>
+    <div class="comp-info">
+      <h3>CURSOR &rarr; AZURE SSH PIPELINE</h3>
+      <p>Cursor Remote SSH to Azure VM (Ubuntu 24). Git repo: <code>redmond-doctrine</code>. MASTER_RULES synced. Node 20 + Python 3.12 + az CLI</p>
+    </div>
+    <div class="comp-meta"><span class="time">15 min</span><br>No deps</div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#3b82f6"></div>
+
+<!-- ═══════════════════════════════ STEP 2 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-blue">02</div>
+  <div>
+    <div class="step-title" style="color:#3b82f6">INGESTION</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Feed every data source into the Evidence Lake &mdash; raw, unfiltered, complete</div>
+  </div>
+  <div class="step-time">2 HOURS</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">DI</div>
+    <div class="comp-info">
+      <h3>DISCOVERY INGEST (427GB)</h3>
+      <p>Federal discovery dump &rarr; Blob. Movebot cloud-to-cloud transfer (no local bandwidth). Every file SHA-256 hashed on landing. This is the Time Machine (Legend 4) raw material.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">BLOB</span> <span class="dep-tag">IMMUTABLE</span></div>
+  </div>
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">AI</div>
+    <div class="comp-info">
+      <h3>AI SEARCH INDEX</h3>
+      <p>Azure AI Search on Blob. Hybrid vector + keyword. Custom skills: assertion extraction, materiality scoring, legal element taxonomy. This is the brain that makes 427GB searchable in milliseconds.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">BLOB</span> <span class="dep-tag">DISCOVERY</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">CL</div>
+    <div class="comp-info">
+      <h3>COURTLISTENER SCRAPER</h3>
+      <p>Pull all Schmehl opinions since 2013. All Matcalf prosecutions. Simmons affidavit search. Crawley testimony search. Free tier: 5K requests/day. Paginate across 2 days if needed.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">POSTGRES</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">PA</div>
+    <div class="comp-info">
+      <h3>PACER + DOCKETBIRD SCRAPER</h3>
+      <p>All active dockets: EDPA criminal, bankruptcy, adversary, Berks County. Agent name searches for Simmons + Crawley. DocketBird API: <code>eTnDW...Cf</code>. RECAP archive first (free), PACER for gaps.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">POSTGRES</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">F9</div>
+    <div class="comp-info">
+      <h3>FIVE9 + PAYCOR PROCESSOR</h3>
+      <p>1.12M IVR call records &rarr; analysis pipeline. 77.6% failed connection proof. Paycor payroll records all quarters. ERC filing documentation. Malcolm Smith letter. The ammunition depot.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">BLOB</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#06b6d4"></div>
+
+<!-- ═══════════════════════════════ STEP 3 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-cyan">03</div>
+  <div>
+    <div class="step-title" style="color:#06b6d4">INTELLIGENCE</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Profile every adversary &mdash; judge, prosecutor, agents, cooperator, network</div>
+  </div>
+  <div class="step-time">3 HOURS</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-green">
+    <div class="comp-icon s-green">JS</div>
+    <div class="comp-info">
+      <h3>JUDGE SCHMEHL SIMULATOR</h3>
+      <p>3 personas: PESSIMIST / NEUTRAL / OPTIMIST. Ruling patterns coded from docket. Linguistic profile from opinions. Timing signals (days-to-decision). Franks ~30%, Dismiss ~15%, Pro Se HIGH. Semantic Warfare engine (Legend 3) &mdash; briefs written in his cognitive style.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1.5 hr</span><br><span class="dep-tag">CL SCRAPER</span> <span class="dep-tag">PACER</span></div>
+  </div>
+  <div class="component c-green">
+    <div class="comp-icon s-green">DM</div>
+    <div class="comp-info">
+      <h3>AUSA MATCALF PROFILER</h3>
+      <p>All cases prosecuted. Win/loss record. Plea terms pattern. Response timing. Career trajectory analysis. Response mode detector: Confident / Defensive / Aggressive. The Doppelganger (Legend 6) &mdash; simulates his oppositions before he writes them.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">PACER</span> <span class="dep-tag">CL SCRAPER</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">CS</div>
+    <div class="comp-info">
+      <h3>FBI SIMMONS ANALYZER</h3>
+      <p>AOPC author. Prior affidavit pattern search. Template vs. meticulous agent determination. Line-by-line AOPC contradiction table. Testimony history. The Franks target.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">PACER</span> <span class="dep-tag">DISCOVERY</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">AG</div>
+    <div class="comp-info">
+      <h3>GROFF COOPERATOR MAP</h3>
+      <p>Pled guilty 12/16/25. 302 analysis pipeline (post-Brady production). Contradiction tracker: Groff statements vs. discovery documents. Giglio impeachment matrix. Testimony prediction engine.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">BRADY PROD</span> <span class="dep-tag">DISCOVERY</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">NM</div>
+    <div class="comp-info">
+      <h3>NETWORK MAP (LEGEND 7)</h3>
+      <p>Rush &harr; Schmehl (clerk '06-'10). Matcalf &harr; Simmons shared cases. All cross-relationships. Hidden influence channels. FOIA targets. Bar association overlaps.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL L2</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#10b981"></div>
+
+<!-- ═══════════════════════════════ STEP 4 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-green">04</div>
+  <div>
+    <div class="step-title" style="color:#10b981">ANALYSIS</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Transform intelligence into weapons &mdash; every module outputs a score, probability, or filing</div>
+  </div>
+  <div class="step-time">3 HOURS</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-red">
+    <div class="comp-icon s-red">KC</div>
+    <div class="comp-info">
+      <h3>KILL CHAIN MAPPER</h3>
+      <p>Prosecution chain: 7 links (Investigation &rarr; Verdict). Cooperator chain: 8 links (Arrest &rarr; Jury Belief). Identifies weakest link per chain. Break probability per link. Cascade impact model. One break collapses everything downstream.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL L2</span></div>
+  </div>
+  <div class="component c-red">
+    <div class="comp-icon s-red">CE</div>
+    <div class="comp-info">
+      <h3>CONTRADICTION ENGINE (THE DOOR-CLOSER)</h3>
+      <p>Gov evidence vs. gov evidence. Call Volume Paradox. Willfulness Paradox. Cooperator Paradox. Materiality Paradox. Auto-detects where their assertions fight each other. Outputs the 10-page Contradiction Map brief. Their exhibits. Their problem.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">AI SEARCH</span> <span class="dep-tag">DISCOVERY</span></div>
+  </div>
+  <div class="component c-purple">
+    <div class="comp-icon s-purple">BP</div>
+    <div class="comp-info">
+      <h3>BAYESIAN PROBABILITY MODEL</h3>
+      <p>Running posterior updated with each evidence piece. Base rate 8% &rarr; current ~38% acquittal. Thresholds: &lt;20% plea, 20-40% motion, 40-60% trial viable, &gt;60% go. Cheek v. US + Kousisis as update factors.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL L2</span> <span class="dep-tag">ALL L3</span></div>
+  </div>
+  <div class="component c-purple">
+    <div class="comp-icon s-purple">KM</div>
+    <div class="comp-info">
+      <h3>KOUSISIS MATERIALITY SCORER</h3>
+      <p>Post-SCOTUS May 2025. Per-count materiality score. Thomas concurrence as anchor: was misrepresentation material to fundamental purpose? Essence-of-bargain test per wire fraud count.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">DISCOVERY</span></div>
+  </div>
+  <div class="component c-purple">
+    <div class="comp-icon s-purple">WN</div>
+    <div class="comp-info">
+      <h3>WILLFULNESS NEGATION CHAIN</h3>
+      <p>7202 counts (21-27). ERC credits = payment attempt via legal mechanism. Malcolm Smith = professional reliance. Good faith belief under Cheek. Every doc showing compliance intent maps here. When this node saturates: "7202 defense is HOT."</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">FIVE9</span> <span class="dep-tag">PAYCOR</span></div>
+  </div>
+  <div class="component c-purple">
+    <div class="comp-icon s-purple">BG</div>
+    <div class="comp-info">
+      <h3>BRADY/GIGLIO RADAR</h3>
+      <p>Auto cross-references gov witness statements against discovery documents. Flags contradictions in real-time. Groff 302 analysis pipeline. Exhibit list generator. Malcolm Smith letter mapping.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL L2</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#f59e0b"></div>
+
+<!-- ═══════════════════════════════ STEP 5 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-amber">05</div>
+  <div>
+    <div class="step-title" style="color:#f59e0b">GAME THEORY</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">Predict every move. Counter every move. Win before the game starts.</div>
+  </div>
+  <div class="step-time">2 HOURS</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">FS</div>
+    <div class="comp-info">
+      <h3>FILING SEQUENCE OPTIMIZER</h3>
+      <p>Optimal 6-move game tree: (1) Compel &rarr; (2) Brady letter &rarr; (3) MTD 7202 &rarr; (4) Franks &rarr; (5) Kousisis &rarr; (6) Five9 ambush at hearing. Each move includes predicted counter-move from Matcalf and pre-computed response.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">ALL L3</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">NE</div>
+    <div class="comp-info">
+      <h3>NASH EQUILIBRIUM CALCULATOR</h3>
+      <p>5 scenarios modeled: Alpha (cascade 4.2%), Beta (grind 5.8%), Gamma (blitz 15%), Delta (nightmare 1%), Epsilon (butterfly TBD). Equilibrium: 2+ motion wins = misdemeanor/no custody. Gov optimal = plea before motions. Your optimal = delay plea until wins.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">BAYESIAN</span></div>
+  </div>
+  <div class="component c-pink">
+    <div class="comp-icon s-pink">GT</div>
+    <div class="comp-info">
+      <h3>GTO + KELLY + RED QUEEN + FEYNMAN</h3>
+      <p>GTO: widen your range (8 experts listed, 2 called). Kelly: optimal resource allocation per motion. Red Queen: 30-min evolution sprint after each gov filing. Feynman: all defense theories running, interference pattern identifies strongest combo (Path 1+4).</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br><span class="dep-tag">ALL L3</span> <span class="dep-tag">ALL L4</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#8b5cf6"></div>
+
+<!-- ═══════════════════════════════ STEP 6 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-purple">06</div>
+  <div>
+    <div class="step-title" style="color:#8b5cf6">WEAPONS</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">The machine produces the filings, scripts, and tools. You deliver them.</div>
+  </div>
+  <div class="step-time">6 HOURS</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-blue">
+    <div class="comp-icon s-blue">MT</div>
+    <div class="comp-info">
+      <h3>MOTION TEMPLATE LIBRARY</h3>
+      <p>7 templates with variable slots: Brady/Giglio, Franks (hearing), MTD 7202 (ERC), MTD Kousisis (materiality), Compel (discovery), Rule 9011 (sanctions), Motion in Limine. Each pulls evidence from argument graph, cites from AI Search, formats per EDPA local rules.</p>
+    </div>
+    <div class="comp-meta"><span class="time">2 hr</span><br><span class="dep-tag">ALL L3</span> <span class="dep-tag">L4 SEQ</span></div>
+  </div>
+  <div class="component c-green">
+    <div class="comp-icon s-green">CX</div>
+    <div class="comp-info">
+      <h3>CROSS-EXAMINATION SCRIPTS</h3>
+      <p>Crawley: handshake sequence (The Reframe). Simmons: AOPC line-by-line + Five9 ambush. Groff: 302 contradiction table + document impeachment. Gov expert: loss calculation challenge. 20-30 questions per witness, pre-loaded with exhibit references.</p>
+    </div>
+    <div class="comp-meta"><span class="time">2 hr</span><br><span class="dep-tag">ALL L2</span> <span class="dep-tag">L3 CE</span></div>
+  </div>
+  <div class="component c-cyan">
+    <div class="comp-icon s-cyan">JG</div>
+    <div class="comp-info">
+      <h3>JURY GENOME</h3>
+      <p>Berks County demographic profile. Census + voting + employment data. 5-7 juror archetypes. Voir dire question bank. Hold-out juror identification strategy. Opening/closing calibrated to dominant archetypes. Moneyball for jury selection.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">WEB DATA</span></div>
+  </div>
+  <div class="component c-amber">
+    <div class="comp-icon s-amber">FC</div>
+    <div class="comp-info">
+      <h3>FINANCIAL COUNTER-ENGINE</h3>
+      <p>Alternative loss calculation using same raw data as government. ERC credit reductions. Five9 failed connections removed from victim count. Minimize guidelines exposure. Expert witness exhibit package for Malcolm Smith / CPA testimony.</p>
+    </div>
+    <div class="comp-meta"><span class="time">1 hr</span><br><span class="dep-tag">FIVE9</span> <span class="dep-tag">PAYCOR</span></div>
+  </div>
+  <div class="component c-red">
+    <div class="comp-icon s-red">DS</div>
+    <div class="comp-info">
+      <h3>DEAD MAN'S SWITCH (LEGEND 5)</h3>
+      <p>Pre-written appeal brief for every anticipated adverse ruling. 8-12 templates. File within days of conviction, not months. Matcalf knows they're loaded. Preserved issues for Third Circuit. The insurance policy.</p>
+    </div>
+    <div class="comp-meta"><span class="time">4 hr</span><br><span class="dep-tag">ALL L4</span> <span class="dep-tag">ALL L5</span></div>
+  </div>
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector" style="--conn-color:#ef4444"></div>
+
+<!-- ═══════════════════════════════ STEP 7 ═══════════════════════════════ -->
+<div class="step-marker">
+  <div class="step-number s-red">07</div>
+  <div>
+    <div class="step-title" style="color:#ef4444">THE REFRAME</div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px">The crown. Where the machine disappears and only the man remains.</div>
+  </div>
+  <div class="step-time">TRIAL</div>
+</div>
+
+<div class="exploded-view">
+  <div class="component c-red" style="border-color: rgba(239,68,68,0.3); background: linear-gradient(135deg, rgba(50,20,20,0.8), rgba(30,10,10,0.9));">
+    <div class="comp-icon s-red">CM</div>
+    <div class="comp-info">
+      <h3>THE CONTRADICTION MAP</h3>
+      <p>10-page standalone memorandum. Zero advocacy. Their evidence vs. their evidence. Four paradoxes. Their exhibit numbers. Their production. Judge reads it and can't unsee it. The thing that makes Schmehl think: "He just dismantled a 27-count indictment with the government's own documents."</p>
+    </div>
+    <div class="comp-meta"><span class="time">2 hr</span><br><span class="dep-tag">L3 CE</span></div>
+  </div>
+  <div class="component c-pink" style="border-color: rgba(236,72,153,0.3); background: linear-gradient(135deg, rgba(50,15,30,0.8), rgba(30,10,20,0.9));">
+    <div class="comp-icon s-pink">HS</div>
+    <div class="comp-info">
+      <h3>THE HANDSHAKE</h3>
+      <p>Cross-examination: Crawley confirms the hallway handshake. The FBI agent delivers your character to the jury through his own mouth. Anagnorisis. Schwerpunkt. The Reframe. Not filed in any motion. Extracted under oath. The moment the jury sees who you actually are.</p>
+    </div>
+    <div class="comp-meta"><span class="time">30 min</span><br>script only</div>
+  </div>
+  <div class="component c-red" style="border-color: rgba(239,68,68,0.3); background: linear-gradient(135deg, rgba(50,20,20,0.8), rgba(30,10,10,0.9));">
+    <div class="comp-icon s-red">TE</div>
+    <div class="comp-info">
+      <h3>REAL-TIME TRIAL ENGINE (LEGEND 9)</h3>
+      <p>iPad app. Live transcript analysis. Instant impeachment document retrieval. Contradiction flagging as witnesses testify. Running probability dashboard. Objection prompts. One person with this system > 15-person BigLaw team without it.</p>
+    </div>
+    <div class="comp-meta"><span class="time">4 hr</span><br><span class="dep-tag">ALL</span></div>
+  </div>
+</div>
+
+</div><!-- end flow-section -->
+
+<!-- ═══════════════════════════════ ASSEMBLY ═══════════════════════════════ -->
+<div class="integration-block">
+  <h2>PARALLEL ASSEMBLY &mdash; 3 ANVIL MACHINES</h2>
+  <div class="assembly-grid">
+    <div class="assembly-card">
+      <h3>ANVIL-1: CRITICAL PATH</h3>
+      <p>Foundation (L0) &rarr; Discovery Ingest (L1) &rarr; AI Search (L1) &rarr; Contradiction Engine (L3) &rarr; Motion Templates (L5) &rarr; Contradiction Map (L7)</p>
+      <p style="color:#ef4444;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px">~6 hours &bull; Produces first motion draft</p>
+    </div>
+    <div class="assembly-card">
+      <h3>ANVIL-2: INTELLIGENCE PATH</h3>
+      <p>CourtListener scraper (L1) &rarr; PACER scraper (L1) &rarr; Schmehl Simulator (L2) &rarr; Matcalf Profiler (L2) &rarr; Game Theory engines (L4) &rarr; Semantic Warfare (L5)</p>
+      <p style="color:#f59e0b;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px">~5 hours &bull; Know your adversary</p>
+    </div>
+    <div class="assembly-card">
+      <h3>ANVIL-3: TRIAL PATH</h3>
+      <p>Five9 processor (L1) &rarr; Simmons Analyzer (L2) &rarr; Groff Map (L2) &rarr; Cross-Exam Scripts (L5) &rarr; Jury Genome (L5) &rarr; Trial Engine (L7)</p>
+      <p style="color:#10b981;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px">~5 hours &bull; Ready for September</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="quote">
+    Build the machine so perfect that when you stand up in that courtroom,<br>
+    <em>the machine disappears</em><br>
+    &mdash; and all the jury sees is the man who shook the agent's hand.
+  </div>
+  <div class="sig">THE REDMOND DOCTRINE &bull; MARCH 2026 &bull; BUILD STARTS NOW</div>
+</div>
+
+</div><!-- end content -->
+</body>
+</html>

@@ -1,0 +1,412 @@
+/*
+ * ═══════════════════════════════════════════════════════════════
+ * THE REDMOND BLUEPRINT — DESIGN SYSTEM
+ * Style: Engineering Schematic / Dark HUD / Exploded Diagram
+ * Origin: Redmond Doctrine, March 2026
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * WHAT MAKES IT WORK:
+ *
+ * 1. NEAR-BLACK BASE (#050810) — not pure black. 
+ *    The blue tint (08) makes it feel like a powered-down screen,
+ *    not a void. Everything placed on it looks like it's glowing
+ *    by comparison.
+ *
+ * 2. BLUEPRINT GRID — four overlapping CSS gradients at 0.03 and 
+ *    0.06 opacity. 20px minor grid, 100px major grid. Your brain 
+ *    registers "precision instrument" without consciously reading 
+ *    the lines. Remove it and the page feels empty. Add it and 
+ *    everything feels engineered.
+ *
+ * 3. JETBRAINS MONO — monospaced font for all headers, labels,
+ *    and metadata. Monospace = machine authority. Every character
+ *    the same width = military precision. Paired with Inter for
+ *    body text (clean, invisible, lets mono headers dominate).
+ *
+ * 4. COMPONENT CARDS — semi-transparent dark backgrounds with 
+ *    1px borders at 15% opacity. On hover: border goes full color,
+ *    outer glow appears (box-shadow), inner glow activates (inset),
+ *    card slides 4px right (transform). Three simultaneous signals
+ *    that say "this is interactive, this is alive."
+ *
+ * 5. CONNECTION ARMS — ::before pseudo-element draws a horizontal
+ *    line from a vertical spine to the card. ::after draws a dot
+ *    at the connection point. This is the crankcase diagram effect.
+ *    Parts appear to float off a central shaft.
+ *
+ * 6. COLOR-AS-MEANING — eight colors, each assigned a semantic 
+ *    role. Applied via CSS custom properties (--comp-color) so 
+ *    one variable change cascades to icon, border, text, glow, 
+ *    connection dot, and accent line.
+ *
+ * 7. LETTER-SPACING — 2-6px on headers creates the "stamped metal"
+ *    feel. Like text engraved into a panel, not printed on paper.
+ *
+ * 8. CLASSIFICATION BORDER — a simple inline-block with 1px border
+ *    in red. Signals "this document matters." Borrowed from 
+ *    military/intelligence document markings.
+ *
+ * 9. CONNECTOR ARROWS — between sections, a 2px vertical line with
+ *    gradient fade and a ▼ character at the bottom. Shows flow 
+ *    direction. The gradient makes it feel like the line is 
+ *    dissolving into the next section.
+ *
+ * 10. RESTRAINT — no gradients on cards. No rounded corners 
+ *     (except 4px). No decorative elements. No images. The beauty 
+ *     comes from alignment, spacing, and the glow system. 
+ *     Engineering is beautiful when it's precise, not decorated.
+ *
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FONTS
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Google Fonts import:
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;700;900&display=swap');
+
+  HEADER FONT: JetBrains Mono (monospaced)
+    - Weights used: 400 (metadata), 700 (labels), 800 (titles)
+    - Letter-spacing: 1-6px depending on hierarchy
+    - Why it works: monospaced fonts carry inherent authority,
+      every character occupies the same width = machine precision
+
+  BODY FONT: Inter (sans-serif)
+    - Weights used: 300 (quotes), 400 (body), 600 (emphasis)
+    - Letter-spacing: 0 (default)
+    - Why it works: invisible, clean, doesn't compete with mono
+
+  FONT SIZES:
+    Title:           42px  JetBrains Mono 800  letter-spacing: 6px
+    Section header:  18px  JetBrains Mono 700  letter-spacing: 2px
+    Component title: 12px  JetBrains Mono 700  letter-spacing: 1px
+    Body text:       11px  Inter 400
+    Metadata:        10px  JetBrains Mono 400
+    Tags/labels:      8px  JetBrains Mono 400
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR PALETTE
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* === BACKGROUNDS === */
+  --bg-deep:      #050810;   /* page base — near-black with blue tint */
+  --bg-mid:       #111827;   /* footer bars, secondary panels */
+  --bg-card:      #1E293B;   /* component card background */
+  --bg-card-alt:  #0F172A;   /* card gradient end */
+
+  /* === TEXT === */
+  --text-primary:   #F1F5F9;  /* bright white — titles, key info */
+  --text-secondary: #CBD5E1;  /* soft white — body text */
+  --text-muted:     #94A3B8;  /* gray — metadata, descriptions */
+  --text-dim:       #64748B;  /* dark gray — timestamps, labels */
+  --text-ghost:     #334155;  /* barely visible — grid, borders */
+
+  /* === ACCENT COLORS (semantic meaning) === */
+  --c-blue:    #3B82F6;  /* data, ingestion, primary action */
+  --c-cyan:    #06B6D4;  /* scraping, external sources */
+  --c-green:   #10B981;  /* intelligence, profiles, success */
+  --c-amber:   #F59E0B;  /* game theory, strategy, warning */
+  --c-red:     #EF4444;  /* weapons, critical, danger */
+  --c-purple:  #8B5CF6;  /* analysis, computation */
+  --c-pink:    #EC4899;  /* human element, narrative */
+  --c-gray:    #94A3B8;  /* foundation, infrastructure */
+
+  /* === SHADOWS & GLOWS === */
+  --shadow-card:    0 4px 20px rgba(0,0,0,0.4);
+  --shadow-hover:   0 0 20px rgba(var(--comp-rgb), 0.15);
+  --glow-inner:     inset 0 0 20px rgba(var(--comp-rgb), 0.03);
+  --glow-text:      0 0 40px rgba(59,130,246,0.3);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   BLUEPRINT GRID BACKGROUND
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Four overlapping gradients:
+  - Layer 1 & 2: minor grid (20px) at 3% opacity
+  - Layer 3 & 4: major grid (100px) at 6% opacity
+  
+  Color: rgba(59,130,246,...) — blue, matching the accent
+  
+  The grid is FIXED position so it doesn't scroll — the content
+  moves over it like a technical drawing on graph paper.
+*/
+.blueprint-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+  z-index: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT CARD ANATOMY
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Structure:
+  ┌─────────────────────────────────────────────────┐
+  │ [ICON]   TITLE (mono, colored)         TIME     │
+  │          Description text (Inter)      DEP TAGS │
+  └─────────────────────────────────────────────────┘
+  
+  Background: gradient from bg-card to bg-card-alt (135deg)
+  Border: 1px solid at 15% opacity (barely visible)
+  Border-radius: 4px (minimal — engineering, not consumer)
+  
+  Left accent: 0.06" colored bar (optional, added via nested element)
+  
+  Grid: 3 columns — icon (40px) | content (1fr) | meta (auto)
+*/
+.component {
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(30,41,59,0.8),   /* --bg-card at 80% */
+    rgba(15,23,42,0.9)    /* --bg-card-alt at 90% */
+  );
+  border: 1px solid rgba(100,116,139,0.15);
+  border-radius: 4px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* HOVER STATE — three simultaneous effects */
+.component:hover {
+  /* 1. Border goes full accent color */
+  border-color: var(--comp-color);
+  /* 2. Outer glow + inner glow activate */
+  box-shadow: 
+    0 0 20px rgba(var(--comp-rgb), 0.15),     /* outer glow */
+    inset 0 0 20px rgba(var(--comp-rgb), 0.03); /* inner glow */
+  /* 3. Card slides right 4px — drawer-pull effect */
+  transform: translateX(4px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CONNECTION ARM (EXPLODED DIAGRAM EFFECT)
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Creates the mechanical connection between the vertical spine
+  and each component card.
+  
+  ::before = horizontal line (44px) from spine to card
+             gradient: gray at spine → accent color at card
+  
+  ::after  = 5px dot at the card's connection point
+             solid accent color
+  
+  Together they create the "parts floating off a shaft" effect
+  from the crankcase diagram.
+*/
+.component::before {
+  content: '';
+  position: absolute;
+  left: -45px;
+  top: 50%;
+  width: 44px;
+  height: 1px;
+  background: linear-gradient(to right, 
+    rgba(100,116,139,0.3),  /* dim at spine */
+    var(--comp-color)        /* bright at card */
+  );
+}
+
+.component::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--comp-color);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   VERTICAL SPINE
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  The central vertical line that all connection arms branch from.
+  Applied as ::before on the exploded-view container.
+  
+  Position: 27px from left (centers on the step-number circles)
+  Color: 20% opacity gray — subtle, structural
+*/
+.exploded-view::before {
+  content: '';
+  position: absolute;
+  left: 27px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(100,116,139,0.2);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FLOW CONNECTOR (BETWEEN STEPS)
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Vertical connecting line between step sections.
+  
+  ::before = 2px line with gradient (colored → transparent)
+  ::after  = ▼ arrow character at bottom
+  
+  Height: 40px (enough breathing room between sections)
+  Position: 27px from left (aligns with spine)
+  Color: set via CSS custom property --conn-color
+*/
+.connector {
+  width: 2px;
+  height: 40px;
+  margin-left: 27px;
+  position: relative;
+}
+.connector::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--conn-color), transparent);
+}
+.connector::after {
+  content: '▼';
+  position: absolute;
+  bottom: -8px;
+  left: -5px;
+  font-size: 10px;
+  color: var(--conn-color);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   STEP NUMBER CIRCLES
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  56px circles with solid accent color fill.
+  Dark text (#050810) on bright background — inverted from cards.
+  
+  These are the "bolts" that hold the spine together.
+  Each one marks a major assembly step.
+*/
+.step-number {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 22px;
+  color: #050810;  /* dark text on bright circle */
+  flex-shrink: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   DEPENDENCY TAGS
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  Tiny bordered pills showing what each component depends on.
+  
+  Border: 1px solid #334155 (subtle)
+  Font: 8px JetBrains Mono (machine-readable)
+  Color: #64748b (dim — don't compete with component info)
+  
+  These are the "bolt specifications" — what must be installed
+  before this part can be attached.
+*/
+.dep-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid #334155;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: #64748b;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CLASSIFICATION BORDER
+   ═══════════════════════════════════════════════════════════════ */
+/*
+  The red-bordered label at the top.
+  Borrowed from military/intelligence document markings.
+  
+  Signals: "this document matters, this is controlled."
+  
+  Simple inline-block, 1px red border, small mono text,
+  wide letter-spacing. That's it. Restraint is the point.
+*/
+.classification {
+  display: inline-block;
+  padding: 4px 20px;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   KEY DESIGN RULES (THE PHILOSOPHY)
+   ═══════════════════════════════════════════════════════════════
+   
+   1. NO ROUNDED CORNERS beyond 4px. Engineering is angular.
+   
+   2. NO DECORATIVE IMAGES. The structure IS the decoration.
+   
+   3. NO GRADIENTS ON CARDS (except the subtle bg gradient).
+      Color comes from borders, text, and glows — not fills.
+   
+   4. LETTER-SPACING ON EVERYTHING in monospace. 1-6px. 
+      This is what makes text feel "stamped" not "typed."
+   
+   5. OPACITY LAYERING. Nothing is fully opaque except text.
+      Backgrounds: 80-90%. Borders: 15%. Grids: 3-6%.
+      This creates depth without using z-index tricks.
+   
+   6. COLOR = MEANING. Never use a color just because it 
+      looks nice. Every color maps to a system layer.
+   
+   7. HOVER = REVEAL. Cards look dormant until touched.
+      The glow on hover makes them feel like they're 
+      powering up. Three effects simultaneously: border 
+      color, box-shadow, and transform.
+   
+   8. VERTICAL FLOW. Everything reads top to bottom.
+      The spine + connection arms create a visual path
+      the eye follows without instruction.
+   
+   9. BREATHING ROOM. Generous padding. 16-20px inside 
+      cards. 40px between sections. White space is 
+      structural, not empty.
+   
+   10. THE GRID NEVER STOPS. The background grid is fixed.
+       Content scrolls over it. This creates the feeling 
+       of a workbench — the paper stays still, the parts 
+       move across it.
+   
+   ═══════════════════════════════════════════════════════════════ */
