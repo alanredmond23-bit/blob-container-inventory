@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENAGERIE WALL CLOCK</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #050810;
+    --card: #1E293B;
+    --card-border: #334155;
+    --blue: #3B82F6;
+    --cyan: #06B6D4;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+    --text: #F8FAFC;
+    --text-dim: #94A3B8;
+    --text-body: #CBD5E1;
+  }
+
+  body {
+    background: var(--bg);
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    color: var(--text);
+    font-family: Inter, -apple-system, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1, h2, h3, h4 { font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 20px;
+  }
+  .header h1 { font-size: 28px; color: var(--blue); margin-bottom: 4px; letter-spacing: 4px; }
+  .header p { color: var(--text-dim); font-size: 13px; letter-spacing: 1px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1400px; margin: 0 auto; }
+  .grid-full { grid-column: 1 / -1; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover { border-color: var(--blue); transform: translateX(4px); }
+  .card h3 {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  textarea, input[type="text"], input[type="number"], select {
+    width: 100%;
+    background: #0F172A;
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 2px;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus, input:focus, select:focus { border-color: var(--blue); }
+  textarea { resize: vertical; min-height: 60px; }
+  select { cursor: pointer; appearance: none; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .field { margin-bottom: 14px; }
+
+  /* VM TIER CARDS */
+  .vm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .vm-option {
+    background: #0F172A;
+    border: 1px solid var(--card-border);
+    border-radius: 2px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .vm-option:hover { border-color: var(--cyan); }
+  .vm-option.selected { border-color: var(--blue); background: rgba(59,130,246,0.1); box-shadow: 0 0 12px rgba(59,130,246,0.15); }
+  .vm-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--cyan); letter-spacing: 1px; }
+  .vm-spec { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .vm-cost { font-size: 14px; color: var(--green); font-weight: 700; margin-top: 6px; }
+  .vm-multi { font-size: 10px; color: var(--amber); margin-top: 4px; font-weight: 600; }
+
+  /* AGENT SWARM CONFIG */
+  .agent-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .agent-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .agent-count button {
+    width: 28px; height: 28px;
+    background: #0F172A;
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .agent-count button:hover { border-color: var(--blue); }
+  .agent-count span { font-family: 'JetBrains Mono', monospace; font-size: 18px; width: 30px; text-align: center; }
+
+  .toggle-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .toggle-chip {
+    padding: 6px 12px;
+    background: #0F172A;
+    border: 1px solid var(--card-border);
+    border-radius: 2px;
+    font-size: 11px;
+    color: var(--text-dim);
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .toggle-chip:hover { border-color: var(--purple); }
+  .toggle-chip.active { border-color: var(--purple); color: var(--purple); background: rgba(139,92,246,0.1); }
+
+  /* COMPLEXITY SLIDER */
+  .complexity-bar { display: flex; gap: 4px; margin-top: 6px; }
+  .complexity-seg {
+    flex: 1; height: 32px;
+    background: #0F172A;
+    border: 1px solid var(--card-border);
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--text-dim);
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .complexity-seg:hover { border-color: var(--amber); }
+  .complexity-seg.active-1 { background: rgba(16,185,129,0.2); border-color: var(--green); color: var(--green); }
+  .complexity-seg.active-2 { background: rgba(6,182,212,0.2); border-color: var(--cyan); color: var(--cyan); }
+  .complexity-seg.active-3 { background: rgba(59,130,246,0.2); border-color: var(--blue); color: var(--blue); }
+  .complexity-seg.active-4 { background: rgba(245,158,11,0.2); border-color: var(--amber); color: var(--amber); }
+  .complexity-seg.active-5 { background: rgba(239,68,68,0.2); border-color: var(--red); color: var(--red); }
+
+  /* PREDICTION DISPLAY */
+  .prediction-display {
+    text-align: center;
+    padding: 24px;
+  }
+  .clock-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .clock-unit { font-size: 14px; color: var(--text-dim); letter-spacing: 3px; }
+  .clock-range {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .confidence-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 12px;
+  }
+  .conf-high { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid var(--green); }
+  .conf-med { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid var(--amber); }
+  .conf-low { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid var(--red); }
+
+  /* BREAKDOWN TABLE */
+  .breakdown-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .breakdown-table th {
+    text-align: left;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--card-border);
+    text-transform: uppercase;
+  }
+  .breakdown-table td {
+    font-size: 13px;
+    padding: 8px;
+    border-bottom: 1px solid rgba(51,65,85,0.4);
+    color: var(--text-body);
+  }
+  .breakdown-table td:last-child { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  .breakdown-table tr:hover td { background: rgba(59,130,246,0.05); }
+
+  /* FACTOR BARS */
+  .factor-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .factor-label { width: 100px; font-size: 11px; color: var(--text-dim); text-align: right; letter-spacing: 1px; }
+  .factor-bar-bg { flex: 1; height: 8px; background: #0F172A; border-radius: 1px; overflow: hidden; }
+  .factor-bar { height: 100%; border-radius: 1px; transition: width 0.4s ease; }
+  .factor-val { width: 50px; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-align: right; }
+
+  /* HISTORY */
+  .history-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(51,65,85,0.3);
+    font-size: 12px;
+  }
+  .history-task { flex: 1; color: var(--text-body); }
+  .history-predicted { width: 70px; text-align: right; font-family: 'JetBrains Mono', monospace; color: var(--text-dim); }
+  .history-actual { width: 70px; text-align: right; font-family: 'JetBrains Mono', monospace; }
+  .history-delta { width: 60px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .delta-good { color: var(--green); }
+  .delta-bad { color: var(--red); }
+  .delta-ok { color: var(--amber); }
+
+  .btn {
+    padding: 10px 20px;
+    border: 1px solid var(--blue);
+    background: rgba(59,130,246,0.1);
+    color: var(--blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn:hover { background: rgba(59,130,246,0.2); transform: translateX(4px); }
+  .btn-green { border-color: var(--green); color: var(--green); background: rgba(16,185,129,0.1); }
+  .btn-green:hover { background: rgba(16,185,129,0.2); }
+  .btn-red { border-color: var(--red); color: var(--red); background: rgba(239,68,68,0.1); }
+  .btn-sm { padding: 6px 12px; font-size: 10px; }
+
+  .btn-row { display: flex; gap: 8px; margin-top: 14px; justify-content: center; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .stat-box { text-align: center; padding: 10px; background: #0F172A; border: 1px solid var(--card-border); border-radius: 2px; }
+  .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; }
+  .stat-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+  .warning-bar {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 10px 16px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    margin-top: 12px;
+    border-radius: 2px;
+    text-align: center;
+  }
+
+  .zone-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    border-radius: 2px;
+  }
+  .zone-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid var(--red); }
+  .zone-yellow { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid var(--amber); }
+  .zone-green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid var(--green); }
+
+  .hidden { display: none; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .vm-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>PREDICTIVE WALL CLOCK</h1>
+  <p>MENAGERIE VM TASK ESTIMATION ENGINE -- MEASURED ON ACTUALS</p>
+</div>
+
+<div class="grid" id="app">
+
+  <!-- TASK INPUT -->
+  <div class="card grid-full">
+    <h3>TASK DEFINITION</h3>
+    <div style="display:grid;grid-template-columns:1fr 200px;gap:12px;">
+      <div class="field">
+        <label>TASK DESCRIPTION</label>
+        <textarea id="taskDesc" placeholder="e.g. Wire FastAPI upload endpoint with SAS token generation and Blob storage integration"></textarea>
+      </div>
+      <div>
+        <div class="field">
+          <label>ZONE</label>
+          <select id="zoneSelect">
+            <option value="green">GREEN - Full autonomy</option>
+            <option value="yellow">YELLOW - Tests required</option>
+            <option value="red">RED - Human approval</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>DOMAIN</label>
+          <select id="domainSelect">
+            <option value="technical">TECHNICAL</option>
+            <option value="legal">LEGAL</option>
+            <option value="business">BUSINESS</option>
+            <option value="general">GENERAL</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VM TIER -->
+  <div class="card">
+    <h3>VM TIER</h3>
+    <div class="vm-grid" id="vmGrid">
+      <div class="vm-option" data-vm="b2s" onclick="selectVM(this)">
+        <div class="vm-name">B2s</div>
+        <div class="vm-spec">2 vCPU / 4GB</div>
+        <div class="vm-cost">$30/mo</div>
+        <div class="vm-multi">1.0x speed</div>
+      </div>
+      <div class="vm-option" data-vm="d2s" onclick="selectVM(this)">
+        <div class="vm-name">D2s v5</div>
+        <div class="vm-spec">2 vCPU / 8GB</div>
+        <div class="vm-cost">$70/mo</div>
+        <div class="vm-multi">1.6x speed</div>
+      </div>
+      <div class="vm-option selected" data-vm="d4s" onclick="selectVM(this)">
+        <div class="vm-name">D4s v5</div>
+        <div class="vm-spec">4 vCPU / 16GB</div>
+        <div class="vm-cost">$140/mo</div>
+        <div class="vm-multi">2.4x speed</div>
+      </div>
+      <div class="vm-option" data-vm="d8s" onclick="selectVM(this)">
+        <div class="vm-name">D8s v5</div>
+        <div class="vm-spec">8 vCPU / 32GB</div>
+        <div class="vm-cost">$280/mo</div>
+        <div class="vm-multi">3.6x speed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLEXITY -->
+  <div class="card">
+    <h3>TASK COMPLEXITY</h3>
+    <div class="complexity-bar" id="complexityBar">
+      <div class="complexity-seg" data-c="1" onclick="setComplexity(1)">TRIVIAL</div>
+      <div class="complexity-seg" data-c="2" onclick="setComplexity(2)">SIMPLE</div>
+      <div class="complexity-seg active-3" data-c="3" onclick="setComplexity(3)">MODERATE</div>
+      <div class="complexity-seg" data-c="4" onclick="setComplexity(4)">COMPLEX</div>
+      <div class="complexity-seg" data-c="5" onclick="setComplexity(5)">MASSIVE</div>
+    </div>
+    <div style="margin-top:14px;">
+      <label>BASE TIME ESTIMATE (SOLO, NO AGENTS)</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="number" id="baseMinutes" value="30" min="1" max="480" style="width:80px;" oninput="recalculate()">
+        <span style="color:var(--text-dim);font-size:13px;">minutes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT SWARM CONFIG -->
+  <div class="card">
+    <h3>AGENT SWARM</h3>
+    <div class="agent-row">
+      <label style="margin:0;width:110px;">AGENTS</label>
+      <div class="agent-count">
+        <button onclick="adjustAgents(-1)">-</button>
+        <span id="agentCount">6</span>
+        <button onclick="adjustAgents(1)">+</button>
+      </div>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:auto;" id="parallelLabel">5 parallel + 1 sequential gate</span>
+    </div>
+
+    <label style="margin-top:10px;">ENHANCEMENTS</label>
+    <div class="toggle-row">
+      <div class="toggle-chip active" data-enh="skills" onclick="toggleEnhancement(this)">SKILLS</div>
+      <div class="toggle-chip" data-enh="loops" onclick="toggleEnhancement(this)">ITERATION LOOPS</div>
+      <div class="toggle-chip active" data-enh="swarm" onclick="toggleEnhancement(this)">SWARM COORD</div>
+      <div class="toggle-chip" data-enh="teams" onclick="toggleEnhancement(this)">TEAM OF SWARMS</div>
+      <div class="toggle-chip" data-enh="selfheal" onclick="toggleEnhancement(this)">SELF-HEAL</div>
+      <div class="toggle-chip" data-enh="precheck" onclick="toggleEnhancement(this)">PRE-CHECK</div>
+    </div>
+  </div>
+
+  <!-- ENHANCEMENT IMPACT -->
+  <div class="card">
+    <h3>SPEED MULTIPLIER BREAKDOWN</h3>
+    <div id="factorBars"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--card-border);">
+      <span style="font-size:12px;color:var(--text-dim);letter-spacing:1px;">COMBINED MULTIPLIER</span>
+      <span id="combinedMulti" style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--cyan);font-weight:700;">3.2x</span>
+    </div>
+  </div>
+
+  <!-- PREDICTION OUTPUT -->
+  <div class="card">
+    <h3>PREDICTED WALL CLOCK</h3>
+    <div class="prediction-display">
+      <div class="clock-value" id="clockValue" style="color:var(--green);">9</div>
+      <div class="clock-unit">MINUTES</div>
+      <div class="clock-range" id="clockRange">RANGE: 7 - 13 min</div>
+      <div id="confidenceBadge" class="confidence-badge conf-high">CONFIDENCE: HIGH</div>
+    </div>
+    <div id="warningBar" class="warning-bar hidden">
+      WARNING: OVER 2 HOURS -- COULD FUCK YOUR DAY ALAN
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="startTask()">START CLOCK</button>
+      <button class="btn" onclick="recalculate()">RECALCULATE</button>
+    </div>
+  </div>
+
+  <!-- TIME BREAKDOWN TABLE -->
+  <div class="card grid-full">
+    <h3>TIME BREAKDOWN</h3>
+    <table class="breakdown-table" id="breakdownTable">
+      <thead>
+        <tr>
+          <th>PHASE</th>
+          <th>AGENT</th>
+          <th>ZONE</th>
+          <th>WITHOUT SWARM</th>
+          <th>WITH SWARM</th>
+        </tr>
+      </thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ACTIVE TIMER -->
+  <div class="card grid-full hidden" id="timerCard">
+    <h3>ACTIVE TASK</h3>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="flex:1;">
+        <div id="activeTaskName" style="font-size:14px;color:var(--text-body);margin-bottom:8px;"></div>
+        <div style="display:flex;gap:16px;">
+          <div>
+            <span style="font-size:10px;color:var(--text-dim);letter-spacing:1px;">ELAPSED</span>
+            <div id="elapsedTime" style="font-family:'JetBrains Mono',monospace;font-size:28px;color:var(--cyan);">00:00</div>
+          </div>
+          <div>
+            <span style="font-size:10px;color:var(--text-dim);letter-spacing:1px;">PREDICTED</span>
+            <div id="predictedTime" style="font-family:'JetBrains Mono',monospace;font-size:28px;color:var(--text-dim);">09:00</div>
+          </div>
+          <div>
+            <span style="font-size:10px;color:var(--text-dim);letter-spacing:1px;">DELTA</span>
+            <div id="deltaTime" style="font-family:'JetBrains Mono',monospace;font-size:28px;">--:--</div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:0;flex-direction:column;">
+        <button class="btn btn-green btn-sm" onclick="completeTask()">MARK COMPLETE</button>
+        <button class="btn btn-red btn-sm" onclick="cancelTask()">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALIBRATION STATS -->
+  <div class="card">
+    <h3>CALIBRATION ACCURACY</h3>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-val" id="statTasks" style="color:var(--blue);">0</div>
+        <div class="stat-label">TASKS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statAccuracy" style="color:var(--green);">--</div>
+        <div class="stat-label">ACCURACY</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statAvgDelta" style="color:var(--amber);">--</div>
+        <div class="stat-label">AVG DELTA</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statCalibration" style="color:var(--purple);">1.00x</div>
+        <div class="stat-label">CAL FACTOR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="card">
+    <h3>TASK HISTORY</h3>
+    <div id="historyList">
+      <div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">No completed tasks yet. Start your first clock.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── STATE ───
+let state = {
+  vm: 'd4s',
+  complexity: 3,
+  agents: 6,
+  enhancements: new Set(['skills', 'swarm']),
+  baseMinutes: 30,
+  activeTask: null,
+  timerInterval: null,
+  history: [],
+  calibrationFactor: 1.0
+};
+
+const VM_SPEED = { b2s: 1.0, d2s: 1.6, d4s: 2.4, d8s: 3.6 };
+
+const ENHANCEMENT_MULTIPLIERS = {
+  skills:    { label: 'SKILLS',          factor: 1.15, color: 'var(--purple)' },
+  loops:     { label: 'ITERATION LOOPS', factor: 1.25, color: 'var(--amber)' },
+  swarm:     { label: 'SWARM COORD',     factor: 1.30, color: 'var(--blue)' },
+  teams:     { label: 'TEAM OF SWARMS',  factor: 1.50, color: 'var(--cyan)' },
+  selfheal:  { label: 'SELF-HEAL',       factor: 1.10, color: 'var(--green)' },
+  precheck:  { label: 'PRE-CHECK',       factor: 1.20, color: 'var(--red)' },
+};
+
+const COMPLEXITY_BASE = { 1: 0.3, 2: 0.6, 3: 1.0, 4: 1.8, 5: 3.2 };
+
+// ─── LOAD HISTORY FROM STORAGE ───
+async function loadHistory() {
+  try {
+    const result = await window.storage.get('wallclock-history');
+    if (result && result.value) {
+      const parsed = JSON.parse(result.value);
+      state.history = parsed.history || [];
+      state.calibrationFactor = parsed.calibrationFactor || 1.0;
+    }
+  } catch(e) { /* no history yet */ }
+  updateStats();
+  renderHistory();
+}
+
+async function saveHistory() {
+  try {
+    await window.storage.set('wallclock-history', JSON.stringify({
+      history: state.history.slice(-50),
+      calibrationFactor: state.calibrationFactor
+    }));
+  } catch(e) { console.error('Save failed:', e); }
+}
+
+// ─── VM SELECTION ───
+function selectVM(el) {
+  document.querySelectorAll('.vm-option').forEach(v => v.classList.remove('selected'));
+  el.classList.add('selected');
+  state.vm = el.dataset.vm;
+  recalculate();
+}
+
+// ─── COMPLEXITY ───
+function setComplexity(level) {
+  state.complexity = level;
+  const segs = document.querySelectorAll('.complexity-seg');
+  segs.forEach(s => {
+    s.className = 'complexity-seg';
+    if (parseInt(s.dataset.c) === level) s.classList.add('active-' + level);
+  });
+  recalculate();
+}
+
+// ─── AGENTS ───
+function adjustAgents(delta) {
+  state.agents = Math.max(1, Math.min(10, state.agents + delta));
+  document.getElementById('agentCount').textContent = state.agents;
+  const parallel = Math.max(1, state.agents - 1);
+  const seq = state.agents > 1 ? 1 : 0;
+  document.getElementById('parallelLabel').textContent =
+    state.agents === 1 ? 'Solo agent' : `${parallel} parallel + ${seq} sequential gate`;
+  recalculate();
+}
+
+// ─── ENHANCEMENTS ───
+function toggleEnhancement(el) {
+  const key = el.dataset.enh;
+  if (state.enhancements.has(key)) {
+    state.enhancements.delete(key);
+    el.classList.remove('active');
+  } else {
+    state.enhancements.add(key);
+    el.classList.add('active');
+  }
+  recalculate();
+}
+
+// ─── CORE PREDICTION ENGINE ───
+function predict() {
+  const baseMin = parseInt(document.getElementById('baseMinutes').value) || 30;
+  state.baseMinutes = baseMin;
+
+  // Base time adjusted for complexity
+  const complexityAdjusted = baseMin * COMPLEXITY_BASE[state.complexity];
+
+  // VM speed factor
+  const vmSpeed = VM_SPEED[state.vm];
+
+  // Agent parallelism: diminishing returns past 4
+  // 1 agent = 1x, 2 = 1.7x, 3 = 2.3x, 4 = 2.8x, 6 = 3.4x, 10 = 4.2x
+  const agentSpeed = 1 + (state.agents - 1) * 0.6 * Math.pow(0.85, Math.max(0, state.agents - 3));
+
+  // Enhancement multipliers (compound)
+  let enhMulti = 1.0;
+  for (const key of state.enhancements) {
+    enhMulti *= ENHANCEMENT_MULTIPLIERS[key].factor;
+  }
+
+  // Zone overhead
+  const zone = document.getElementById('zoneSelect').value;
+  const zoneOverhead = zone === 'red' ? 1.4 : zone === 'yellow' ? 1.15 : 1.0;
+
+  // Combined speed divisor
+  const totalSpeed = (vmSpeed / 2.4) * agentSpeed * enhMulti; // normalize VM to d4s baseline
+
+  // Predicted minutes
+  let predicted = (complexityAdjusted * zoneOverhead) / totalSpeed;
+
+  // Apply calibration from history
+  predicted *= state.calibrationFactor;
+
+  // Confidence bounds
+  const uncertainty = state.history.length < 3 ? 0.4 : state.history.length < 10 ? 0.25 : 0.15;
+  const low = Math.max(1, Math.round(predicted * (1 - uncertainty)));
+  const high = Math.round(predicted * (1 + uncertainty));
+  predicted = Math.max(1, Math.round(predicted));
+
+  // Confidence level
+  let confidence = 'HIGH';
+  if (state.history.length < 3 || state.complexity >= 4) confidence = 'MEDIUM';
+  if (state.history.length < 1 && state.complexity >= 4) confidence = 'LOW';
+
+  return {
+    predicted, low, high, confidence,
+    factors: {
+      base: complexityAdjusted,
+      vm: vmSpeed / 2.4,
+      agents: agentSpeed,
+      enhancements: enhMulti,
+      zone: zoneOverhead,
+      calibration: state.calibrationFactor,
+      totalSpeed
+    }
+  };
+}
+
+// ─── RECALCULATE + RENDER ───
+function recalculate() {
+  const p = predict();
+
+  // Clock display
+  const clockEl = document.getElementById('clockValue');
+  const unitEl = document.querySelector('.clock-unit');
+
+  if (p.predicted >= 120) {
+    clockEl.textContent = (p.predicted / 60).toFixed(1);
+    unitEl.textContent = 'HOURS';
+    clockEl.style.color = 'var(--red)';
+    document.getElementById('clockRange').textContent = `RANGE: ${(p.low/60).toFixed(1)} - ${(p.high/60).toFixed(1)} hrs`;
+  } else {
+    clockEl.textContent = p.predicted;
+    unitEl.textContent = 'MINUTES';
+    clockEl.style.color = p.predicted <= 30 ? 'var(--green)' : p.predicted <= 60 ? 'var(--amber)' : 'var(--red)';
+    document.getElementById('clockRange').textContent = `RANGE: ${p.low} - ${p.high} min`;
+  }
+
+  // Warning
+  document.getElementById('warningBar').classList.toggle('hidden', p.predicted < 120);
+
+  // Confidence
+  const badge = document.getElementById('confidenceBadge');
+  badge.textContent = `CONFIDENCE: ${p.confidence}`;
+  badge.className = 'confidence-badge conf-' + p.confidence.toLowerCase();
+
+  // Factor bars
+  renderFactorBars(p.factors);
+
+  // Combined multiplier
+  document.getElementById('combinedMulti').textContent = p.factors.totalSpeed.toFixed(1) + 'x';
+
+  // Breakdown table
+  renderBreakdown(p);
+}
+
+function renderFactorBars(factors) {
+  const container = document.getElementById('factorBars');
+  const items = [
+    { label: 'VM TIER', value: factors.vm, max: 2.0, color: 'var(--cyan)' },
+    { label: 'AGENTS', value: factors.agents, max: 5.0, color: 'var(--blue)' },
+    { label: 'ENHANCE', value: factors.enhancements, max: 3.0, color: 'var(--purple)' },
+    { label: 'ZONE', value: 1/factors.zone, max: 1.0, color: factors.zone > 1.1 ? 'var(--red)' : 'var(--green)' },
+    { label: 'CALIBRATE', value: 1/factors.calibration, max: 2.0, color: 'var(--amber)' },
+  ];
+
+  container.innerHTML = items.map(item => `
+    <div class="factor-row">
+      <div class="factor-label">${item.label}</div>
+      <div class="factor-bar-bg">
+        <div class="factor-bar" style="width:${Math.min(100, (item.value/item.max)*100)}%;background:${item.color};"></div>
+      </div>
+      <div class="factor-val" style="color:${item.color}">${item.value.toFixed(2)}x</div>
+    </div>
+  `).join('');
+}
+
+function renderBreakdown(p) {
+  const phases = [];
+  const soloBase = p.factors.base * p.factors.zone;
+  const agents = state.agents;
+
+  if (agents >= 2) {
+    phases.push({ phase: 'Phase 1: Sequential Gate', agent: 'AG-1 INFRA', zone: 'GREEN', solo: soloBase * 0.25, swarm: soloBase * 0.25 / (p.factors.vm * p.factors.enhancements) });
+    const parallelWork = soloBase * 0.75;
+    const parallelTime = parallelWork / ((agents - 1) * p.factors.vm * p.factors.enhancements);
+    phases.push({ phase: 'Phase 2: Parallel Build', agent: `AG 2-${agents}`, zone: 'YELLOW', solo: parallelWork, swarm: parallelTime });
+    phases.push({ phase: 'Phase 3: Integration', agent: 'ALL', zone: 'YELLOW', solo: soloBase * 0.15, swarm: soloBase * 0.15 / (p.factors.vm * p.factors.enhancements) });
+  } else {
+    phases.push({ phase: 'Full Sequential', agent: 'SOLO', zone: document.getElementById('zoneSelect').value.toUpperCase(), solo: soloBase, swarm: p.predicted });
+  }
+
+  const zoneColors = { GREEN: 'zone-green', YELLOW: 'zone-yellow', RED: 'zone-red' };
+
+  document.getElementById('breakdownBody').innerHTML = phases.map(ph => `
+    <tr>
+      <td>${ph.phase}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);">${ph.agent}</td>
+      <td><span class="zone-tag ${zoneColors[ph.zone] || 'zone-green'}">${ph.zone}</span></td>
+      <td style="text-align:right;font-family:'JetBrains Mono',monospace;">${Math.round(ph.solo)} min</td>
+      <td style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--green);">${Math.max(1, Math.round(ph.swarm))} min</td>
+    </tr>
+  `).join('');
+}
+
+// ─── TIMER ───
+function startTask() {
+  const desc = document.getElementById('taskDesc').value || 'Untitled task';
+  const p = predict();
+
+  state.activeTask = {
+    desc,
+    predicted: p.predicted,
+    startTime: Date.now(),
+    vm: state.vm,
+    agents: state.agents,
+    complexity: state.complexity
+  };
+
+  document.getElementById('timerCard').classList.remove('hidden');
+  document.getElementById('activeTaskName').textContent = desc;
+  document.getElementById('predictedTime').textContent = formatTime(p.predicted * 60);
+
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  if (!state.activeTask) return;
+  const elapsed = (Date.now() - state.activeTask.startTime) / 1000;
+  document.getElementById('elapsedTime').textContent = formatTime(elapsed);
+
+  const predictedSec = state.activeTask.predicted * 60;
+  const delta = elapsed - predictedSec;
+  const deltaEl = document.getElementById('deltaTime');
+
+  if (delta > 0) {
+    deltaEl.textContent = '+' + formatTime(delta);
+    deltaEl.style.color = 'var(--red)';
+  } else {
+    deltaEl.textContent = '-' + formatTime(Math.abs(delta));
+    deltaEl.style.color = 'var(--green)';
+  }
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(Math.abs(seconds) / 60);
+  const s = Math.floor(Math.abs(seconds) % 60);
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function completeTask() {
+  if (!state.activeTask) return;
+  clearInterval(state.timerInterval);
+
+  const actualMin = (Date.now() - state.activeTask.startTime) / 60000;
+
+  state.history.push({
+    desc: state.activeTask.desc,
+    predicted: state.activeTask.predicted,
+    actual: Math.round(actualMin * 10) / 10,
+    vm: state.activeTask.vm,
+    agents: state.activeTask.agents,
+    complexity: state.activeTask.complexity,
+    ts: new Date().toISOString()
+  });
+
+  // Recalibrate
+  recalibrate();
+  saveHistory();
+  updateStats();
+  renderHistory();
+
+  state.activeTask = null;
+  document.getElementById('timerCard').classList.add('hidden');
+  recalculate();
+}
+
+function cancelTask() {
+  if (!state.activeTask) return;
+  clearInterval(state.timerInterval);
+  state.activeTask = null;
+  document.getElementById('timerCard').classList.add('hidden');
+}
+
+// ─── CALIBRATION ───
+function recalibrate() {
+  if (state.history.length < 2) return;
+  // Use last 20 tasks, weighted toward recent
+  const recent = state.history.slice(-20);
+  let sumRatio = 0;
+  let sumWeight = 0;
+  recent.forEach((task, i) => {
+    const weight = 1 + i * 0.3; // recent tasks weighted more
+    const ratio = task.actual / task.predicted;
+    sumRatio += ratio * weight;
+    sumWeight += weight;
+  });
+  state.calibrationFactor = Math.max(0.3, Math.min(3.0, sumRatio / sumWeight));
+}
+
+function updateStats() {
+  const h = state.history;
+  document.getElementById('statTasks').textContent = h.length;
+
+  if (h.length === 0) {
+    document.getElementById('statAccuracy').textContent = '--';
+    document.getElementById('statAvgDelta').textContent = '--';
+    document.getElementById('statCalibration').textContent = '1.00x';
+    return;
+  }
+
+  // Accuracy: % of tasks within 25% of prediction
+  const accurate = h.filter(t => Math.abs(t.actual - t.predicted) / t.predicted <= 0.25).length;
+  const accuracy = Math.round((accurate / h.length) * 100);
+  const accEl = document.getElementById('statAccuracy');
+  accEl.textContent = accuracy + '%';
+  accEl.style.color = accuracy >= 75 ? 'var(--green)' : accuracy >= 50 ? 'var(--amber)' : 'var(--red)';
+
+  // Avg delta
+  const avgDelta = h.reduce((sum, t) => sum + (t.actual - t.predicted), 0) / h.length;
+  const deltaEl = document.getElementById('statAvgDelta');
+  deltaEl.textContent = (avgDelta >= 0 ? '+' : '') + avgDelta.toFixed(1) + 'm';
+  deltaEl.style.color = Math.abs(avgDelta) <= 5 ? 'var(--green)' : 'var(--amber)';
+
+  document.getElementById('statCalibration').textContent = state.calibrationFactor.toFixed(2) + 'x';
+}
+
+function renderHistory() {
+  const container = document.getElementById('historyList');
+  if (state.history.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">No completed tasks yet. Start your first clock.</div>';
+    return;
+  }
+
+  container.innerHTML = state.history.slice(-10).reverse().map(t => {
+    const delta = t.actual - t.predicted;
+    const pct = Math.abs(delta / t.predicted * 100);
+    let deltaClass = 'delta-good';
+    if (pct > 25) deltaClass = 'delta-bad';
+    else if (pct > 10) deltaClass = 'delta-ok';
+
+    return `
+      <div class="history-row">
+        <span class="history-task">${t.desc.substring(0, 40)}${t.desc.length > 40 ? '...' : ''}</span>
+        <span class="history-predicted">${t.predicted}m</span>
+        <span class="history-actual" style="color:var(--text);">${t.actual}m</span>
+        <span class="history-delta ${deltaClass}">${delta >= 0 ? '+' : ''}${delta.toFixed(1)}m</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── INIT ───
+loadHistory();
+recalculate();
+</script>
+</body>
+</html>
