@@ -19,7 +19,8 @@ triage/                          # March 2026 -- Full VM implementation package
 
 ## Quick Start
 
-See `triage/README.md` for deployment instructions.
+- Index and inventory tools: `repos/README.md`
+- VM deployment: `triage/README.md`
 
 ---
 

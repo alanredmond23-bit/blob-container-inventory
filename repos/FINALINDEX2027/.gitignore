@@ -1,0 +1,23 @@
+# Never commit local secrets / tokens
+config.env
+*.p12
+*.key
+*.ovpn
+vpnclientconfiguration/
+vpnclientconfiguration.zip
+
+# macOS
+.DS_Store
+
+# Logs
+.azcopy/
+*.log
+
+# Workhorse inventory outputs (large; keep MD summaries in git)
+workhorse/index.jsonl
+workhorse/five9_azure.jsonl
+workhorse/indexer.log
+workhorse/indexer.stdout.log
+workhorse/indexer.pid
+workhorse/checkpoint.json
+
