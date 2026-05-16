@@ -1,0 +1,16 @@
+{
+  "agent": "AG-1",
+  "status": "partial",
+  "outputs": [
+    "scripts/ag1_ensure_inventory_container.py",
+    "artifacts/dedup/ag1/STATUS.json",
+    "artifacts/dedup/ag1/DEPLOY.md"
+  ],
+  "errors": [
+    "Create container inventory-reports failed: Azure ResourceNotFoundError (404) on Put Container with current AZURE_STORAGE_KEY — list/read works; credential may be read-only SAS fragment, secondary read-only key, or account-level restriction blocking writes).",
+    "No blob inventory CSV found: container inventory-reports is absent; no container name contains 'inventory'; shallow prefix scan for blob-inventory*/BlobInventory* found no .csv blobs."
+  ],
+  "inventory_csv_downloaded": false,
+  "inventory_blob_count": null,
+  "notes": "After policy runs, reports land under inventory-reports/<rule>/... ; re-run scripts/ag1_ensure_inventory_container.py with a full-permission key to create the container and download inventory_latest.csv."
+}
