@@ -1,0 +1,2 @@
+certainty,action,keep_container,keep_blob,delete_container,delete_blob,content_length,content_md5
+PROVEN_EXACT,DELETE_AFTER_APPROVAL,container-a,duplicate.bin,container-b,duplicate.bin,100,d41d8cd98f00b204e9800998ecf8427e
