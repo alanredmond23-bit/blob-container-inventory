@@ -1,0 +1,9 @@
+{
+  "agent": "AG-4-MANIFEST",
+  "status": "complete",
+  "summary": {
+    "delete_rows": 0,
+    "bytes_reclaimable": 0,
+    "certainty_breakdown": {}
+  }
+}
