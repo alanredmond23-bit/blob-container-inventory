@@ -1,0 +1,66 @@
+# storage_account=<local-storage-account>
+# generated_utc=2026-05-16T03:16:38.999049+00:00
+# method=account_key_list_blobs_sum_size
+#
+num	container	blobs	size_human	size_bytes
+1	container-01	0	0 B	0
+2	container-02	0	0 B	0
+3	container-03	36579	26.78 GiB	28752603513
+4	container-04	131191	45.15 GiB	48477742581
+5	container-05	0	0 B	0
+6	container-06	0	0 B	0
+7	container-07	3235	372.37 MiB	390459999
+8	container-08	509642	185.50 GiB	199182346670
+9	container-09	18	143.63 MiB	150610042
+10	container-10	348	192.90 MiB	202265810
+11	container-11	647	10.63 MiB	11141330
+12	container-12	39	104.21 KiB	106706
+13	container-13	40	192.71 MiB	202071970
+14	container-14	0	0 B	0
+15	container-15	189664	7.71 GiB	8279994984
+16	container-16	26	2.17 MiB	2279813
+17	container-17	243	77.01 MiB	80747305
+18	container-18	52	40.26 MiB	42216589
+19	container-19	1651	1.26 GiB	1350444327
+20	container-20	3496	2.75 GiB	2953359753
+21	container-21	3735554	602.66 GiB	647099278497
+22	container-22	9331	7.75 GiB	8320727742
+23	container-23	0	0 B	0
+24	container-24	0	0 B	0
+25	container-25	0	0 B	0
+26	container-26	24	87.10 GiB	93527815879
+27	container-27	11	125.32 KiB	128324
+28	container-28	10	11.29 KiB	11560
+29	container-29	697765	93.12 GiB	99984098775
+30	container-30	93768	32.10 GiB	34463277131
+31	container-31	9	127.95 KiB	131018
+32	container-32	521	8.32 GiB	8936494286
+33	container-33	272210	16.89 GiB	18130533936
+34	container-34	443	255.59 MiB	268008115
+35	container-35	87	62.26 MiB	65280591
+36	container-36	328	8.88 MiB	9312145
+37	container-37	0	0 B	0
+38	container-38	0	0 B	0
+39	container-39	0	0 B	0
+40	container-40	2314019	312.69 GiB	335747617471
+41	container-41	0	0 B	0
+42	container-42	0	0 B	0
+43	container-43	0	0 B	0
+44	container-44	1377553	736.34 GiB	790638396646
+45	container-45	129483	13.08 GiB	14048941109
+46	container-46	198	131.03 MiB	137392362
+47	container-47	1498	2.15 GiB	2311322513
+48	container-48	401167	49.14 GiB	52765417524
+49	container-49	6413	65.76 MiB	68958267
+50	container-50	3533	86.38 GiB	92748019132
+51	container-51	39	167.25 GiB	179583367534
+52	container-52	5	12.87 KiB	13175
+53	container-53	111	194.45 KiB	199116
+54	container-54	211603	376.46 GiB	404217385566
+55	container-55	10	11.25 KiB	11517
+56	container-56	16	53.29 KiB	54571
+57	container-57	149937	315.42 GiB	338684092891
+58	container-58	40817	14.47 GiB	15532679375
+
+TOTAL		10323334	3.12 TiB	3427367358160
+CONTAINER_COUNT	58

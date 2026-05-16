@@ -1,0 +1,64 @@
+storage_account=<local-storage-account>
+
+#	container	blobs	bytes	human
+--------------------------------------------------------------------------------
+1	container-01	0	0	0 B
+2	container-02	0	0	0 B
+3	container-03	36579	28752603513	26.78 GiB
+4	container-04	131191	48477742581	45.15 GiB
+5	container-05	0	0	0 B
+6	container-06	0	0	0 B
+7	container-07	3235	390459999	372.37 MiB
+8	container-08	509642	199182346670	185.50 GiB
+9	container-09	18	150610042	143.63 MiB
+10	container-10	348	202265810	192.90 MiB
+11	container-11	647	11141330	10.63 MiB
+12	container-12	39	106706	104.21 KiB
+13	container-13	40	202071970	192.71 MiB
+14	container-14	0	0	0 B
+15	container-15	189664	8279994984	7.71 GiB
+16	container-16	26	2279813	2.17 MiB
+17	container-17	243	80747305	77.01 MiB
+18	container-18	52	42216589	40.26 MiB
+19	container-19	1651	1350444327	1.26 GiB
+20	container-20	3496	2953359753	2.75 GiB
+21	container-21	3735554	647099278497	602.66 GiB
+22	container-22	9331	8320727742	7.75 GiB
+23	container-23	0	0	0 B
+24	container-24	0	0	0 B
+25	container-25	0	0	0 B
+26	container-26	24	93527815879	87.10 GiB
+27	container-27	11	128324	125.32 KiB
+28	container-28	10	11560	11.29 KiB
+29	container-29	697765	99984098775	93.12 GiB
+30	container-30	93768	34463277131	32.10 GiB
+31	container-31	9	131018	127.95 KiB
+32	container-32	521	8936494286	8.32 GiB
+33	container-33	272210	18130533936	16.89 GiB
+34	container-34	443	268008115	255.59 MiB
+35	container-35	87	65280591	62.26 MiB
+36	container-36	328	9312145	8.88 MiB
+37	container-37	0	0	0 B
+38	container-38	0	0	0 B
+39	container-39	0	0	0 B
+40	container-40	2314019	335747617471	312.69 GiB
+41	container-41	0	0	0 B
+42	container-42	0	0	0 B
+43	container-43	0	0	0 B
+44	container-44	1377553	790638396646	736.34 GiB
+45	container-45	129483	14048941109	13.08 GiB
+46	container-46	198	137392362	131.03 MiB
+47	container-47	1498	2311322513	2.15 GiB
+48	container-48	401167	52765417524	49.14 GiB
+49	container-49	6413	68958267	65.76 MiB
+50	container-50	3533	92748019132	86.38 GiB
+51	container-51	39	179583367534	167.25 GiB
+52	container-52	5	13175	12.87 KiB
+53	container-53	111	199116	194.45 KiB
+54	container-54	211603	404217385566	376.46 GiB
+55	container-55	10	11517	11.25 KiB
+56	container-56	16	54571	53.29 KiB
+57	container-57	149937	338684092891	315.42 GiB
+58	container-58	40817	15532679375	14.47 GiB
+--------------------------------------------------------------------------------
+TOTAL	(all 58 containers)	10323334	3427367358160	3.12 TiB
