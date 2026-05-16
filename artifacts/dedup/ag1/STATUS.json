@@ -1,16 +1,22 @@
 {
   "agent": "AG-1",
-  "status": "partial",
+  "status": "blocked",
   "outputs": [
-    "scripts/ag1_ensure_inventory_container.py",
-    "artifacts/dedup/ag1/STATUS.json",
-    "artifacts/dedup/ag1/DEPLOY.md"
-  ],
-  "errors": [
-    "Create container inventory-reports failed: Azure ResourceNotFoundError (404) on Put Container with current AZURE_STORAGE_KEY — list/read works; credential may be read-only SAS fragment, secondary read-only key, or account-level restriction blocking writes).",
-    "No blob inventory CSV found: container inventory-reports is absent; no container name contains 'inventory'; shallow prefix scan for blob-inventory*/BlobInventory* found no .csv blobs."
+    "Azure blob dedup/policies/blob-inventory-dedup.json",
+    "artifacts/dedup/ag1/DEPLOY.md",
+    "scripts/ag1_ensure_inventory_container.py"
   ],
   "inventory_csv_downloaded": false,
-  "inventory_blob_count": null,
-  "notes": "After policy runs, reports land under inventory-reports/<rule>/... ; re-run scripts/ag1_ensure_inventory_container.py with a full-permission key to create the container and download inventory_latest.csv."
+  "inventory_container_created": false,
+  "errors": [
+    "Put Container inventory-reports: ResourceNotFound (current AZURE_STORAGE_KEY cannot create containers on menageriesa36965).",
+    "No existing inventory CSV found in account (43 containers scanned)."
+  ],
+  "next_steps": [
+    "In Azure Portal: Storage account → Blob inventory → Add policy using Azure blob dedup/policies/blob-inventory-dedup.json",
+    "Create container inventory-reports manually if needed",
+    "After first daily run, download CSV to artifacts/dedup/ag1/inventory_latest.csv",
+    "Re-run: python3 scripts/blob_dedup_from_inventory.py --inventory-csv artifacts/dedup/ag1/inventory_latest.csv --output-dir artifacts/dedup/ag2-live"
+  ],
+  "notes": "Large containers (>50k blobs) require inventory report for 100% account coverage. SDK scan completed on 30 smaller containers (~110k blobs)."
 }

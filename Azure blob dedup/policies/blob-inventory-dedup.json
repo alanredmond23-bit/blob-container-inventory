@@ -1,0 +1,30 @@
+{
+  "enabled": true,
+  "type": "Inventory",
+  "rules": [
+    {
+      "enabled": true,
+      "name": "blob-inventory-dedup",
+      "destination": "inventory-reports",
+      "definition": {
+        "format": "csv",
+        "objectType": "blob",
+        "schedule": "daily",
+        "schemaFields": [
+          "Name",
+          "Content-Length",
+          "Content-MD5",
+          "Last-Modified",
+          "BlobType",
+          "Etag",
+          "Creation-Time"
+        ],
+        "filters": {
+          "blobTypes": ["blockBlob", "appendBlob"],
+          "includeSnapshots": false,
+          "includeBlobVersions": false
+        }
+      }
+    }
+  ]
+}
