@@ -2,10 +2,10 @@
   "agent": "AG-4-MANIFEST",
   "status": "complete",
   "summary": {
-    "delete_rows": 57,
-    "bytes_reclaimable": 56619,
+    "delete_rows": 14969,
+    "bytes_reclaimable": 360085194,
     "certainty_breakdown": {
-      "PROVEN_EXACT_COMPUTED": 57
+      "PROVEN_EXACT_COMPUTED": 14969
     }
   }
 }

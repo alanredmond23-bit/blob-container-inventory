@@ -10,17 +10,20 @@
 
 Large containers skipped: `uploads`, `organization`, `onedrive-personal`, `backups`, `discovery`, `five9-calls`, `legal`, `legal-filings`, `45gb-final-onedrive`, `super-master-triage`, `personal`, `loose-files`, and others capped at 50,001+ blobs.
 
-## Master manifest
+## Master manifest (AG-4)
 
 | Metric | Value |
 |--------|------:|
-| Delete rows (`PROVEN_EXACT` + `PROVEN_EXACT_COMPUTED`) | See `SUMMARY.json` |
-| Bytes reclaimable (scanned subset) | See `SUMMARY.json` |
+| Delete rows (`PROVEN_EXACT` + `PROVEN_EXACT_COMPUTED`) | 14,969 |
+| Bytes reclaimable (scanned subset) | 360,085,194 (~343.5 MiB) |
+| Certainty | 14,969 × `PROVEN_EXACT_COMPUTED` |
+
+Merged from AG-3 + `ag3b-full/` (test AG-2 excluded). **Awaiting human approval** — see `APPROVAL_REQUEST.md`. Overseer status: `ready_for_approval`.
 
 Files:
 - `MASTER_DEDUP_MANIFEST.csv` — human-approved deletes only
-- `ag3b/delete_candidates.csv` — computed SHA-256 duplicates (small-container pass)
-- `ag3b-full/` — full 30-container size-collision pass (may still be running)
+- `APPROVAL_REQUEST.md` — approval package (PR #2 merge + blob deletes)
+- `ag3b-full/` — full 30-container SHA-256 size-collision pass (complete)
 
 ## Certainty rules applied
 

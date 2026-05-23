@@ -7,16 +7,30 @@
     "scripts/ag1_ensure_inventory_container.py"
   ],
   "inventory_csv_downloaded": false,
+  "inventory_latest_csv_exists": false,
   "inventory_container_created": false,
+  "account": "menageriesa36965",
+  "containers_scanned": 43,
+  "inventory_containers_found": 0,
+  "inventory_csv_blobs_found": 0,
+  "keys_tried": ["AZURE_STORAGE_KEY", "AZURE_STORAGE_KEY_2"],
+  "ag1_runs": [
+    {
+      "key": "AZURE_STORAGE_KEY",
+      "container_create_error": "container_create_ResourceNotFound: The specified resource does not exist.",
+      "inventory_csv_found": false
+    },
+    {
+      "key": "AZURE_STORAGE_KEY_2",
+      "container_create_error": "container_create_ResourceNotFound: The specified resource does not exist.",
+      "inventory_csv_found": false
+    }
+  ],
+  "ag2_live_ran": false,
+  "ag2_live_delete_candidates_rows": null,
   "errors": [
-    "Put Container inventory-reports: ResourceNotFound (current AZURE_STORAGE_KEY cannot create containers on menageriesa36965).",
-    "No existing inventory CSV found in account (43 containers scanned)."
+    "Both account keys can list containers (43) but cannot create inventory-reports (ResourceNotFound).",
+    "No inventory CSV blobs found: inventory-related containers empty; prefix scan (blob-inventory, BlobInventory, inventory) across all 43 containers returned 0 CSV files."
   ],
-  "next_steps": [
-    "In Azure Portal: Storage account → Blob inventory → Add policy using Azure blob dedup/policies/blob-inventory-dedup.json",
-    "Create container inventory-reports manually if needed",
-    "After first daily run, download CSV to artifacts/dedup/ag1/inventory_latest.csv",
-    "Re-run: python3 scripts/blob_dedup_from_inventory.py --inventory-csv artifacts/dedup/ag1/inventory_latest.csv --output-dir artifacts/dedup/ag2-live"
-  ],
-  "notes": "Large containers (>50k blobs) require inventory report for 100% account coverage. SDK scan completed on 30 smaller containers (~110k blobs)."
+  "next_step": "Deploy blob inventory policy and create destination container with Portal or az CLI (see artifacts/dedup/ag1/DEPLOY.md): az storage account blob-inventory-policy create --policy @Azure\\ blob\\ dedup/policies/blob-inventory-dedup.json; az storage container create --name inventory-reports; after first daily run re-run ag1_ensure_inventory_container.py then blob_dedup_from_inventory.py --output-dir artifacts/dedup/ag2-live"
 }

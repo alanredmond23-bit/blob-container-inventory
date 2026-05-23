@@ -1,7 +1,8 @@
 {
-  "delete_rows": 57,
-  "bytes_reclaimable": 56619,
+  "delete_rows": 14953,
+  "bytes_reclaimable": 360064034,
   "certainty_breakdown": {
-    "PROVEN_EXACT_COMPUTED": 57
-  }
+    "PROVEN_EXACT_COMPUTED": 14953
+  },
+  "rows_removed_secret_paths": 16
 }

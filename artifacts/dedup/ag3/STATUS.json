@@ -2,14 +2,13 @@
   "agent": "AG-3-SCANNER",
   "status": "complete",
   "outputs": [
-    "artifacts/dedup/ag3/delete_candidates.csv",
-    "artifacts/dedup/ag3/stats.json"
+    "artifacts/dedup/ag3b-full/delete_candidates.csv",
+    "artifacts/dedup/ag3b-full/stats.json"
   ],
   "blobs_scanned": 109773,
-  "proven_groups": 0,
-  "computed_groups": 0,
-  "delete_candidates": 0,
-  "bytes_reclaimable": 0,
+  "computed_groups": 8966,
+  "delete_candidates": 14969,
+  "bytes_reclaimable": 360085194,
   "containers_skipped": 0,
   "skipped": [],
   "errors": []
