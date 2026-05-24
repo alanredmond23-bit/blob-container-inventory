@@ -14,3 +14,5 @@ artifacts/catalog/HOMES_EXPORT_STATE.json
 artifacts/catalog/DELETE_QUEUE_MANIFEST.json
 artifacts/dedup/DELETE_QUEUE_EXECUTION.jsonl
 artifacts/catalog/ZONE_INBOX_DUPE_REPORT.md
+artifacts/catalog/SECTION_VIEWS.html
+artifacts/catalog/SECTION_INDEX.md
