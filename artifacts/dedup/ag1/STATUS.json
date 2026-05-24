@@ -1,0 +1,16 @@
+{
+  "agent": "AG-1",
+  "status": "complete",
+  "inventory_policy_applied": true,
+  "policy_last_modified": "2026-05-24T15:17:57Z",
+  "rules": ["Alansinv", "blob-inventory-dedup"],
+  "dedup_rule": {
+    "name": "blob-inventory-dedup",
+    "destination": "inventory-reports",
+    "schedule": "Daily",
+    "schemaFields": ["Name", "Content-Length", "Content-MD5", "Last-Modified", "BlobType", "Etag", "Creation-Time"]
+  },
+  "inventory_reports_container": "inventory-reports",
+  "inventory_csv_downloaded": false,
+  "notes": "Policy applied via service principal. First CSV lands in inventory-reports/ after next daily run (may take hours on large accounts)."
+}

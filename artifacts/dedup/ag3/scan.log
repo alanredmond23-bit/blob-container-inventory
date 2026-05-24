@@ -1,0 +1,39 @@
+Listed 36579 blobs in 1triageworkhorse
+Listed 3235 blobs in agent-outputs
+Listed 18 blobs in bin
+Listed 348 blobs in claude-conversations
+Listed 647 blobs in claude-memory
+Listed 39 blobs in claude-skills
+Listed 40 blobs in cursor-extractions
+Listed 26 blobs in evidence-bankruptcy
+Listed 243 blobs in evidence-federal
+Listed 52 blobs in evidence-foreclosure
+Listed 1651 blobs in evidence-rush
+Listed 3496 blobs in financial-docs
+Listed 9331 blobs in fleet-sync
+Listed 24 blobs in indexes
+Listed 11 blobs in insights-logs-auditevent
+Listed 10 blobs in insights-metrics-pt1m
+Listed 9 blobs in lil-red-artifacts
+Listed 521 blobs in localtriage4162026admincomp
+Listed 443 blobs in make-money
+Listed 87 blobs in marketing-war-command-center
+Listed 328 blobs in meta-workflow
+Listed 198 blobs in product-assets
+Listed 1498 blobs in program-files-hd
+Listed 6413 blobs in redmond-os
+Listed 3533 blobs in save-money
+Listed 39 blobs in scheduling-2026
+Listed 111 blobs in session-extractions
+Listed 10 blobs in sys-tweaks-backups
+Listed 16 blobs in triage
+Listed 40817 blobs in workhorse-docs
+{
+  "blobs_scanned": 109773,
+  "proven_groups": 0,
+  "computed_groups": 0,
+  "delete_candidates": 0,
+  "bytes_reclaimable": 0,
+  "containers_skipped": 0,
+  "skipped": []
+}

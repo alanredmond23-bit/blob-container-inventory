@@ -1,0 +1,8 @@
+{
+  "rows_read": 3,
+  "blobs_with_length": 3,
+  "proven_groups": 1,
+  "delete_candidates": 1,
+  "suspects": 0,
+  "bytes_reclaimable": 100
+}

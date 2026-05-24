@@ -1,0 +1,455 @@
+# Workhorse local inventory (approx counts)
+Root: `/Users/stripe_secure`
+Generated: `2026-04-27 10:38:35 EDT`
+Method: local `os.walk` + JSONL stream (metadata only; excludes caches/deps per plan).
+Elapsed: `146.8s`
+
+---
+## Summary
+- Total files indexed: **2,208,412**
+- Total bytes (sum of file sizes): **505,356,955,344**
+
+---
+## Top-level → subfolder → file counts
+- **Library**: 2,009,967
+  - CloudStorage: 1,906,330
+  - Python: 59,760
+  - pnpm: 37,940
+  - Metadata: 1,199
+  - Mobile Documents: 934
+  - Preferences: 613
+  - Biome: 585
+  - WebKit: 360
+  - HTTPStorages: 332
+  - Daemon Containers: 287
+  - DuetExpertCenter: 194
+  - Trial: 150
+  - IntelligencePlatform: 147
+  - Fonts: 130
+  - Safari: 113
+  - LanguageModeling: 82
+  - Assistant: 71
+  - SafariTechnologyPreview: 50
+  - Keychains: 45
+  - AppleMediaServices: 42
+  - UnifiedAssetFramework: 40
+  - com.apple.bluetoothuser: 32
+  - HomeKit: 32
+  - IdentityServices: 31
+  - Translation: 31
+  - Suggestions: 30
+  - Weather: 26
+  - LaunchAgents: 23
+  - ResponseKit: 21
+  - Caches: 20
+  - PersonalizationPortrait: 20
+  - Intents: 19
+  - Services: 19
+  - Logs: 18
+  - News: 17
+  - com.apple.AppleMediaServices: 14
+  - com.apple.bluetooth.services.cloud: 14
+  - DoNotDisturb: 14
+  - Passes: 13
+  - Google: 12
+  - Accessibility: 11
+  - com.apple.aiml.instrumentation: 11
+  - Messages: 11
+  - Shortcuts: 11
+  - Accounts: 8
+  - Calendars: 8
+  - com.apple.icloud.searchpartyd: 8
+  - StatusKit: 8
+  - Finance: 7
+  - FontCollections: 7
+  - *(+ 34 more subfolders, 67 files total)*
+- **.rustup**: 49,409
+  - toolchains: 49,406
+  - (root): 2
+  - update-hashes: 1
+- **miniforge3**: 35,308
+  - envs: 13,578
+  - pkgs: 12,881
+  - share: 3,993
+  - lib: 3,744
+  - include: 842
+  - bin: 104
+  - conda-meta: 80
+  - etc: 41
+  - sbin: 12
+  - ssl: 11
+  - man: 8
+  - (root): 6
+  - libexec: 4
+  - condabin: 2
+  - shell: 2
+- **.cache**: 24,702
+  - uv: 16,391
+  - codex-runtimes: 7,310
+  - zig: 855
+  - huggingface: 105
+  - puppeteer: 25
+  - prisma: 6
+  - gh: 3
+  - fontconfig: 2
+  - whisper: 2
+  - (root): 1
+  - chroma: 1
+  - gdown: 1
+- **Desktop**: 16,768
+  - CLAUDE UPGRADES AND DEV OPS: 12,616
+  - NEW LEGAL CATCH UP: 3,962
+  - ok - prefences in chatgpt and claude: 135
+  - MAVERICK AND NEXIO = 75K: 40
+  - (root): 6
+  - Codex.app: 3
+  - DOL: 3
+  - SCHEDULE: 3
+- **.cargo**: 12,206
+  - registry: 12,180
+  - bin: 19
+  - (root): 7
+- **.cursor**: 8,095
+  - projects: 7,936
+  - plans: 80
+  - skills-cursor: 25
+  - commands: 20
+  - (root): 9
+  - rules: 7
+  - chats: 6
+  - scripts: 5
+  - extensions: 3
+  - ai-tracking: 1
+  - browser-logs: 1
+  - custom-css: 1
+  - worktrees: 1
+- **.gemini**: 6,657
+  - antigravity-browser-profile: 4,470
+  - antigravity: 2,185
+  - (root): 2
+- **.warp_chrome**: 5,917
+  - Default: 5,820
+  - GraphiteDawnCache: 26
+  - optimization_guide_model_store: 26
+  - Safe Browsing: 23
+  - (root): 8
+  - GrShaderCache: 5
+  - ShaderCache: 5
+  - segmentation_platform: 2
+  - component_crx_cache: 1
+  - extensions_crx_cache: 1
+- **.codex**: 5,798
+  - .tmp: 4,079
+  - vendor_imports: 728
+  - plugins: 722
+  - skills: 209
+  - (root): 18
+  - sessions: 12
+  - tmp: 11
+  - archived_sessions: 5
+  - ambient-suggestions: 4
+  - shell_snapshots: 3
+  - cache: 2
+  - memories: 2
+  - browser: 1
+  - log: 1
+  - sqlite: 1
+- **.claude**: 5,450
+  - projects: 1,727
+  - archive: 1,390
+  - todos: 629
+  - plugins: 531
+  - file-history: 419
+  - shell-snapshots: 192
+  - tasks: 95
+  - usage-data: 93
+  - memory: 40
+  - scripts: 35
+  - legal-templates: 34
+  - commands: 30
+  - legal-scripts: 30
+  - (root): 29
+  - paste-cache: 28
+  - skills: 26
+  - logs: 25
+  - hooks: 16
+  - teams: 12
+  - mcp-servers: 10
+  - plans: 9
+  - sidebar: 9
+  - .memory-db: 6
+  - backups: 5
+  - ide: 4
+  - launchd: 4
+  - statsig: 4
+  - .memory-scripts: 3
+  - sessions: 3
+  - config: 2
+  - history-viewer: 2
+  - session-env: 2
+  - cache: 1
+  - chrome: 1
+  - claude-memories: 1
+  - learnings: 1
+  - legal-plugin: 1
+  - ui: 1
+- **Documents**: 5,447
+  - CursorSessionArchives: 5,330
+  - _DesktopTidy_2026-04-21_no_cursor_slugs: 112
+  - Codex: 3
+  - (root): 1
+  - Claude: 1
+- **.antigravity**: 4,963
+  - extensions: 4,961
+  - (root): 2
+- **.azcopy**: 4,714
+  - jobs: 3,205
+  - logs: 1,217
+  - plans: 199
+  - (root): 93
+- **claude-sessions**: 2,988
+  - ClaudeQuadApp: 2,953
+  - claude-skills: 25
+  - claude_code-multi-AI-MCP: 9
+  - (root): 1
+- **.local**: 2,948
+  - share: 2,423
+  - pipx: 505
+  - bin: 16
+  - state: 2
+  - (root): 1
+  - log: 1
+- **.llama-cpp-venv**: 2,420
+  - lib: 2,397
+  - bin: 20
+  - (root): 3
+- **.azure**: 1,593
+  - cliextensions: 1,546
+  - commands: 23
+  - (root): 12
+  - menagerie-p2s-cert: 7
+  - azuredevops: 3
+  - bin: 1
+  - logs: 1
+- **.config**: 1,300
+  - gcloud: 1,236
+  - kitty: 42
+  - shell_gpt: 5
+  - claude-desktop: 2
+  - gh: 2
+  - (root): 1
+  - atuin: 1
+  - ccstatusline: 1
+  - configstore: 1
+  - frida: 1
+  - git: 1
+  - pip: 1
+  - rclone: 1
+  - redmond-os: 1
+  - skhd: 1
+  - SwiftBar: 1
+  - uv: 1
+  - yabai: 1
+- **final-lead-faucet-2027**: 348
+  - chats: 305
+  - claude-chat-extractor: 32
+  - (root): 4
+  - sessions: 4
+  - skills: 3
+- **Pictures**: 170
+  - Photos Library.photoslibrary: 169
+  - (root): 1
+- **gmail-mcp-extension**: 160
+  - gmail-mcp-extension: 46
+  - docs: 38
+  - tests: 20
+  - (root): 14
+  - scripts: 11
+  - src: 11
+  - tools: 11
+  - .github: 7
+  - bin: 2
+- **(root)**: 137
+- **Music**: 98
+  - Music: 95
+  - (root): 3
+- **MASTER_RULES**: 90
+  - claude-skills: 62
+  - (root): 11
+  - v5: 8
+  - hooks: 5
+  - config: 2
+  - logs: 1
+  - plans: 1
+- **.zsh_sessions**: 77
+- **.playwright-mcp**: 75
+- **Downloads**: 65
+  - data-82cf535d-f496-4927-b8f6-c1fb393fd11f-1776955009-07f02361-batch-0000: 46
+  - (root): 13
+  - Spark-unpack-3.28.6: 4
+  - Here_is_your_signed_document_Nexio_Address_C: 2
+- **cortex**: 60
+  - ~: 19
+  - visuals: 8
+  - chezmoi: 5
+  - tests: 5
+  - docs: 4
+  - (root): 3
+  - fleet: 3
+  - memory: 3
+  - supabase: 3
+  - alerts: 2
+  - db: 2
+  - scripts: 2
+  - logs: 1
+- **Movies**: 47
+  - TV: 45
+  - (root): 2
+- **.goodsync**: 36
+- **.bash_sessions**: 34
+- **.secrets**: 29
+  - CHILD SUPPORT AUDIT: 26
+  - (root): 2
+  - wells repo: 1
+- **MASTER_PACKAGE**: 26
+  - (root): 8
+  - agents: 5
+  - scripts: 4
+  - proofs: 3
+  - settings: 3
+  - brain: 2
+  - docs: 1
+- **AZURE BLOB FILE SYSTEM**: 25
+  - (root): 15
+  - vpnclientconfiguration: 5
+  - workhorse: 5
+- **.agents**: 23
+  - skills: 23
+- **Applications**: 16
+  - Chrome Apps.localized: 5
+  - Search in Passwords.app: 3
+  - (root): 2
+  - SpeedDemonToolbar.app: 2
+  - TPSTracker.app: 2
+  - Claude Code URL Handler.app: 1
+  - Claude.app: 1
+- **gmail-archive**: 16
+  - (root): 7
+  - cli: 6
+  - mcp: 2
+  - data: 1
+- **.continue**: 14
+  - (root): 7
+  - index: 5
+  - sessions: 1
+  - types: 1
+- **PERFECT_MOUSE**: 12
+  - (root): 5
+  - scripts: 4
+  - configs: 2
+  - docs: 1
+- **.dotnet**: 10
+  - (root): 6
+  - TelemetryStorageService: 4
+- **.net**: 10
+  - azmcp: 9
+  - bicep: 1
+- **.agent-deck**: 9
+  - profiles: 5
+  - (root): 3
+  - logs: 1
+- **.azure-transfer**: 9
+- **.openwork**: 9
+  - bin: 8
+  - desktop: 1
+- **.pm2**: 9
+  - (root): 6
+  - logs: 2
+  - pids: 1
+- **.ssh**: 9
+- **claude-memories**: 8
+  - claude-code-enhanced: 3
+  - (root): 2
+  - legal: 1
+  - mcp: 1
+  - scripts: 1
+- **zoom repo**: 8
+  - .playwright-mcp: 8
+- **.npm-global**: 7
+  - bin: 5
+  - (root): 1
+  - lib: 1
+- **bin**: 7
+- **.cli_ai_assistant**: 6
+- **.twilio-cli**: 6
+- **Archive**: 6
+  - barrier-backup-20260108: 6
+- **orbital-brain**: 6
+  - ops: 6
+- **cursor-mcp-config**: 5
+  - (root): 4
+  - scripts: 1
+- **extractor**: 5
+- **.claude-server-commander**: 4
+- **.cline**: 4
+  - data: 4
+- **.mcp-auth**: 4
+  - mcp-remote-0.1.18: 3
+  - (root): 1
+- **.runpod**: 4
+  - (root): 2
+  - ssh: 2
+- **browser-benchmarks**: 4
+  - (root): 3
+  - results: 1
+- **.claude-mcp-servers**: 3
+  - multi-ai-collab: 3
+- **.degit**: 3
+  - github: 3
+- **.hymble**: 3
+- **Public**: 3
+  - (root): 2
+  - Drop Box: 1
+- **.ai-turbo-backup**: 2
+- **.aws**: 2
+- **.azure-devops**: 2
+  - python-sdk: 2
+- **.swt**: 2
+  - lib: 2
+- **.templateengine**: 2
+  - (root): 1
+  - dotnetcli: 1
+- **.vibe-kanban**: 2
+  - bin: 2
+- **.voicemode**: 2
+- **1: FILE ERRATA**: 2
+- **Codex-memories**: 2
+  - (root): 1
+  - sessions: 1
+- **everlaw_mcp**: 2
+- **Scripts**: 2
+- **.aspnet**: 1
+  - dev-certs: 1
+- **.claude-server-commander-logs**: 1
+- **.claude-tui**: 1
+- **.conda**: 1
+- **.cortex**: 1
+- **.cups**: 1
+- **.gmail-mcp**: 1
+- **.hammerspoon**: 1
+- **.hoffman-suite**: 1
+- **.matplotlib**: 1
+- **.nuget**: 1
+  - NuGet: 1
+- **.oracle_jre_usage**: 1
+- **.orbital**: 1
+- **.redhat**: 1
+- **.supabase**: 1
+- **.tmux**: 1
+- **.tmuxinator**: 1
+- **.tsh**: 1
+  - bin: 1
+- **apps**: 1
+- **iCloud Drive (Archive) - 2**: 1
+- **mnt**: 1
+

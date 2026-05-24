@@ -1,0 +1,77 @@
+{
+  "destination": null,
+  "enabled": true,
+  "rules": [
+    {
+      "definition": {
+        "filters": {
+          "blobTypes": [
+            "blockBlob",
+            "pageBlob",
+            "appendBlob"
+          ],
+          "creationTime": null,
+          "excludePrefix": null,
+          "includeBlobVersions": true,
+          "includeDeleted": true,
+          "includeSnapshots": true,
+          "prefixMatch": []
+        },
+        "format": "Csv",
+        "objectType": "Blob",
+        "schedule": "Weekly",
+        "schemaFields": [
+          "Name",
+          "Creation-Time",
+          "Last-Modified",
+          "ETag",
+          "Content-Length",
+          "Content-Type",
+          "Content-Encoding",
+          "BlobType",
+          "Snapshot",
+          "VersionId",
+          "IsCurrentVersion",
+          "Metadata",
+          "LastAccessTime",
+          "LeaseStatus",
+          "LeaseState",
+          "LeaseDuration",
+          "Deleted",
+          "RemainingRetentionDays"
+        ]
+      },
+      "destination": "localtriage4162026admincomp",
+      "enabled": true,
+      "name": "Alansinv"
+    },
+    {
+      "enabled": true,
+      "name": "blob-inventory-dedup",
+      "destination": "inventory-reports",
+      "definition": {
+        "format": "Csv",
+        "objectType": "Blob",
+        "schedule": "Daily",
+        "schemaFields": [
+          "Name",
+          "Content-Length",
+          "Content-MD5",
+          "Last-Modified",
+          "BlobType",
+          "Etag",
+          "Creation-Time"
+        ],
+        "filters": {
+          "blobTypes": [
+            "blockBlob",
+            "appendBlob"
+          ],
+          "includeSnapshots": false,
+          "includeBlobVersions": false
+        }
+      }
+    }
+  ],
+  "type": "Inventory"
+}

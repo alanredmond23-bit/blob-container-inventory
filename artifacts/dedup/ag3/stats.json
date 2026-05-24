@@ -1,0 +1,9 @@
+{
+  "blobs_scanned": 109773,
+  "proven_groups": 0,
+  "computed_groups": 0,
+  "delete_candidates": 0,
+  "bytes_reclaimable": 0,
+  "containers_skipped": 0,
+  "skipped": []
+}

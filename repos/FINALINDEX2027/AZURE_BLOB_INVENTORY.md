@@ -1,0 +1,2267 @@
+# Azure Blob Inventory (approx counts)
+
+Account: `menageriesa36965`
+Generated: `2026-04-27 09:12:30 EDT`
+Method: Azure SDK list (counts blobs by name prefix; no file listing).
+Elapsed: `2487.0s`
+
+---
+
+## Summary
+
+- Containers: **54**
+- Total blobs across all containers: **6,481,123**
+
+---
+
+## `$web` — **0** blobs
+
+## `123triageonedrive` — **849** blobs
+
+- **BANKRUPTCY AND FORECLOSURE**: 517
+  - _archive: 400
+  - 03_FORECLOSURE_25-13446: 43
+  - 01_BANKRUPTCY_24-13093: 28
+  - 06_TOOLS: 15
+  - 05_CORRESPONDENCE: 11
+  - 02_ADVERSARY_AP-25-00254: 10
+  - 04_EVIDENCE: 6
+  - 00_CASE-SUMMARY: 3
+  - (root): 1
+- **onedrive**: 330
+  - (root): 188
+  - directory: 65
+  - Firestorm-20-main: 35
+  - second final draft: 23
+  - brain-feed-enterprise-final: 14
+  - 00_---- DOMAINS: 4
+  - Fed win frame: 1
+- **(root)**: 2
+
+## `1triageworkhorse` — **35,645** blobs
+
+- **.nvm**: 7,239
+  - .cache: 3,514
+  - versions: 3,326
+  - test: 299
+  - .git: 51
+  - (root): 24
+  - alias: 13
+  - .github: 12
+- **.gemini**: 5,041
+  - antigravity-browser-profile: 2,854
+  - antigravity: 2,185
+  - (root): 2
+- **.cursor**: 2,960
+  - extensions: 2,578
+  - plugins: 173
+  - projects: 89
+  - plans: 62
+  - commands: 19
+  - skills-cursor: 11
+  - (root): 9
+  - rules: 7
+  - chats: 6
+  - scripts: 4
+  - ai-tracking: 1
+  - worktrees: 1
+- **.npm-global**: 2,923
+  - lib: 2,922
+  - (root): 1
+- **.cache**: 2,715
+  - uv: 1,692
+  - zig: 855
+  - puppeteer: 86
+  - huggingface: 68
+  - prisma: 6
+  - gh: 3
+  - whisper: 2
+  - (root): 1
+  - chroma: 1
+  - gdown: 1
+- **.claude**: 2,475
+  - archive: 1,390
+  - shell-snapshots: 189
+  - file-history: 185
+  - projects: 154
+  - memory: 137
+  - plugins: 85
+  - .git: 50
+  - commands: 36
+  - scripts: 35
+  - legal-templates: 34
+  - legal-scripts: 30
+  - (root): 26
+  - logs: 24
+  - hooks: 13
+  - plans: 11
+  - sidebar: 11
+  - mcp-servers: 10
+  - paste-cache: 8
+  - .memory-db: 6
+  - skills: 6
+  - backups: 5
+  - .memory-scripts: 4
+  - launchd: 4
+  - statsig: 4
+  - ide: 3
+  - config: 2
+  - history-viewer: 2
+  - session-env: 2
+  - sessions: 2
+  - tasks: 2
+  - cache: 1
+  - chrome: 1
+  - claude-memories: 1
+  - learnings: 1
+  - legal-plugin: 1
+- **.npm**: 1,888
+  - _npx: 1,683
+  - _cacache: 189
+  - _logs: 11
+  - (root): 2
+  - _prebuilds: 2
+  - _libvips: 1
+- **.azure**: 1,626
+  - cliextensions: 1,592
+  - commands: 21
+  - (root): 11
+  - azuredevops: 1
+  - logs: 1
+- **.local**: 1,590
+  - share: 1,096
+  - pipx: 477
+  - bin: 13
+  - state: 2
+  - (root): 1
+  - log: 1
+- **.cargo**: 1,352
+  - registry: 1,339
+  - (root): 7
+  - bin: 6
+- **.antigravity**: 1,064
+  - extensions: 1,062
+  - (root): 2
+- **.codex**: 1,048
+  - .tmp: 589
+  - skills: 194
+  - vendor_imports: 183
+  - plugins: 53
+  - (root): 13
+  - sessions: 12
+  - cache: 1
+  - log: 1
+  - sqlite: 1
+  - tmp: 1
+- **.rustup**: 494
+  - toolchains: 491
+  - (root): 2
+  - update-hashes: 1
+- **.warp_chrome**: 459
+  - Default: 387
+  - GraphiteDawnCache: 26
+  - Safe Browsing: 23
+  - (root): 8
+  - GrShaderCache: 5
+  - ShaderCache: 5
+  - optimization_guide_model_store: 3
+  - component_crx_cache: 1
+  - extensions_crx_cache: 1
+- **Library**: 410
+  - CloudStorage: 240
+  - Caches: 135
+  - Application Support: 34
+  - Assistant: 1
+- **Agentos**: 373
+  - ops: 310
+  - .git: 22
+  - evals: 16
+  - (root): 13
+  - .github: 4
+  - schemas: 4
+  - docs: 3
+  - agents: 1
+- **.llama-cpp-venv**: 355
+  - lib: 335
+  - bin: 17
+  - (root): 3
+- **.azcopy**: 292
+  - plans: 199
+  - (root): 93
+- **GITHUB Projects**: 271
+  - alandb: 76
+  - DEV DUMP CLEAN LATER: 55
+  - finalUIRed_temp: 24
+  - code: 19
+  - dashboard-electron: 16
+  - monorepo: 16
+  - SHIPIT: 12
+  - dpc-dashboard: 11
+  - MyVbApp: 10
+  - ambient-platform: 9
+  - DuplicateHunter: 8
+  - Atlas: 7
+  - (root): 3
+  - claude-voice-mode: 1
+  - computerjoin: 1
+  - MASTER_RULES: 1
+  - member-app: 1
+  - node_modules: 1
+- **Desktop**: 205
+  - WORKHORSEDTTRIAGE: 197
+  - (root): 5
+  - schedule stuff 2026: 3
+- **LibreChat**: 179
+  - client: 111
+  - api: 22
+  - packages: 21
+  - node_modules: 16
+  - (root): 2
+  - .github: 2
+  - .claude: 1
+  - .devcontainer: 1
+  - .vscode: 1
+  - config: 1
+  - helm: 1
+- **(root)**: 131
+- **.playwright-mcp**: 75
+- **.config**: 66
+  - kitty: 44
+  - shell_gpt: 5
+  - claude-desktop: 2
+  - gh: 2
+  - (root): 1
+  - atuin: 1
+  - ccstatusline: 1
+  - configstore: 1
+  - frida: 1
+  - git: 1
+  - pip: 1
+  - rclone: 1
+  - redmond-os: 1
+  - skhd: 1
+  - SwiftBar: 1
+  - uv: 1
+  - yabai: 1
+- **ClaudeQuadApp**: 60
+  - consumer-group-test: 44
+  - .build: 11
+  - (root): 4
+  - ClaudeQuad: 1
+- **Projects**: 47
+  - focuslite: 47
+- **.goodsync**: 36
+- **.bash_sessions**: 34
+- **.zsh_sessions**: 31
+- **Downloads**: 19
+- **.continue**: 14
+  - (root): 7
+  - index: 5
+  - sessions: 1
+  - types: 1
+- **SHIPIT**: 12
+  - librechat-meta-agent: 7
+  - (root): 4
+  - .next: 1
+- **.dotnet**: 10
+  - (root): 6
+  - TelemetryStorageService: 4
+- **.agent-deck**: 9
+  - profiles: 5
+  - (root): 3
+  - logs: 1
+- **.azure-transfer**: 9
+- **.pm2**: 9
+  - (root): 6
+  - logs: 2
+  - pids: 1
+- **.openwork**: 8
+  - bin: 7
+  - desktop: 1
+- **.ssh**: 8
+- **.cli_ai_assistant**: 6
+- **.twilio-cli**: 6
+- **Applications**: 6
+  - Chrome Apps.localized: 3
+  - (root): 2
+  - Claude Code URL Handler.app: 1
+- **claude-skills**: 5
+  - (root): 4
+  - bulk-interview: 1
+- **.claude-server-commander**: 4
+- **.cline**: 4
+  - data: 4
+- **.mcp-auth**: 4
+  - mcp-remote-0.1.18: 3
+  - (root): 1
+- **.runpod**: 4
+  - (root): 2
+  - ssh: 2
+- **Archive**: 4
+  - barrier-backup-20260108: 4
+- **MASTER_PACKAGE**: 4
+  - brain: 2
+  - settings: 2
+- **Music**: 4
+  - Music: 4
+- **.claude-mcp-servers**: 3
+  - multi-ai-collab: 3
+- **.degit**: 3
+  - github: 3
+- **.hymble**: 3
+- **MASTER_RULES**: 3
+  - config: 2
+  - (root): 1
+- **.ai-turbo-backup**: 2
+- **.aws**: 2
+- **.azure-devops**: 2
+  - python-sdk: 2
+- **.swt**: 2
+  - lib: 2
+- **.templateengine**: 2
+  - (root): 1
+  - dotnetcli: 1
+- **.vibe-kanban**: 2
+  - bin: 2
+- **.voicemode**: 2
+- **1: FILE ERRATA**: 2
+- **claude_code-multi-AI-MCP**: 2
+- **cursor-dev-panel**: 2
+- **PERFECT_MOUSE**: 2
+  - configs: 2
+- **.aspnet**: 1
+  - dev-certs: 1
+- **.claude-server-commander-logs**: 1
+- **.claude-tui**: 1
+- **.conda**: 1
+- **.cortex**: 1
+- **.cups**: 1
+- **.gmail-mcp**: 1
+- **.hammerspoon**: 1
+- **.hoffman-suite**: 1
+- **.matplotlib**: 1
+- **.nuget**: 1
+  - NuGet: 1
+- **.oracle_jre_usage**: 1
+- **.orbital**: 1
+- **.redhat**: 1
+- **.supabase**: 1
+- **.tmux**: 1
+- **.tmuxinator**: 1
+- **.tsh**: 1
+  - bin: 1
+- **1worhorsetriage**: 1
+  - final: 1
+- **browser-benchmarks**: 1
+  - results: 1
+- **claude-memories**: 1
+- **cortex**: 1
+- **Documents**: 1
+
+## `45gb-final-onedrive` — **131,206** blobs
+
+- **claude code**: 87,394
+  - Skills: 87,318
+  - .git: 39
+  - (root): 11
+  - brain: 8
+  - agents: 5
+  - scripts: 4
+  - proofs: 3
+  - settings: 3
+  - sessions: 2
+  - docs: 1
+- **ORGANIZATION**: 27,264
+  - rush_law_emails: 26,900
+  - indexes: 356
+  - TABLES FOR SUPABASE AND NEW PRODUCT: 5
+  - (root): 3
+- **LEGAL**: 11,839
+  - BANKRUPTCY AND FORECLOSURE: 11,836
+  - legal API: 2
+  - (root): 1
+- **MONEY VERTICALS**: 2,920
+  - RESERVES GOT: 2,895
+  - PROPERTY 1M: 23
+  - (root): 1
+  - Sell Software: 1
+- **CHILD_SUPPORT_EVIDENCE**: 1,393
+  - RUSH: 668
+  - SHANNON: 339
+  - emails: 169
+  - PACSES_BERKS: 167
+  - BELL: 36
+  - (root): 14
+- **azure set up**: 103
+  - azure-implementation: 75
+  - azure: 23
+  - (root): 5
+- **domains 2-Shannon’s MacBook Pro-DPC (6)**: 94
+  - 00_---- DOMAINS: 93
+  - (root): 1
+- **get reserves**: 64
+  - nexio: 34
+  - OPEN ABN BANK ACCOUNT: 28
+  - (root): 2
+- **corporate docs**: 43
+  - NETEVIA WORKSPACE: 23
+  - (root): 19
+  - _archive: 1
+- **OneDrive-Personal-Small**: 34
+  - 00_---- DOMAINS: 20
+  - Imports: 9
+  - domains 2-Shannon’s MacBook Pro-DPC (6): 2
+  - (root): 1
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 6.wav: 1
+  - SECRETS: 1
+- **domains 2**: 26
+  - 00_---- DOMAINS 2: 25
+  - (root): 1
+- **Imports**: 11
+  - [alanredmond23@gmail.com](mailto:alanredmond23@gmail.com) - Google Drive: 10
+  - (root): 1
+- **(root)**: 6
+- **BANKING**: 6
+- **00_---- DOMAINS**: 3
+  - 01_LEGAL: 2
+  - (root): 1
+- **zoom_phone_export**: 3
+- **FIVE9_02_CONFIDENTIAL_AR-0000132430 6.wav**: 1
+- **from ADMIN COMP**: 1
+- **more secrets**: 1
+
+## `agent-outputs` — **3,235** blobs
+
+- **onedrive2**: 2,839
+  - claude code: 2,839
+- **04_DEVOPS**: 393
+  - 05_TECH: 376
+  - (root): 12
+  - KVM: 2
+  - APPLICATIONS Custom: 1
+  - AUTOMATED HYPERLOOP RESEARCH and money: 1
+  - DEVOPS:AISTAFF DOMAIN: 1
+- **(root)**: 3
+
+## `backups` — **509,640** blobs
+
+- **quicks-desktop**: 179,922
+  - Desktop: 179,922
+- **onedrive-acct1**: 160,425
+  - onedrive-acct2: 131,352
+  - 00_---- DOMAINS: 11,229
+  - Google Drive: 10,748
+  - domains 2: 4,624
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 797
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 399
+  - RUSH_RETAINER_SEARCH: 349
+  - (root): 263
+  - from ADMIN COMP: 153
+  - GAEL-GUARD-devin-1753164745-legal-warfare-system 2: 152
+  - Firestorm-20-main: 48
+  - 2025-09-01-conversations (2): 44
+  - MONEY VERTICALS: 40
+  - APPLICATIONS Custom: 39
+  - CONSOLIDATE: 38
+  - VICTIM_GRAB_FINAL: 35
+  - 2025-09-01-conversations (1): 33
+  - second final draft: 27
+  - 2025-09-01-conversations (3): 16
+  - Imports: 15
+  - brain-feed-enterprise-final: 14
+  - domains 2-Shannon’s MacBook Pro-DPC (6): 3
+  - 2025-9-3: 2
+  - 2025-9-3 2: 2
+  - SECRETS: 2
+  - licenses: 1
+- **ai-data-admin-2026-04-17**: 153,802
+  - claude: 64,680
+  - cursor: 56,871
+  - gemini: 26,973
+  - antigravity-ide: 3,045
+  - openai: 1,853
+  - misc: 217
+  - raycast: 106
+  - mcp: 25
+  - continue: 13
+  - warp: 8
+  - cline: 7
+  - copilot: 2
+  - (root): 1
+  - logs: 1
+- **admin-2026-04-17**: 15,230
+  - Supabase-S3: 5,159
+  - asset_venv: 2,821
+  - venv: 2,230
+  - githubrepos: 1,603
+  - teleport: 778
+  - rclone-staging: 772
+  - .config: 658
+  - mega_pull: 605
+  - monorepo: 295
+  - (root): 81
+  - ring-outreach-mcp-server: 32
+  - SupabaseMount: 26
+  - Music: 25
+  - migration: 23
+  - gcs-migration-logs: 14
+  - .ssh: 12
+  - Movies: 11
+  - Mounts: 10
+  - LegalBrain: 9
+  - Projects: 9
+  - supabase: 9
+  - LaunchAgents-disabled: 8
+  - MOTION_PRACTICE: 6
+  - firestorm: 5
+  - chat-image-bundle: 4
+  - FBI (master): 3
+  - Parallels: 3
+  - Pictures: 3
+  - Applications: 2
+  - chatgpt-image-scraper: 2
+  - Desktop: 2
+  - godaddy-inbox-commander: 2
+  - mcswain_analysis: 2
+  - ring_project_export: 2
+  - warchest_backups: 2
+  - sys-tweaks-backups: 1
+  - wallpapers: 1
+- **workhorse-desktop**: 203
+  - Desktop: 203
+- **onedrive-personal-2-orphans-2026-04-17**: 52
+  - 00_---- DOMAINS: 52
+- **(root)**: 4
+- **_cursor_test**: 1
+- **backups**: 1
+  - cursor-full: 1
+
+## `benfranklin-dashboard` — **16** blobs
+
+- **(root)**: 14
+- **mosquitto**: 2
+  - (root): 1
+  - config: 1
+
+## `bin` — **17** blobs
+
+- **(root)**: 17
+
+## `claude-conversations` — **344** blobs
+
+- **2026-03**: 224
+  - ai_assistant_dashboard_queue_system_04100e48: 2
+  - analyzing_dashboard_artifacts_and_synergy_af64ed15: 2
+  - applying_prompt_to_100_conversations_f234e303: 2
+  - archive_clis_and_share_d24e5525: 2
+  - arrest_risk_assessment_and_project_sync_213eb3c8: 2
+  - auditing_conversations_and_artifacts_for_world-cla_356d3a5a: 2
+  - azure-based_stack_with_custom_ui_layer_f1b42177: 2
+  - azure_migration_from_superbus_27e847cc: 2
+  - bankruptcy_7969da21: 2
+  - berks_county_adult_probation_contact_0aa83b41: 2
+  - bill_rush_malpractice_case_analysis_e2a45a56: 2
+  - billionaire_tax_avoidance_strategies_for_dual_pass_e17db8f7: 2
+  - building_a_competitive_llm_skill_ea9b8769: 2
+  - bull_rush_malpractice_legal_case_f72d176e: 2
+  - calculating_date_90_days_prior_813194bd: 2
+  - cash_wage_payments_in_pennsylvania_c85f2956: 2
+  - chatbot_and_gitbrain_331f3a4a: 2
+  - comparing_pushed_files_and_repo_discrepancies_221e7cd9: 2
+  - comprehensive_conversation_analysis_and_improvemen_8442f465: 2
+  - court-annexed_mediation_declination_decision_5127cfa2: 2
+  - creating_a_new_guitar_lesson_sheet_61522d61: 2
+  - cursor_speed_vs_claude_code_cli_performance_264651de: 2
+  - desktop_connection_from_web_602cd49b: 2
+  - disconnecting_the_everlaw_mcp_error_7ad30801: 2
+  - docketbird_api_integration_and_case_timeline_track_015d4e30: 2
+  - done_-_ocr_in_prgro_2a5c0905: 2
+  - done_excel_f7a37fb6: 2
+  - done_prompt_skill_c5f6a352: 2
+  - done_researcher_0705d296: 2
+  - downloading_all_chatgpt_transcripts_and_history_751ee13f: 2
+  - edpa_judge_selection_strategy_c6eed0cb: 2
+  - everlaw_api_connection_setup_2e4348f3: 2
+  - extracting_action_items_and_requirements_from_conv_3d985e38: 2
+  - extracting_and_cataloging_conversation_artifacts_ff4b8371: 2
+  - extractor_skill_and_related_thoughts_eff785cb: 2
+  - family_court_motions_and_drs_warrant_pressure_627577c5: 2
+  - fast_api_connection_to_azure_blob_vs_onedrive_6373cd56: 2
+  - fbi_evidence_and_judge_research_synthesis_1002f653: 2
+  - file_upload_requirements_27aa1b2f: 2
+  - file_upload_size_limits_and_constraints_44440d37: 2
+  - filing_custody_case_online_through_berks_county_ef_159d9d3a: 2
+  - finding_a_courthouse_courier_service_372416c0: 2
+  - finding_bankruptcy_errata_filing_7747fb6a: 2
+  - finding_brian_dixon_contact_number_3cd9d989: 2
+  - finding_lawsuits_against_neighbors_9ef40365: 2
+  - finding_recent_azure_conversation_about_file_routi_7b5651f3: 2
+  - finding_the_gap_registry_number_0d3ab412: 2
+  - github_repo_creation_with_expired_token_fix_f033643b: 2
+  - go_faster_orbital_one_screen_and_browser_02a6638c: 2
+  - google_storage_solutions_for_database_connectivity_3bb85ce9: 2
+  - *(+ 62 more subfolders, 124 blobs total)*
+- **2026-04**: 80
+  - 4_cowork_so_shit_bd6d67b4: 2
+  - all_claudes_merge_cb815ab5: 2
+  - azure_container_domain_folder_setup_74337039: 2
+  - azure_infrastructure_registry_and_credentials_5060913f: 2
+  - azure_secrets_and_tokens_inventory_762e05d4: 2
+  - call_analysis_blueprint_0edf44ce: 2
+  - cashflow_and_make_money_5e97bb6f: 2
+  - cf_app_and_artifact_registry_31100684: 2
+  - claude_on_azure_and_foundary_used_838c9d37: 2
+  - connecting_azure_storage_to_unsupported_app_d821ec4c: 2
+  - cursor_cloud_agents_secrets_format_conversion_7b2e10c0: 2
+  - cursor_extractions_context_analysis_ed188bb8: 2
+  - exo_e462d6ee: 2
+  - faster_alternatives_to_cursor_for_code_editing_e7a27f48: 2
+  - final_organization_with_full_index_841d5b90: 2
+  - final_system_c157194e: 2
+  - fix_mcp_claude-skills_server_472f7ede: 2
+  - golden_repo_and_memory_episodic_e2ed79ce: 2
+  - hermes_beat_91e5fd26: 2
+  - ipad_keyboard_spacebar_not_working_5063a672: 2
+  - legal_-_morgan_drive_property_intelligence_86926abb: 2
+  - macbook_pro_processor_architecture_compatibility_21b3657d: 2
+  - migration_current_indexes_9c8dd13b: 2
+  - ok2_f1b4f26d: 2
+  - onedrive_api_graph_setup_and_migration_45b6d5f0: 2
+  - onedrive_api_integration_with_graph_permissions_c074ea3e: 2
+  - org_-_cashflow_ui_5e97bb6f: 2
+  - org_-_command_center_c04af409: 2
+  - org_artifacts_repo_31100684: 2
+  - org_legal_f3c606c9: 2
+  - org_tech_2de759a5: 2
+  - orgsync_-_idation_perfect_across_all_8ced2ace: 2
+  - pennsylvania_annual_car_inspection_requirements_44e41f3f: 2
+  - rclone_final_merge_d594d74d: 2
+  - rclone_view_and_manager_refined_7611d11f: 2
+  - replace_github_with_azure_516823c2: 2
+  - rush_xfinity_and_zoom_04eb260e: 2
+  - scheduling_2026_9783b23e: 2
+  - top_10_apis_to_install_c5eefe71: 2
+  - victim_calls_extracted_c4e76fe1: 2
+- **(root)**: 40
+
+## `claude-memory` — **645** blobs
+
+- **merged-from-old**: 526
+  - sessions: 497
+  - projects: 19
+  - infrastructure: 6
+  - legal: 4
+- **transcripts**: 83
+  - extractions: 75
+  - raw: 6
+  - (root): 2
+- **WORKHORSE**: 27
+  - memory.bak: 18
+  - (root): 9
+- **tori**: 5
+- **(root)**: 3
+- **OVERALL TRIAGE**: 1
+
+## `claude-skills` — **39** blobs
+
+- **.git**: 31
+  - hooks: 14
+  - (root): 6
+  - logs: 4
+  - objects: 3
+  - refs: 3
+  - info: 1
+- **bulk-interview**: 5
+  - (root): 2
+  - questions: 2
+  - answers: 1
+- **(root)**: 3
+
+## `cursor-extractions` — **40** blobs
+
+- **(root)**: 40
+
+## `devops` — **0** blobs
+
+## `discovery` — **189,664** blobs
+
+- **quicks**: 179,344
+  - VICTIM_GRAB_FINAL: 179,344
+- **EVIDENCE_PULL_ROOT**: 6,961
+  - EVIDENCE_PULL: 6,961
+- **EVIDENCE_PULL_LEGAL**: 1,720
+  - EVIDENCE_PULL: 1,720
+- **onedrive2**: 1,376
+  - CHILD_SUPPORT_EVIDENCE: 1,376
+- **03_DATA**: 263
+  - 03_DATA: 263
+
+## `evidence-bankruptcy` — **26** blobs
+
+- **9011 SAFE HARBOR TRUSTEE**: 14
+  - FINAL_READY_TO_FILE: 9
+  - (root): 2
+  - DRAFTS: 2
+  - REFERENCE_DOCS: 1
+- **ERRATA**: 9
+  - DRAFTS: 4
+  - (root): 2
+  - WORKING_DRAFT: 2
+  - FINAL_READY_TO_FILE: 1
+- **(root)**: 2
+- **READY-AP-25-00254**: 1
+
+## `evidence-family` — **0** blobs
+
+## `evidence-federal` — **243** blobs
+
+- **legal**: 105
+  - CASES: 81
+  - GLOBAL: 24
+- **final-FBI-defensive-DOJ-strategy**: 73
+  - part-4: 41
+  - part-2: 15
+  - REDMOND_DOCTRINE_v1: 11
+  - (root): 2
+  - artifacts-current-session: 2
+  - triage: 2
+- **analysis**: 23
+  - (root): 14
+  - actors: 3
+  - carriers: 1
+  - evidence: 1
+  - financial: 1
+  - intel: 1
+  - legal: 1
+  - tools-api: 1
+- **redmond-defense-artifacts**: 17
+- **operation-freedom**: 13
+  - assets: 13
+- **redmond-defense-transcripts**: 7
+- **Master-legal**: 3
+  - Shannon-research: 3
+- **(root)**: 2
+
+## `evidence-foreclosure` — **48** blobs
+
+- **morgan-drive**: 36
+  - motions-filed: 11
+  - exhibits: 9
+  - correspondence: 8
+  - intelligence: 3
+  - sessions: 3
+  - context: 2
+- **original-filings**: 11
+  - extracted: 9
+  - (root): 2
+- **dockets**: 1
+
+## `evidence-rush` — **1,647** blobs
+
+- **groff-texts**: 731
+  - attachments: 726
+  - (root): 5
+- **RUSH**: 550
+  - GAVIN DEADLY EVIDENCE: 550
+- **video-ocr**: 150
+  - VIDEO_FRAMES: 148
+  - (root): 2
+- **CLAUDE-DESKTOP-RUSH**: 123
+  - PROJECT_FILES: 83
+  - UPLOADS: 22
+  - SESSIONS: 11
+  - EVIDENCE: 7
+- **project-knowledge**: 51
+- **evidence-images**: 14
+- **(root)**: 7
+- **court-filings**: 4
+- **build-scripts**: 3
+- **cohn-intake**: 3
+- **demand-letters**: 3
+- **text-messages**: 3
+- **master-compilations**: 2
+- **azure-blob-sync-caveats**: 1
+- **forensic-audit**: 1
+- **spreadsheets**: 1
+
+## `financial-docs` — **3,496** blobs
+
+- **onedrive2**: 3,201
+  - MONEY VERTICALS: 3,131
+  - get reserves: 64
+  - BANKING: 6
+- **MONEY VERTICALS**: 205
+  - RESERVES GOT: 163
+  - PROPERTY 1M: 42
+- **02_FINANCE**: 90
+  - 2: CASHFLOW AND NOW MONEY: 76
+  - BANKING 1: 13
+  - (root): 1
+
+## `five9-calls` — **165,674** blobs
+
+- **trash-series03**: 72,212
+  - .Trash: 72,212
+- **FIVE9_02_folder**: 57,562
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 57,562
+- **INTAKE**: 26,555
+  - 20260327_legal_march_rush_gavin: 26,555
+- **trash-series02**: 9,102
+  - .Trash: 9,102
+- **FIVE9_FLEET_SWEEP_2026-03-31**: 205
+  - QUICKS: 79
+  - WORKHORSE: 73
+  - ADMIN: 48
+  - INDEX_HUNT: 4
+  - (root): 1
+- **FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav**: 38
+  - DESKTOP WORKHORSE: 32
+  - ORGANIZATION: 6
+
+## `fleet-sync` — **9,331** blobs
+
+- **workhorse**: 9,331
+  - Downloads: 7,184
+  - claude-memories: 2,008
+  - Desktop: 127
+  - MASTER_RULES: 9
+  - (root): 2
+  - Documents: 1
+
+## `future` — **0** blobs
+
+## `gmail-takeout` — **3** blobs
+
+- **(root)**: 3
+
+## `ice-cold-triage` — **2** blobs
+
+- **(root)**: 1
+- **scheduling-2026-duplicate-mbox**: 1
+
+## `indexes` — **14** blobs
+
+- **2026-04-06_session**: 10
+  - (root): 7
+  - skills: 3
+- **(root)**: 4
+
+## `legal` — **697,763** blobs
+
+- **recordings**: 401,167
+  - onedrive-acct1: 197,449
+  - 00_---- DOMAINS: 177,214
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 19,997
+  - ALL_CALL_RECORDINGS: 2,674
+  - domains 2: 1,915
+  - domains 2-Shannon’s MacBook Pro-DPC (6): 1,915
+  - onedrive2: 3
+- **discovery**: 189,664
+  - quicks: 179,344
+  - EVIDENCE_PULL_ROOT: 6,961
+  - EVIDENCE_PULL_LEGAL: 1,720
+  - onedrive2: 1,376
+  - 03_DATA: 263
+- **legal-filings**: 93,768
+  - LEGAL: 49,766
+  - quicks: 22,428
+  - onedrive2: 11,815
+  - RUSH_SANCTIONS: 8,004
+  - FORECLOSURE_25-13446: 1,085
+  - onedrive-acct1: 670
+- **evidence-rush**: 12,847
+  - 004-evidence-by-category: 10,095
+  - groff-texts: 731
+  - emails-raw: 662
+  - RUSH: 550
+  - groff-texts-attachments: 362
+  - video-ocr: 150
+  - CLAUDE-DESKTOP-RUSH: 123
+  - project-knowledge: 51
+  - bankruptcy-filings: 38
+  - filings: 34
+  - evidence-images: 14
+  - (root): 8
+  - demand-letters: 5
+  - court-filings: 4
+  - strategy: 4
+  - build-scripts: 3
+  - cohn-intake: 3
+  - spreadsheets: 3
+  - text-messages: 3
+  - master-compilations: 2
+  - azure-blob-sync-caveats: 1
+  - forensic-audit: 1
+- **evidence-federal**: 243
+  - legal: 105
+  - final-FBI-defensive-DOJ-strategy: 73
+  - analysis: 23
+  - redmond-defense-artifacts: 17
+  - operation-freedom: 13
+  - redmond-defense-transcripts: 7
+  - Master-legal: 3
+  - (root): 2
+- **evidence-foreclosure**: 48
+  - morgan-drive: 36
+  - original-filings: 11
+  - dockets: 1
+- **evidence-bankruptcy**: 26
+  - 9011 SAFE HARBOR TRUSTEE: 14
+  - ERRATA: 9
+  - (root): 2
+  - READY-AP-25-00254: 1
+
+## `legal-filings` — **93,768** blobs
+
+- **LEGAL**: 49,766
+  - LEGAL: 49,766
+- **quicks**: 22,428
+  - LEGAL-MONOREPO: 22,410
+  - RUSH_SANCTIONS: 18
+- **onedrive2**: 11,815
+  - LEGAL: 11,815
+- **RUSH_SANCTIONS**: 8,004
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 8,004
+- **FORECLOSURE_25-13446**: 1,085
+  - 25-13446 Mor.DR Foreclosure: 1,085
+- **onedrive-acct1**: 670
+  - RUSH_RETAINER_SEARCH: 441
+  - 01_LEGALuu: 229
+
+## `lil-red-artifacts` — **7** blobs
+
+- **2026-04-04**: 7
+
+## `localtriage4162026admincomp` — **509** blobs
+
+- **triage**: 501
+  - SECRETS 2027 BILLIONARIE: 436
+  - inventory-reconcile: 50
+  - (root): 15
+- **2026**: 8
+  - 04: 8
+
+## `loose-files` — **0** blobs
+
+## `make-money` — **443** blobs
+
+- **product-assets**: 198
+  - marketing-war-command-center: 182
+  - pet-product-repo: 14
+  - (root): 2
+- **marketing command center**: 115
+  - .git: 91
+  - supabase: 8
+  - desktop-companion: 5
+  - (root): 4
+  - src: 4
+  - .github: 3
+- **.git**: 91
+  - logs: 30
+  - refs: 28
+  - hooks: 15
+  - (root): 8
+  - objects: 8
+  - info: 2
+- **benfranklin-dashboard**: 16
+  - (root): 14
+  - mosquitto: 2
+- **supabase**: 8
+  - functions: 6
+  - (root): 2
+- **desktop-companion**: 5
+  - (root): 3
+  - src: 2
+- **src**: 4
+- **(root)**: 3
+- **.github**: 3
+  - workflows: 2
+  - (root): 1
+
+## `marketing-war-command-center` — **87** blobs
+
+- **.git**: 73
+  - logs: 23
+  - refs: 22
+  - hooks: 14
+  - (root): 7
+  - objects: 6
+  - info: 1
+- **supabase**: 4
+  - functions: 3
+  - (root): 1
+- **(root)**: 3
+- **desktop-companion**: 3
+  - (root): 2
+  - src: 1
+- **src**: 3
+- **.github**: 1
+  - workflows: 1
+
+## `meta-workflow` — **328** blobs
+
+- **redmond-os**: 157
+  - system: 38
+  - (root): 22
+  - scripts: 21
+  - ai: 19
+  - apps: 12
+  - docs: 12
+  - connectors: 10
+  - cli: 7
+  - infra: 4
+  - tests: 4
+  - supabase: 3
+  - api: 2
+  - .vscode: 1
+  - indexes: 1
+  - swarm: 1
+- **rush-sanctions-sync**: 113
+  - 20260404_044338: 112
+  - SYNC_CAVEATS: 1
+- **extractions**: 25
+  - phase-d-skills-layercake: 13
+  - phase-c-prometheus-system: 10
+  - (root): 2
+- **war-room**: 14
+  - war-room: 14
+- **tori-menagerie**: 10
+  - versions: 4
+  - (root): 3
+  - app: 3
+- **(root)**: 4
+- **repo-binaries**: 4
+  - Meta-workflow: 4
+- **snapshots**: 1
+
+## `mirror-test` — **0** blobs
+
+## `models` — **0** blobs
+
+## `moreonedrive` — **0** blobs
+
+## `onedrive-personal` — **2,314,019** blobs
+
+- **01_LEGAL**: 941,618
+  - 01_LEGAL: 940,793
+  - REDMOND_TRIAL: 328
+  - GROFF_RUSH_MALPRACTICE: 197
+  - ALL_CALL_RECORDINGS: 86
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 69
+  - IMAP_EMAIL_PDFS: 65
+  - GAVIN CAROLYN: 22
+  - SUPERSEDWINSTARTS: 15
+  - LEGAL DOMAIN: 14
+  - 25-13446 Mor.DR Foreclosure: 11
+  - RUSH_MALPRACTICE: 5
+  - 04_TRUSTEE_BK: 4
+  - 00_---- DOMAINS: 3
+  - RUSH_EMAIL_ORGANIZED: 3
+  - 99_ARCHIVE: 1
+  - EVIDENCE_PULL: 1
+  - OTHER_EVIDENCE: 1
+- **OneDrive-Personal**: 876,424
+  - 01_LEGAL: 714,530
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 57,426
+  - LEGAL WORKHORSE: 49,168
+  - LEGAL-MONOREPO: 23,652
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 11,043
+  - defense-canvas-v2: 7,667
+  - defense-canvas: 6,035
+  - ARCHIVED PROJECTS: 3,421
+  - cashflow, schedule, replit and secrets: 689
+  - THIS WEEK BOY: 592
+  - 08_FUTURE: 506
+  - ConfigTool.app: 383
+  - (root): 297
+  - GAEL-GUARD-devin-1753164745-legal-warfare-system: 248
+  - 2025-12-09-conversations: 126
+  - 02_FINANCE: 90
+  - 04_DEVOPS: 76
+  - comprehensive_scalable_database_schema: 68
+  - 03_DATA: 59
+  - FINAL INDEX 2027 FINAL FINAL FINAL GO: 52
+  - VICTIM_EXHIBITS: 41
+  - SHANNON LIST: 32
+  - corporate docs: 26
+  - licenses: 26
+  - WENDY: 24
+  - motions (2): 20
+  - MONEY VERTICALS: 17
+  - brain-feed-enterprise-final: 15
+  - SHANNON_FINAL_PROPER: 14
+  - zoom api: 12
+  - Atlas_Final_Hybrid: 10
+  - 99_ARCHIVE: 9
+  - brain-feed-starter: 9
+  - EVIDENCE_PULL: 7
+  - wyndcroft_packet_assets: 6
+  - wyndcroft_packet_assets 2: 6
+  - wyndcroft_packet_assets 3: 6
+  - twilio_export (1): 4
+  - 10_SECRETS: 3
+  - CashFlow_Complete_Package: 3
+  - CLAUDE, GEMINI, CHATGPT, DEEPSEEK SAVED CONVOS: 2
+  - INTEL_SYSTEM: 2
+  - 01_LEGALuu-Quick's MacBook Pro: 1
+  - secrets: 1
+- **LEGAL WORKHORSE**: 420,326
+  - LEGAL WORKHORSE: 416,888
+  - TRIAGE: 2,085
+  - Users: 530
+  - AFTER_RUSH_BABY: 320
+  - QUICKS_SOURCE_FILES: 291
+  - TEMP_QUICKS_FILES: 180
+  - gavin here: 13
+  - (root): 9
+  - REDMOND_WAR_ROOM_SESSION_032626: 6
+  - ARC NUBRIDGE: 4
+- **ARCHIVED PROJECTS**: 34,161
+  - ARCHIVED PROJECTS: 27,841
+  - CodeGreen: 3,609
+  - forgitfinalui: 2,138
+  - ARCHIVE: 297
+  - LEGAL APP: 151
+  - COMMAND CENTER: 109
+  - INGESTION (Dedup and chat history): 14
+  - (root): 1
+  - claude-code: 1
+- **EVIDENCE_PULL**: 10,441
+  - EVIDENCE_PULL: 9,150
+  - GoogleDrive_Evidence: 1,280
+  - guv: 11
+- **ALL_CALL_RECORDINGS**: 8,290
+  - ALL_CALL_RECORDINGS: 8,290
+- **REDMOND_TRIAL**: 5,683
+  - REDMOND_TRIAL: 5,683
+- **RUSH SANCTIONS:MOTION EXEMPTIONS**: 3,234
+  - EMAIL_EVIDENCE: 2,064
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 937
+  - EVIDENCE: 178
+  - VIDEO_OCR_FINDINGS: 37
+  - .git: 14
+  - (root): 3
+  - TEXT_MESSAGE_COMPILATIONS: 1
+- **LEGAL-MONOREPO**: 2,310
+  - GLOBAL: 1,053
+  - LEGAL-MONOREPO: 1,012
+  - .git: 77
+  - .conversations: 60
+  - 13_ui_implementation: 39
+  - 02_raw_intake: 23
+  - INDEX: 19
+  - 10_drafts: 7
+  - MCP_CLI_API: 4
+  - .cursor: 3
+  - GAP_TO_WORLD_CLASS: 3
+  - FINAL_VERSIONS_TO_FILE: 2
+  - PROBABILITY_MODEL: 2
+  - .vscode: 1
+  - 03_targets: 1
+  - 04_research_intel: 1
+  - 07_evidence_gaps: 1
+  - 12_service: 1
+  - STAFF: 1
+- **LEGAL DOMAIN**: 1,353
+  - LEGAL DOMAIN: 1,353
+- **RUSH_EMAIL_ORGANIZED**: 1,318
+  - RUSH_EMAIL_ORGANIZED: 1,318
+- **FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav**: 1,274
+  - DESKTOP WORKHORSE: 1,089
+  - ORGANIZATION: 163
+  - claudey-skills: 20
+  - final 2026 scheduleing: 2
+- **GROFF_RUSH_MALPRACTICE**: 1,218
+  - GROFF_RUSH_MALPRACTICE: 1,218
+- **08_FUTURE**: 978
+  - FUTURE GOALS DOMAIN: 508
+  - 08_FUTURE: 469
+  - (root): 1
+- **04_DEVOPS**: 786
+  - 04_DEVOPS: 393
+  - 05_TECH: 376
+  - (root): 12
+  - KVM: 2
+  - APPLICATIONS Custom: 1
+  - AUTOMATED HYPERLOOP RESEARCH and money: 1
+  - DEVOPS:AISTAFF DOMAIN: 1
+- **IMAP_EMAIL_PDFS**: 745
+  - IMAP_EMAIL_PDFS: 745
+- **GAVIN CAROLYN**: 688
+  - GAVIN CAROLYN: 688
+- **25-13446 Mor.DR Foreclosure**: 577
+  - 25-13446 Mor.DR Foreclosure: 577
+- **03_DATA**: 526
+  - 03_DATA: 263
+  - DATA:CORPUS MANAGEMENT DOMAIN: 262
+  - (root): 1
+- **RUSH_MALPRACTICE**: 498
+  - RUSH_MALPRACTICE: 498
+- **cashflow, schedule, replit and secrets**: 330
+  - cursor, replit, codex: 186
+  - SECRETS 27: 87
+  - 04_DEVOPS: 26
+  - CASHFLOW AND SCHEDULE: 26
+  - 05_TECH: 2
+  - (root): 1
+  - 03_DATA: 1
+  - 06_REVENUE: 1
+- **EVIDENCE_PULL copy**: 275
+  - EVIDENCE_PULL copy: 275
+- **GAEL-GUARD-devin-1753164745-legal-warfare-system**: 243
+  - GAEL-GUARD-devin-1753164745-legal-warfare-system: 243
+- **GoogleDrive_Evidence**: 201
+  - GoogleDrive_Evidence: 201
+- **02_FINANCE**: 180
+  - 02_FINANCE: 90
+  - 2: CASHFLOW AND NOW MONEY: 76
+  - BANKING 1: 13
+  - (root): 1
+- **SUPERSEDWINSTARTS**: 178
+  - SUPERSEDWINSTARTS: 178
+- **04_TRUSTEE_BK**: 51
+  - 04_TRUSTEE_BK: 51
+- **99_ARCHIVE**: 41
+  - 99_ARCHIVE: 32
+  - LOST AND FOUND: 8
+  - (root): 1
+- **00_---- DOMAINS**: 39
+  - 00_---- DOMAINS: 39
+- **OTHER_EVIDENCE**: 11
+  - OTHER_EVIDENCE: 11
+- **10_SECRETS**: 6
+  - 10_SECRETS: 3
+  - (root): 2
+  - SECRETS: 1
+- **09_REPUTATION**: 5
+  - 09_REPUTATION: 5
+- **ENROLLMENT_ESIGNS**: 5
+  - ENROLLMENT_ESIGNS: 5
+- **INTEL_SYSTEM**: 2
+  - INTEL_SYSTEM: 2
+- **PA_Court_Filing_Reference_Library**: 2
+  - PA_Court_Filing_Reference_Library: 2
+- **01_LEGALuu-Quick's MacBook Pro**: 1
+  - 01_LEGALuu-Quick's MacBook Pro: 1
+- **2 high road foreclousre**: 1
+  - 2 high road foreclousre: 1
+
+## `ops-ingest` — **0** blobs
+
+## `organization` — **1,377,551** blobs
+
+- **backups**: 340,556
+  - quicks-desktop: 179,922
+  - onedrive-acct1: 160,425
+  - workhorse-desktop: 203
+  - (root): 4
+  - _cursor_test: 1
+  - backups: 1
+- **super-master-triage**: 186,803
+  - uploads: 146,279
+  - workhorse-docs: 40,524
+- **stripe_secure**: 167,603
+  - Library: 44,324
+  - GITHUB Projects: 16,118
+  - miniforge3: 14,711
+  - .cursor: 13,636
+  - .npm: 11,633
+  - .ssh: 9,752
+  - .cargo: 7,125
+  - .claude: 6,877
+  - .gemini: 6,265
+  - claude-sessions: 5,955
+  - .warp_chrome: 5,449
+  - .cache: 5,131
+  - node_modules: 3,194
+  - hoffman-suite: 2,570
+  - .antigravity: 1,949
+  - swarm-workspace: 1,765
+  - .llama-cpp-venv: 1,739
+  - extractors: 1,541
+  - final-lead-faucet-2027: 1,401
+  - gmail-mcp-extension: 1,157
+  - .nvm: 1,006
+  - cursor-dev-panel: 645
+  - .azcopy: 629
+  - Downloads: 561
+  - .azure: 456
+  - .codex: 414
+  - docket_pulls: 206
+  - .local: 150
+  - (root): 133
+  - MASTER_PACKAGE: 132
+  - Music: 93
+  - .playwright-mcp: 75
+  - cortex: 68
+  - .config: 66
+  - Movies: 47
+  - extractor: 44
+  - .zsh_sessions: 43
+  - .goodsync: 36
+  - cursor-mcp-config: 36
+  - killed-bloatware-backup: 35
+  - .bash_sessions: 34
+  - .rustup: 34
+  - Archive: 33
+  - Applications: 29
+  - zoom-call-extract: 28
+  - .npm-global: 27
+  - MASTER_RULES: 18
+  - gmail-archive: 16
+  - .continue: 14
+  - PERFECT_MOUSE: 12
+  - *(+ 58 more subfolders, 191 blobs total)*
+- **GITHUB-Projects**: 133,210
+  - GITHUB Projects: 133,210
+- **GITHUB Projects**: 133,197
+  - alandb: 42,850
+  - SHIPIT: 25,002
+  - member-app: 13,674
+  - monorepo: 10,322
+  - runpod-launcher-now: 7,855
+  - redmond-os: 6,839
+  - go: 4,509
+  - dpc-dashboard: 4,140
+  - review_repos: 3,906
+  - finalUIRed_temp: 3,792
+  - code: 3,357
+  - DEV DUMP CLEAN LATER: 2,707
+  - node_modules: 1,507
+  - computerjoin: 1,401
+  - dashboard-electron: 994
+  - Music: 93
+  - Atlas: 80
+  - MyVbApp: 52
+  - arms-demo-repo: 29
+  - ambient-platform: 24
+  - claude-voice-mode: 13
+  - MASTER_RULES: 13
+  - Applications: 10
+  - DuplicateHunter: 8
+  - (root): 7
+  - orbital-brain: 7
+  - runpod-launcher-cloudflare: 4
+  - **pycache**: 1
+  - github_repos: 1
+- **45gb-final-onedrive**: 131,206
+  - claude code: 87,394
+  - ORGANIZATION: 27,264
+  - LEGAL: 11,839
+  - MONEY VERTICALS: 2,920
+  - CHILD_SUPPORT_EVIDENCE: 1,393
+  - azure set up: 103
+  - domains 2-Shannon’s MacBook Pro-DPC (6): 94
+  - get reserves: 64
+  - corporate docs: 43
+  - OneDrive-Personal-Small: 34
+  - domains 2: 26
+  - Imports: 11
+  - (root): 6
+  - BANKING: 6
+  - 00_---- DOMAINS: 3
+  - zoom_phone_export: 3
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 6.wav: 1
+  - from ADMIN COMP: 1
+  - more secrets: 1
+- **Desktop**: 73,339
+  - Desktop: 73,339
+- **icloud-archive**: 48,873
+  - iCloud Drive (Archive): 48,873
+- **1triageworkhorse**: 35,643
+  - .nvm: 7,239
+  - .gemini: 5,041
+  - .cursor: 2,960
+  - .npm-global: 2,923
+  - .cache: 2,715
+  - .claude: 2,475
+  - .npm: 1,888
+  - .azure: 1,626
+  - .local: 1,590
+  - .cargo: 1,352
+  - .antigravity: 1,064
+  - .codex: 1,048
+  - .rustup: 494
+  - .warp_chrome: 459
+  - Library: 408
+  - Agentos: 373
+  - .llama-cpp-venv: 355
+  - .azcopy: 292
+  - GITHUB Projects: 271
+  - Desktop: 205
+  - LibreChat: 179
+  - (root): 131
+  - .playwright-mcp: 75
+  - .config: 66
+  - ClaudeQuadApp: 60
+  - Projects: 47
+  - .goodsync: 36
+  - .bash_sessions: 34
+  - .zsh_sessions: 31
+  - Downloads: 19
+  - .continue: 14
+  - SHIPIT: 12
+  - .dotnet: 10
+  - .agent-deck: 9
+  - .azure-transfer: 9
+  - .pm2: 9
+  - .openwork: 8
+  - .ssh: 8
+  - .cli_ai_assistant: 6
+  - .twilio-cli: 6
+  - Applications: 6
+  - claude-skills: 5
+  - .claude-server-commander: 4
+  - .cline: 4
+  - .mcp-auth: 4
+  - .runpod: 4
+  - Archive: 4
+  - MASTER_PACKAGE: 4
+  - Music: 4
+  - .claude-mcp-servers: 3
+  - *(+ 37 more subfolders, 54 blobs total)*
+- **icloud-archive-1**: 30,448
+  - iCloud Drive (Archive) - 1: 30,448
+- **Downloads**: 26,176
+  - Command-Center-final: 26,152
+  - (root): 24
+- **claude-sessions**: 14,415
+  - ClaudeQuadApp: 14,323
+  - claude-skills: 53
+  - claude_code-multi-AI-MCP: 38
+  - (root): 1
+- **Projects**: 12,347
+  - Projects: 12,347
+- **hoffman-suite**: 10,326
+  - mcp-servers: 10,306
+  - skills: 10
+  - chrome-extension: 5
+  - (root): 2
+  - profiles: 2
+  - .claude-plugin: 1
+- **redmond-os**: 6,388
+  - apps: 4,343
+  - node_modules: 1,177
+  - .git: 648
+  - extractions: 95
+  - (root): 21
+  - ai: 20
+  - scripts: 20
+  - docs: 12
+  - connectors: 11
+  - .github: 9
+  - cli: 6
+  - infra: 4
+  - secrets: 4
+  - tests: 4
+  - api: 3
+  - commander-center-2027: 3
+  - supabase: 3
+  - transcripts: 3
+  - .vscode: 1
+  - cursor: 1
+- **fleet-sync**: 6,250
+  - workhorse: 6,250
+- **swarm-workspace**: 5,937
+  - redmond-os: 5,688
+  - META-WORKFLOW: 248
+  - (root): 1
+- **extractors**: 5,692
+  - apps: 4,367
+  - node_modules: 1,181
+  - .git: 27
+  - (root): 21
+  - scripts: 21
+  - ai: 20
+  - docs: 12
+  - connectors: 11
+  - .github: 9
+  - cli: 7
+  - infra: 4
+  - tests: 4
+  - api: 3
+  - supabase: 3
+  - .vscode: 1
+  - swarm: 1
+- **agent-outputs**: 3,235
+  - onedrive2: 2,839
+  - 04_DEVOPS: 393
+  - (root): 3
+- **program-files-hd**: 1,494
+  - usr: 508
+  - Applications: 426
+  - System: 220
+  - private: 150
+  - opt: 59
+  - sbin: 52
+  - bin: 37
+  - Users: 36
+  - Library: 6
+- **cursor-dev-panel**: 1,399
+  - 01-menu: 818
+  - docs: 178
+  - tools: 147
+  - business: 101
+  - (root): 45
+  - .git: 27
+  - experiments: 24
+  - apps: 20
+  - 06-platform: 14
+  - 03-data: 8
+  - infrastructure: 5
+  - .github: 4
+  - 10-monorepo-settings: 4
+  - scripts: 4
+- **123triageonedrive**: 849
+  - BANKRUPTCY AND FORECLOSURE: 517
+  - onedrive: 330
+  - (root): 2
+- **claude-memory**: 644
+  - merged-from-old: 526
+  - transcripts: 83
+  - WORKHORSE: 27
+  - tori: 5
+  - (root): 3
+- **claude-conversations**: 344
+  - 2026-03: 224
+  - 2026-04: 80
+  - (root): 40
+- **meta-workflow**: 328
+  - redmond-os: 157
+  - rush-sanctions-sync: 113
+  - extractions: 25
+  - war-room: 14
+  - tori-menagerie: 10
+  - (root): 4
+  - repo-binaries: 4
+  - snapshots: 1
+- **docket_pulls**: 206
+  - 2026-02-09: 205
+  - (root): 1
+- **MASTER_PACKAGE**: 134
+  - .git: 108
+  - (root): 8
+  - agents: 5
+  - scripts: 4
+  - proofs: 3
+  - settings: 3
+  - brain: 2
+  - docs: 1
+- **Movies**: 47
+  - TV: 45
+  - (root): 2
+- **(root)**: 45
+- **extractor**: 44
+  - .git: 39
+  - (root): 5
+- **claude-skills**: 39
+  - .git: 31
+  - bulk-interview: 5
+  - (root): 3
+- **cursor-mcp-config**: 37
+  - .git: 32
+  - (root): 4
+  - scripts: 1
+- **.goodsync**: 36
+- **killed-bloatware-backup**: 35
+  - UserAgents: 16
+  - LaunchDaemons: 12
+  - LaunchAgents: 5
+  - (root): 2
+- **zoom-call-extract**: 28
+  - .git: 26
+  - (root): 2
+- **MASTER_RULES**: 18
+  - (root): 9
+  - hooks: 5
+  - config: 2
+  - logs: 1
+  - plans: 1
+- **migration**: 18
+  - migration: 18
+- **bin**: 17
+- **gmail-archive**: 16
+  - (root): 7
+  - cli: 6
+  - mcp: 2
+  - data: 1
+- **.continue**: 14
+  - (root): 7
+  - index: 5
+  - sessions: 1
+  - types: 1
+- **mac_index**: 14
+  - (root): 9
+  - mac_index: 5
+- **indexes**: 11
+  - 2026-04-06_session: 10
+  - (root): 1
+- **swimlanes**: 10
+  - 01-legal-warfare: 2
+  - 02-command-control: 2
+  - 03-cashflow-revenue: 2
+  - 04-product-builds: 2
+  - 05-infrastructure-devops: 2
+- **camera-viewer**: 9
+- **.net**: 7
+  - azmcp: 6
+  - bicep: 1
+- **lil-red-artifacts**: 7
+  - 2026-04-04: 7
+- **orbital-brain**: 6
+  - ops: 6
+- **secrets**: 5
+  - (root): 2
+  - onedrive-acct1: 2
+  - onedrive2: 1
+- **tools**: 5
+  - unifi: 4
+  - (root): 1
+- **.claude-server-commander**: 4
+- **.runpod**: 4
+  - (root): 2
+  - ssh: 2
+- **browser-benchmarks**: 4
+  - (root): 3
+  - results: 1
+- **everlaw_mcp**: 4
+  - (root): 2
+  - **pycache**: 2
+- **index**: 4
+- **scripts**: 3
+- **.templateengine**: 2
+  - (root): 1
+  - dotnetcli: 1
+- **1: FILE ERRATA**: 2
+- **ice-cold-triage**: 2
+  - (root): 1
+  - scheduling-2026-duplicate-mbox: 1
+- **Scripts**: 2
+- **.claude-server-commander-logs**: 1
+- **.cortex**: 1
+- **.hoffman-suite**: 1
+- **.nuget**: 1
+  - NuGet: 1
+- **.podman**: 1
+- **.supabase**: 1
+- **apps**: 1
+- **iCloud Drive (Archive) - 2**: 1
+- **iPhone_backup_v2**: 1
+  - 00008120-0016045E1A82601E: 1
+- **schema**: 1
+
+## `personal` — **129,483** blobs
+
+- **Pictures**: 129,483
+  - Pictures: 129,483
+
+## `product-assets` — **198** blobs
+
+- **marketing-war-command-center**: 182
+  - desktop-companion: 179
+  - (root): 2
+  - public: 1
+- **pet-product-repo**: 14
+  - artifacts: 3
+  - dossier: 3
+  - transcripts: 3
+  - (root): 2
+  - deck: 1
+  - financial: 1
+  - research: 1
+- **(root)**: 2
+
+## `program-files-hd` — **1,498** blobs
+
+- **usr**: 508
+  - sbin: 195
+  - local: 137
+  - lib: 77
+  - libexec: 42
+  - standalone: 40
+  - share: 17
+- **Applications**: 426
+  - Cyberduck.app: 129
+  - Claude.app: 47
+  - Cursor.app: 42
+  - Orion.app: 31
+  - Microsoft Remote Desktop.app: 27
+  - Memory Clean 3.app: 18
+  - InputLeap.app: 16
+  - ChatGPT.app: 15
+  - ExifCleaner.app: 15
+  - Google Chrome.app: 12
+  - Safari Technology Preview.app: 11
+  - Google Docs.app: 9
+  - Google Sheets.app: 9
+  - Replit.app: 6
+  - Stats.app: 6
+  - OmniFocus.app: 5
+  - OneDrive.app: 5
+  - Microsoft Excel.app: 4
+  - Microsoft Outlook.app: 4
+  - SwiftBar.app: 4
+  - (root): 3
+  - Microsoft Word.app: 3
+  - TomatoBar.app: 3
+  - Utilities: 2
+- **System**: 220
+  - Applications: 144
+  - Volumes: 35
+  - DriverKit: 33
+  - iOSSupport: 6
+  - (root): 1
+  - Library: 1
+- **private**: 153
+  - etc: 110
+  - var: 22
+  - tmp: 21
+- **opt**: 59
+  - homebrew: 59
+- **sbin**: 52
+- **bin**: 37
+- **Users**: 36
+  - old user 1: 9
+  - old user 2: 8
+  - Shared: 8
+  - (root): 5
+  - CHATGPT: 3
+  - alanredmond: 2
+  - Deleted Users: 1
+- **Library**: 6
+  - (root): 5
+  - Application Support: 1
+- **dev**: 1
+  - fd: 1
+
+## `recordings` — **401,167** blobs
+
+- **onedrive-acct1**: 197,449
+  - 00_---- DOMAINS: 175,522
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 20,000
+  - domains 2: 1,916
+  - Google Drive: 10
+  - (root): 1
+- **00_---- DOMAINS**: 177,214
+  - 01_LEGAL: 177,214
+- **FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav**: 19,997
+  - 01_LEGAL: 19,997
+- **ALL_CALL_RECORDINGS**: 2,674
+  - ALL_CALL_RECORDINGS: 2,674
+- **domains 2**: 1,915
+  - 00_---- DOMAINS 2: 1,915
+- **domains 2-Shannon’s MacBook Pro-DPC (6)**: 1,915
+  - 00_---- DOMAINS: 1,915
+- **onedrive2**: 3
+  - zoom_phone_export: 3
+
+## `redmond-os` — **6,413** blobs
+
+- **apps**: 4,343
+  - vscode-extension: 4,339
+  - (root): 1
+  - admin: 1
+  - api-console: 1
+  - web: 1
+- **node_modules**: 1,177
+  - @supabase: 750
+  - @types: 84
+  - undici-types: 45
+  - pg-protocol: 43
+  - web-streams-polyfill: 43
+  - node-domexception: 42
+  - pg: 22
+  - ws: 19
+  - node-fetch: 17
+  - pg-cloudflare: 13
+  - pg-types: 13
+  - fetch-blob: 10
+  - tslib: 10
+  - formdata-polyfill: 8
+  - xtend: 7
+  - data-uri-to-buffer: 6
+  - pg-connection-string: 6
+  - split2: 6
+  - pg-pool: 5
+  - postgres-array: 5
+  - postgres-interval: 5
+  - pg-int8: 4
+  - pgpass: 4
+  - postgres-bytea: 4
+  - postgres-date: 4
+  - (root): 2
+- **.git**: 648
+  - objects: 616
+  - hooks: 14
+  - (root): 10
+  - logs: 4
+  - refs: 3
+  - info: 1
+- **extractions**: 113
+  - (root): 50
+  - redmond-os: 12
+  - META-WORKFLOW: 8
+  - BANKRUPTCY: 5
+  - SCHEDULE-2026: 5
+  - secrets-tokens: 5
+  - 30-days-to-the-win: 3
+  - operation-freedom: 3
+  - pet-product-repo: 3
+  - predictibility-cartridge: 3
+  - APIS-CLIs-MCPs: 2
+  - BILL-RUSH: 2
+  - EQUIPMENT: 2
+  - final-FBI-defensive-DOJ-strategy: 2
+  - GITBrain: 2
+  - MEMORY-TEARS-FOR-FEARS-NOW: 2
+  - RUSH-SANCTIONS-MOTION-EXEMPTIONS: 2
+  - WORKFLOW: 2
+- **(root)**: 21
+- **ai**: 20
+  - agents: 9
+  - skills: 6
+  - tools: 4
+  - (root): 1
+- **scripts**: 20
+- **docs**: 12
+- **connectors**: 11
+  - (root): 2
+  - anthropic: 1
+  - aws: 1
+  - github: 1
+  - google: 1
+  - groq: 1
+  - mcp: 1
+  - openai: 1
+  - supabase: 1
+  - twilio: 1
+- **.github**: 9
+  - workflows: 9
+- **commander-center-2027**: 7
+  - initial-research-and-ideas: 2
+  - next-implementation: 2
+  - tech: 2
+  - (root): 1
+- **cli**: 6
+  - commands: 4
+  - (root): 2
+- **secrets**: 5
+- **infra**: 4
+  - docker: 3
+  - (root): 1
+- **tests**: 4
+- **transcripts**: 4
+- **api**: 3
+  - (root): 1
+  - gateway: 1
+  - internal: 1
+- **supabase**: 3
+- **cursor**: 2
+- **.vscode**: 1
+
+## `save-money` — **3,533** blobs
+
+- **financial-docs**: 3,496
+  - onedrive2: 3,201
+  - MONEY VERTICALS: 205
+  - 02_FINANCE: 90
+- **scheduling-2026**: 34
+  - archives: 32
+  - (root): 2
+- **gmail-takeout**: 3
+
+## `scheduling-2026` — **35** blobs
+
+- **archives**: 33
+  - 2026-04-04: 31
+  - (root): 2
+- **(root)**: 2
+
+## `secrets` — **5** blobs
+
+- **(root)**: 2
+- **onedrive-acct1**: 2
+  - SECRETS: 2
+- **onedrive2**: 1
+  - more secrets: 1
+
+## `session-extractions` — **109** blobs
+
+- **extractions**: 95
+  - (root): 49
+  - redmond-os: 11
+  - META-WORKFLOW: 7
+  - BANKRUPTCY: 4
+  - SCHEDULE-2026: 4
+  - secrets-tokens: 4
+  - 30-days-to-the-win: 2
+  - operation-freedom: 2
+  - pet-product-repo: 2
+  - predictibility-cartridge: 2
+  - APIS-CLIs-MCPs: 1
+  - BILL-RUSH: 1
+  - EQUIPMENT: 1
+  - final-FBI-defensive-DOJ-strategy: 1
+  - GITBrain: 1
+  - MEMORY-TEARS-FOR-FEARS-NOW: 1
+  - RUSH-SANCTIONS-MOTION-EXEMPTIONS: 1
+  - WORKFLOW: 1
+- **secrets**: 4
+- **(root)**: 3
+- **commander-center-2027**: 3
+  - initial-research-and-ideas: 1
+  - next-implementation: 1
+  - tech: 1
+- **transcripts**: 3
+- **cursor**: 1
+
+## `super-master-triage` — **211,603** blobs
+
+- **uploads**: 171,079
+  - google-drive: 104,370
+  - Desktop: 22,753
+  - 00_---- DOMAINS: 11,137
+  - Google Drive: 10,240
+  - Imports: 5,257
+  - quicks: 4,652
+  - domains 2: 4,605
+  - domains 2-Shannon’s MacBook Pro-DPC (6): 3,653
+  - FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav: 2,817
+  - 08_FUTURE: 514
+  - RUSH_RETAINER_SEARCH: 412
+  - RUSH SANCTIONS:MOTION EXEMPTIONS: 391
+  - from ADMIN COMP: 151
+  - onedrive-acct1: 71
+  - VICTIM_GRAB_FINAL: 31
+  - second final draft: 25
+- **workhorse-docs**: 40,524
+  - five9-calls: 26,760
+  - Library: 6,782
+  - .gemini: 2,210
+  - iCloud Drive (Archive) - 1: 805
+  - Desktop: 745
+  - iCloud Drive (Archive): 508
+  - GITHUB Projects: 440
+  - .cursor: 385
+  - go: 351
+  - .codex: 221
+  - .antigravity: 216
+  - .nvm: 129
+  - .rustup: 106
+  - LibreChat: 105
+  - docket_pulls: 98
+  - .warp_chrome: 81
+  - .cache: 79
+  - .local: 74
+  - .claude: 56
+  - .llama-cpp-venv: 51
+  - Documents: 45
+  - .npm: 44
+  - cursor-dev-panel: 31
+  - (root): 26
+  - Projects: 21
+  - .azure: 20
+  - Downloads: 19
+  - final-lead-faucet-2027: 18
+  - imported: 16
+  - .playwright-mcp: 11
+  - cortex: 10
+  - SHIPIT: 10
+  - miniforge3: 7
+  - gmail-mcp-extension: 6
+  - .cargo: 4
+  - Agentos: 4
+  - backup-1759390444: 4
+  - claude-skills: 4
+  - Music: 4
+  - launchagents-google_1759389403: 3
+  - 1: FILE ERRATA: 2
+  - extractors: 2
+  - migration: 2
+  - PERFECT_MOUSE: 2
+  - .claude-mcp-servers: 1
+  - .conda: 1
+  - .mcp-auth: 1
+  - claude_code-multi-AI-MCP: 1
+  - ClaudeQuadApp: 1
+  - gmail-archive: 1
+  - *(+ 1 more subfolders, 1 blobs total)*
+
+## `sys-tweaks-backups` — **10** blobs
+
+- **backup-1759390444**: 4
+- **(root)**: 3
+- **launchagents-google_1759389403**: 3
+
+## `triage` — **16** blobs
+
+- **imported**: 16
+  - benfranklin-dashboard: 16
+
+## `uploads` — **149,937** blobs
+
+- **google-drive**: 105,981
+  - FED FED 2026 FINAL DISCO: 105,410
+  - mega_pull: 184
+  - DAVID HEIM DISC: 168
+  - Opal: 130
+  - [GoogleDrive-alanredmond23@gmail.com](mailto:GoogleDrive-alanredmond23@gmail.com) (16-11-2025 04:53): 51
+  - (root): 15
+  - 297452 417 Alan Redmond (Unzipped Files): 9
+  - mbox takeout 2026 all emails: 5
+  - Saved from Chrome: 3
+  - Saved from the Google app: 3
+  - FIVE9_ 01_ 0000000001-0000250000_AR: 1
+  - FIVE9_COMBINED: 1
+  - test_uploads: 1
+- **00_---- DOMAINS**: 11,137
+  - BANKRUPTCY_DOCS_GATHERED: 5,045
+  - 01_LEGAL: 3,202
+  - 05_TECH: 2,252
+  - ARCHIVED PROJECTS: 518
+  - 03_DATA: 70
+  - DESKTOP WORKHORSE: 45
+  - SKILLS: 3
+  - 08_FUTURE: 1
+  - rush is a faggot: 1
+- **Google Drive**: 10,240
+  - FED FED 2026 FINAL DISCO: 9,385
+  - mega_pull: 366
+  - DAVID HEIM DISC: 336
+  - [GoogleDrive-alanredmond23@gmail.com](mailto:GoogleDrive-alanredmond23@gmail.com) (16-11-2025 04003a53) - Modify: 86
+  - Opal: 64
+  - FIVE9_COMBINED: 2
+  - Saved from the Google app: 1
+- **Imports**: 5,257
+  - [alanredmond23@gmail.com](mailto:alanredmond23@gmail.com) - Google Drive: 5,257
+- **quicks**: 4,652
+  - 04_DEVOPS: 4,455
+  - Google Drive: 175
+  - 03_DATA: 17
+  - files: 3
+  - space saver: 2
+- **domains 2**: 4,605
+  - 00_---- DOMAINS 2: 4,605
+- **domains 2-Shannon’s MacBook Pro-DPC (6)**: 3,653
+  - 00_---- DOMAINS: 3,653
+- **FIVE9_02_CONFIDENTIAL_AR-0000132430 7.wav**: 2,817
+  - 00_---- DOMAINS: 2,156
+  - 01_LEGAL: 579
+  - PA_Court_Filing_Reference_Library: 47
+  - claude-excel-cli: 32
+  - 2 high road foreclousre: 3
+- **08_FUTURE**: 514
+  - 08_FUTURE: 514
+- **RUSH_RETAINER_SEARCH**: 412
+  - sweep_2022_2026: 297
+  - sweep_2016_2021: 68
+  - alan_2013_2015: 36
+  - shannon_2013_2015: 9
+  - acm_2013_2015: 2
+- **RUSH SANCTIONS:MOTION EXEMPTIONS**: 391
+  - RUSH_MALPRACTICE: 194
+  - INCOMING EVIDENCE AND WORK: 52
+  - banks: 50
+  - HEARING 3 - JUDGE SCHMEHL: 22
+  - COURT_DOCS_480-526: 14
+  - FINAL_FILINGS_MARCH9: 13
+  - _build_scripts: 12
+  - _ARCHIVE_DESKTOP: 9
+  - THE_BIGGY_FINAL: 5
+  - evidence: 4
+  - RUSH DIRECTORY: 4
+  - _archive: 3
+  - HEARING 2 - EXEMPTIONS: 3
+  - rush workhorse: 3
+  - .claude: 1
+  - .cursor: 1
+  - .vscode: 1
+- **from ADMIN COMP**: 151
+  - ORGANIZATION: 151
+- **onedrive-acct1**: 71
+- **VICTIM_GRAB_FINAL**: 31
+  - ALLISON_SCOLLARD: 2
+  - ANNETTE_COLLINS: 2
+  - BEVERLY_BONNEVILLE: 2
+  - CRAIG_SCHMIDT: 2
+  - DAN_GORDAN: 2
+  - ELIZABETH_MU: 2
+  - ESSIE_TEETS: 2
+  - GERALYN_CASSONE: 2
+  - JAMILLAH_ROBERTS: 2
+  - JOSEPH_SHEMETA: 2
+  - LESLEY_RUDGE: 2
+  - LORAINE_FARMER: 2
+  - LUIS_GONZALEZ: 2
+  - PETER_LANCASTER: 2
+  - BETH_COLLARD: 1
+  - DARRON_PARKER: 1
+  - PHYLLIS_GARRETT: 1
+- **second final draft**: 25
+  - COURT_FILINGS: 6
+  - EXHIBITS: 6
+  - STRATEGY_FOR_RUSH: 6
+  - BERKS_COUNTY: 4
+  - REFERENCE: 3
+
+## `workhorse-docs` — **40,817** blobs
+
+- **five9-calls**: 26,760
+  - INTAKE: 26,555
+  - FIVE9_FLEET_SWEEP_2026-03-31: 205
+- **Library**: 6,992
+  - CloudStorage: 5,919
+  - Containers: 658
+  - Application Support: 215
+  - Caches: 178
+  - Intents: 21
+  - Assistant: 1
+- **.gemini**: 2,210
+  - antigravity: 2,117
+  - antigravity-browser-profile: 93
+- **iCloud Drive (Archive) - 1**: 805
+  - Documents: 487
+  - Desktop: 318
+- **Desktop**: 745
+  - WORKHORSEDTTRIAGE: 708
+  - GAVIN_ALL_DOCS: 24
+  - Custody: 10
+  - schedule stuff 2026: 3
+- **iCloud Drive (Archive)**: 508
+  - Documents: 380
+  - Desktop: 128
+- **GITHUB Projects**: 440
+  - go: 160
+  - alandb: 74
+  - monorepo: 51
+  - finalUIRed_temp: 43
+  - DEV DUMP CLEAN LATER: 28
+  - review_repos: 28
+  - computerjoin: 23
+  - DuplicateHunter: 8
+  - Atlas: 5
+  - code: 4
+  - dpc-dashboard: 3
+  - dashboard-electron: 2
+  - MyVbApp: 2
+  - node_modules: 2
+  - redmond-os: 2
+  - runpod-launcher-now: 2
+  - SHIPIT: 2
+  - (root): 1
+- **.cursor**: 385
+  - projects: 233
+  - extensions: 149
+  - plugins: 2
+  - (root): 1
+- **go**: 351
+  - pkg: 351
+- **.codex**: 221
+  - .tmp: 120
+  - vendor_imports: 58
+  - skills: 39
+  - plugins: 4
+- **.antigravity**: 216
+  - extensions: 216
+- **.nvm**: 129
+  - .cache: 78
+  - versions: 33
+  - test: 18
+- **Documents**: 121
+  - Documents - WORKHORSE-MBP: 59
+  - Documents: 58
+  - (root): 3
+  - stats bar 2026: 1
+- **.rustup**: 106
+  - toolchains: 106
+- **LibreChat**: 105
+  - client: 94
+  - api: 5
+  - node_modules: 5
+  - helm: 1
+- **docket_pulls**: 98
+  - 2026-02-09: 98
+- **.warp_chrome**: 81
+  - Default: 78
+  - optimization_guide_model_store: 3
+- **.cache**: 79
+  - uv: 76
+  - gdown: 1
+  - puppeteer: 1
+  - zig: 1
+- **.local**: 74
+  - share: 62
+  - pipx: 12
+- **.claude**: 56
+  - plugins: 25
+  - projects: 19
+  - paste-cache: 8
+  - legal-scripts: 2
+  - legal-templates: 2
+- **.llama-cpp-venv**: 51
+  - lib: 51
+- **.npm**: 44
+  - _npx: 44
+- **cursor-dev-panel**: 31
+  - docs: 18
+  - business: 6
+  - 01-menu: 5
+  - experiments: 1
+  - tools: 1
+- **(root)**: 26
+- **imported**: 21
+  - benfranklin-dashboard: 20
+  - (root): 1
+- **Projects**: 21
+  - focuslite: 21
+- **.azure**: 20
+  - cliextensions: 20
+- **Downloads**: 19
+- **final-lead-faucet-2027**: 18
+  - chats: 13
+  - claude-chat-extractor: 5
+- **.playwright-mcp**: 11
+- **cortex**: 10
+  - ~: 5
+  - visuals: 4
+  - (root): 1
+- **SHIPIT**: 10
+  - librechat-meta-agent: 9
+  - (root): 1
+- **miniforge3**: 7
+  - lib: 2
+  - (root): 1
+  - conda-meta: 1
+  - envs: 1
+  - etc: 1
+  - pkgs: 1
+- **gmail-mcp-extension**: 6
+  - gmail-mcp-extension: 4
+  - docs: 2
+- **backup-1759390444**: 5
+- **.cargo**: 4
+  - registry: 4
+- **Agentos**: 4
+  - ops: 3
+  - (root): 1
+- **claude-skills**: 4
+- **launchagents-google_1759389403**: 4
+- **Music**: 4
+  - Music: 4
+- **1: FILE ERRATA**: 2
+- **extractors**: 2
+  - apps: 2
+- **migration**: 2
+- **PERFECT_MOUSE**: 2
+  - configs: 2
+- **.claude-mcp-servers**: 1
+  - multi-ai-collab: 1
+- **.conda**: 1
+- **.mcp-auth**: 1
+  - mcp-remote-0.1.18: 1
+- **claude_code-multi-AI-MCP**: 1
+- **ClaudeQuadApp**: 1
+  - .build: 1
+- **gmail-archive**: 1
+- **zoom repo**: 1
+  - .playwright-mcp: 1

@@ -1,0 +1,14 @@
+{
+  "agent": "AG-2",
+  "status": "complete",
+  "outputs": [
+    "/workspace/artifacts/dedup/ag2/proven_exact_groups.jsonl",
+    "/workspace/artifacts/dedup/ag2/delete_candidates.csv",
+    "/workspace/artifacts/dedup/ag2/suspects.jsonl",
+    "/workspace/artifacts/dedup/ag2/stats.json"
+  ],
+  "proven_exact_groups": 1,
+  "delete_candidates": 1,
+  "bytes_reclaimable": 100,
+  "errors": []
+}

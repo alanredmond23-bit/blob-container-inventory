@@ -1,0 +1,7 @@
+{
+  "delete_rows": 14953,
+  "bytes_reclaimable": 360064034,
+  "certainty_breakdown": {
+    "PROVEN_EXACT_COMPUTED": 14953
+  }
+}

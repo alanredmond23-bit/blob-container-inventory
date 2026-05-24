@@ -1,0 +1,4 @@
+Name,Content-Length,Content-MD5,BlobType,Last-Modified
+container-a/duplicate.bin,100,1B2M2Y8AsgTpgAmY7PhCfg==,BlockBlob,2026-01-01T00:00:00Z
+container-b/duplicate.bin,100,1B2M2Y8AsgTpgAmY7PhCfg==,BlockBlob,2026-01-02T00:00:00Z
+container-c/other.bin,2048,d41d8cd98f00b204e9800998ecf8427e,BlockBlob,2026-01-03T00:00:00Z
