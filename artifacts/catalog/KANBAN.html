@@ -325,11 +325,24 @@
       return n;
     }
 
-    async function mergeRemoteJson(url) {
+    async function mergeRemoteJson(url, overwrite = false) {
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) return 0;
-        return mergeAssignmentsFrom(await res.json(), url);
+        const data = await res.json();
+        const reg = data.assignments || data;
+        let n = 0;
+        for (const [id, a] of Object.entries(reg)) {
+          if (overwrite || !assignments[id]) {
+            assignments[id] = migrateV1Entry(a);
+            n++;
+          }
+        }
+        if (data.board) {
+          board = data.board;
+          ensureOrganizationDomain();
+        }
+        return n;
       } catch (_) {
         return 0;
       }
