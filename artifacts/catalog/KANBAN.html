@@ -624,7 +624,16 @@
     function clearSelection() {
       selected.clear();
       document.querySelectorAll(".card.selected").forEach((c) => c.classList.remove("selected"));
-      updateSelectionMeta();
+      document.querySelectorAll("#card-tbody .row-check").forEach((cb) => {
+        cb.checked = false;
+        cb.closest("tr")?.classList.remove("row-checked");
+      });
+      const all = document.getElementById("check-all");
+      if (all) {
+        all.checked = false;
+        all.indeterminate = false;
+      }
+      updateDeleteSelectedBtn();
     }
 
     function toggleSelect(cardEl, additive) {
