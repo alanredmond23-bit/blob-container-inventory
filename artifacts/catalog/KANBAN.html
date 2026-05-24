@@ -697,9 +697,8 @@
       ensureOrganizationDomain();
       await mergeBoardSeed();
       ensureOrganizationDomain();
-      const nReg = await mergeRemoteJson("registered_homes.json");
-      const nDrop = await mergeRemoteJson("blob_homes_assignments.json");
-      if (nReg || nDrop) saveState();
+      const nDrop = await mergeRemoteJson("blob_homes_assignments.json", true);
+      if (nDrop) saveState();
       buildBoard();
       try {
         const res = await fetch("kanban_data.json", { cache: "no-store" });
@@ -709,7 +708,7 @@
         const legalN = (board.domains.find((d) => d.id === "legal") || {}).children?.length || 0;
         document.getElementById("load-status").textContent =
           `Ready — ${allCards.length} cards · ${legalN} legal matters · ${Object.keys(assignments).length} placed` +
-          (nReg + nDrop ? ` · loaded ${nReg + nDrop} from repo JSON` : "") +
+          (nDrop ? ` · loaded ${nDrop} placements from server` : "") +
           `. Hard-refresh keeps browser placements.`;
         document.getElementById("main").hidden = false;
         placeCards();
