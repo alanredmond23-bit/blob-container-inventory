@@ -1,0 +1,370 @@
+{
+  "version": 1,
+  "source": [
+    "triage/REDMOND_DOCTRINE_COMPLETE_REGISTER.csv",
+    "123triageonedrive case folders"
+  ],
+  "domains": [
+    {
+      "id": "legal",
+      "merge": "replace_children",
+      "children": [
+        {
+          "id": "bk-24-13093",
+          "title": "BK 24-13093",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "ap-25-00254",
+          "title": "AP 25-00254",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "foreclosure-25-13446",
+          "title": "Foreclosure 25-13446",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "feldman-doc-507",
+          "title": "Feldman Doc 507",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "snap-osig-threat",
+          "title": "SNAP / OSIG (threat)",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "custody-montgomery-2016-47715",
+          "title": "Custody 2016-47715",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "sba-adv-25-00119",
+          "title": "SBA Adversary 25-00119",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "federal-defense",
+          "title": "Federal criminal defense",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "general-legal",
+          "title": "General / cross-matter",
+          "children": [
+            {
+              "id": "evidence",
+              "title": "Evidence",
+              "children": []
+            },
+            {
+              "id": "discovery",
+              "title": "Discovery",
+              "children": []
+            },
+            {
+              "id": "filings",
+              "title": "Filings",
+              "children": []
+            },
+            {
+              "id": "strategy",
+              "title": "Strategy",
+              "children": []
+            },
+            {
+              "id": "unfiled",
+              "title": "Unfiled",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "container_hints": [
+    {
+      "container": "five9-calls",
+      "suggest": [
+        "legal",
+        "federal-defense",
+        "evidence"
+      ]
+    },
+    {
+      "container": "discovery",
+      "suggest": [
+        "legal",
+        "general-legal",
+        "discovery"
+      ]
+    },
+    {
+      "container": "legal-filings",
+      "suggest": [
+        "legal",
+        "general-legal",
+        "filings"
+      ]
+    },
+    {
+      "container": "legal",
+      "suggest": [
+        "legal",
+        "general-legal",
+        "unfiled"
+      ]
+    },
+    {
+      "container": "backups",
+      "suggest": [
+        "dup-likely",
+        "structural-mirror"
+      ]
+    },
+    {
+      "container": "organization",
+      "suggest": [
+        "dup-likely",
+        "structural-mirror"
+      ]
+    },
+    {
+      "container": "1triageworkhorse",
+      "suggest": [
+        "devops",
+        "backups-caches"
+      ]
+    },
+    {
+      "container": "financial-docs",
+      "suggest": [
+        "finance",
+        "banking-cash"
+      ]
+    },
+    {
+      "container": "save-money",
+      "suggest": [
+        "finance",
+        "verticals"
+      ]
+    },
+    {
+      "container": "make-money",
+      "suggest": [
+        "finance",
+        "verticals"
+      ]
+    }
+  ]
+}
