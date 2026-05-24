@@ -1,16 +1,16 @@
 {
   "agent": "AG-1",
-  "status": "partial",
-  "container_created": true,
+  "status": "complete",
+  "inventory_policy_applied": true,
+  "policy_last_modified": "2026-05-24T15:17:57Z",
+  "rules": ["Alansinv", "blob-inventory-dedup"],
+  "dedup_rule": {
+    "name": "blob-inventory-dedup",
+    "destination": "inventory-reports",
+    "schedule": "Daily",
+    "schemaFields": ["Name", "Content-Length", "Content-MD5", "Last-Modified", "BlobType", "Etag", "Creation-Time"]
+  },
   "inventory_reports_container": "inventory-reports",
   "inventory_csv_downloaded": false,
-  "inventory_policy_applied": false,
-  "errors": [
-    "Blob inventory policy requires Azure CLI management-plane login (az login). Run scripts/apply_inventory_policy.sh after login."
-  ],
-  "next_steps": [
-    "az login && bash scripts/apply_inventory_policy.sh",
-    "Wait for first inventory run (hours on large accounts)",
-    "python3 scripts/ag1_ensure_inventory_container.py && blob_dedup_from_inventory.py --inventory-csv artifacts/dedup/ag1/inventory_latest.csv --output-dir artifacts/dedup/ag2-live"
-  ]
+  "notes": "Policy applied via service principal. First CSV lands in inventory-reports/ after next daily run (may take hours on large accounts)."
 }
