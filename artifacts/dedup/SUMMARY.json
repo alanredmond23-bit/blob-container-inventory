@@ -1,7 +1,13 @@
 {
-  "delete_rows": 14953,
-  "bytes_reclaimable": 360064034,
+  "delete_rows": 56422,
+  "bytes_reclaimable": 991373320,
   "certainty_breakdown": {
-    "PROVEN_EXACT_COMPUTED": 14953
-  }
+    "PROVEN_EXACT_ETAG": 56365,
+    "PROVEN_EXACT_COMPUTED": 57
+  },
+  "sources": [
+    "artifacts/dedup/ag2-live/shard_0/delete_candidates.csv",
+    "artifacts/dedup/ag2-live/shard_1/delete_candidates.csv",
+    "artifacts/dedup/ag3b/delete_candidates.csv"
+  ]
 }
