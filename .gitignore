@@ -4,3 +4,6 @@ artifacts/dedup/ag1/Alansinv_*.csv
 artifacts/dedup/ag2-live/shard_*/delete_candidates.csv
 artifacts/dedup/DELETE_EXECUTION.jsonl
 artifacts/dedup/delete_run.log
+artifacts/catalog/BLOB_HIERARCHY.html
+artifacts/catalog/BLOB_HIERARCHY.md
+artifacts/catalog/BLOB_HIERARCHY_SUMMARY.json
