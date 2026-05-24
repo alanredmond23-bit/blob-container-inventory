@@ -9,7 +9,7 @@
     :root {
       --bg: #0b0f14; --panel: #141b24; --border: #2a3544; --text: #e8eef5; --muted: #8b9cb3;
       --accent: #38bdf8; --devops: #a78bfa; --finance: #34d399; --legal: #fbbf24;
-      --cold: #94a3b8; --dup: #f472b6;
+      --cold: #94a3b8; --dup: #f472b6; --org: #fb923c;
     }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
@@ -53,6 +53,18 @@
     .domain-col[data-domain="legal"] .domain-head { border-color: var(--legal); }
     .domain-col[data-domain="cold"] .domain-head { border-color: var(--cold); }
     .domain-col[data-domain="dup-likely"] .domain-head { border-color: var(--dup); }
+    .domain-col[data-domain="organization"] .domain-head { border-color: var(--org); }
+    .swim-lane { margin: 0.15rem 0.2rem 0.25rem; border-top: 1px solid var(--border); padding-top: 0.2rem; }
+    .swim-inbox-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.15rem 0.3rem; font-size: 0.62rem; font-weight: 700; color: var(--accent);
+      background: rgba(56, 189, 248, 0.08); border-radius: 3px 3px 0 0;
+    }
+    .swim-inbox-head .badge {
+      background: var(--accent); color: #0b0f14; border-radius: 10px; padding: 0 0.35rem; font-size: 0.62rem; min-width: 1.1rem; text-align: center;
+    }
+    .swim-inbox-head.empty { color: var(--muted); background: transparent; }
+    .swim-inbox-head.empty .badge { background: #334155; color: var(--muted); }
     .node-l1 { margin: 0.2rem 0; border: 1px solid var(--border); border-radius: 4px; background: rgba(0,0,0,0.15); }
     .node-l1 > summary, .node-l2 > summary {
       cursor: pointer; padding: 0.2rem 0.35rem; font-size: 0.68rem; font-weight: 600;
@@ -89,6 +101,7 @@
       <button type="button" id="btn-export">Export</button>
       <button type="button" id="btn-import">Import</button>
       <button type="button" id="btn-save-reg">Copy for register</button>
+      <a class="btn" href="ZONE_INBOX_DUPE_REPORT.md" target="_blank" style="text-decoration:none">Dup report</a>
       <button type="button" class="danger" id="btn-reset">Reset cards</button>
       <label class="btn"><input type="checkbox" id="show-folders" checked /> Folders</label>
       <label class="btn"><input type="checkbox" id="compact-meta" checked /> Compact</label>
@@ -153,6 +166,16 @@
             ],
           },
           {
+            id: "organization", title: "ORGANIZATION", color: "org",
+            children: [
+              { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
+              { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
+              { id: "super-master", title: "Super-master triage", children: [] },
+              { id: "loose-uploads", title: "Loose / uploads", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
+          {
             id: "dup-likely", title: "DUP LIKELY", color: "dup",
             children: [
               { id: "etag-exact", title: "ETag / size exact", children: [] },
@@ -205,6 +228,27 @@
       return path.join("|");
     }
 
+    function ensureOrganizationDomain() {
+      if (!board.domains.some((d) => d.id === "organization")) {
+        board.domains.splice(
+          board.domains.findIndex((d) => d.id === "dup-likely"),
+          0,
+          {
+            id: "organization",
+            title: "ORGANIZATION",
+            color: "org",
+            children: [
+              { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
+              { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
+              { id: "super-master", title: "Super-master triage", children: [] },
+              { id: "loose-uploads", title: "Loose / uploads", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          }
+        );
+      }
+    }
+
     function slug(s) {
       return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48) || "node";
     }
@@ -226,6 +270,7 @@
         if (raw) v2 = JSON.parse(raw);
       } catch (_) {}
       if (v2 && v2.board) board = v2.board;
+      ensureOrganizationDomain();
       if (v2 && v2.assignments) {
         assignments = {};
         for (const [id, a] of Object.entries(v2.assignments)) {
@@ -252,18 +297,50 @@
       );
     }
 
-    async function mergeRegistered() {
-      try {
-        const res = await fetch("registered_homes.json", { cache: "no-store" });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.board && (!board.domains || !localStorage.getItem(STORAGE_V2))) {
+    function mergeAssignmentsFrom(data, label) {
+      let n = 0;
+      const reg = data.assignments || data;
+      if (!reg || typeof reg !== "object") return 0;
+      for (const [id, a] of Object.entries(reg)) {
+        if (!assignments[id]) {
+          assignments[id] = migrateV1Entry(a);
+          n++;
+        }
+      }
+        if (data.board) {
           board = data.board;
+          ensureOrganizationDomain();
         }
-        const reg = data.assignments || {};
-        for (const [id, a] of Object.entries(reg)) {
-          if (!assignments[id]) assignments[id] = migrateV1Entry(a);
-        }
+      return n;
+    }
+
+    async function mergeRemoteJson(url) {
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) return 0;
+        return mergeAssignmentsFrom(await res.json(), url);
+      } catch (_) {
+        return 0;
+      }
+    }
+
+    async function mergeBoardSeed() {
+      try {
+        const res = await fetch("kanban_board_seed.json", { cache: "no-store" });
+        if (!res.ok) return;
+        const seed = await res.json();
+        (seed.domains || []).forEach((patch) => {
+          const dom = board.domains.find((d) => d.id === patch.id);
+          if (!dom) return;
+          const ids = new Set((dom.children || []).map((c) => c.id));
+          (patch.children || []).forEach((ch) => {
+            if (!ids.has(ch.id)) dom.children.push(ch);
+          });
+        });
+        (seed.container_hints || []).forEach((h) => {
+          containerHints[h.container] = h.suggest;
+        });
+        board._seedVersion = seed.version;
       } catch (_) {}
     }
 
@@ -278,8 +355,10 @@
       div.dataset.id = card.id;
       div.dataset.search = (card.label + " " + card.container).toLowerCase();
       const meta = `${(card.blobs / 1000).toFixed(0)}k · ${card.bytes_human}`;
+      const hint = containerHints[card.container];
+      const hintTip = hint ? ` · hint: ${hint.join(" → ")}` : "";
       if (compact) {
-        div.innerHTML = `<span class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</span> <span class="meta">${meta}</span>`;
+        div.innerHTML = `<span class="label" title="${escapeHtml(card.label + hintTip)}">${escapeHtml(card.label)}</span> <span class="meta">${meta}</span>`;
       } else {
         div.innerHTML = `<div class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</div><div class="meta">${card.blobs.toLocaleString()} · ${card.bytes_human}</div>`;
       }
@@ -312,10 +391,29 @@
     }
 
     function renderDropList(path) {
+      const wrap = document.createElement("div");
+      wrap.className = "swim-lane";
+      const zk = zoneKey(path);
+      const head = document.createElement("div");
+      head.className = "swim-inbox-head empty";
+      head.dataset.zoneBadge = zk;
+      head.innerHTML = `Inbox <span class="badge">0</span>`;
       const el = document.createElement("div");
       el.className = "card-list";
-      el.dataset.zone = zoneKey(path);
-      return el;
+      el.dataset.zone = zk;
+      wrap.appendChild(head);
+      wrap.appendChild(el);
+      return wrap;
+    }
+
+    function updateZoneBadges() {
+      document.querySelectorAll(".swim-inbox-head").forEach((head) => {
+        const zk = head.dataset.zoneBadge;
+        const list = document.querySelector(`.card-list[data-zone="${zk}"]`);
+        const n = list ? list.querySelectorAll(".card:not(.hidden)").length : 0;
+        head.querySelector(".badge").textContent = String(n);
+        head.classList.toggle("empty", n === 0);
+      });
     }
 
     function addChildBtn(path, level, parentEl) {
@@ -431,6 +529,7 @@
         `${inboxCount} inbox · ${Object.keys(assignments).length} placed · ${allCards.length} cards`;
       applyFilter();
       initSortable();
+      updateZoneBadges();
     }
 
     function pathFromZone(zone) {
@@ -532,15 +631,21 @@
 
     async function init() {
       loadState();
-      await mergeRegistered();
+      await mergeBoardSeed();
+      const nReg = await mergeRemoteJson("registered_homes.json");
+      const nDrop = await mergeRemoteJson("blob_homes_assignments.json");
+      if (nReg || nDrop) saveState();
       buildBoard();
       try {
         const res = await fetch("kanban_data.json", { cache: "no-store" });
         if (!res.ok) throw new Error(res.statusText);
         const data = await res.json();
         allCards = data.cards || [];
+        const legalN = (board.domains.find((d) => d.id === "legal") || {}).children?.length || 0;
         document.getElementById("load-status").textContent =
-          `Ready — ${allCards.length} cards. Hard-refresh (Ctrl+Shift+R) if board looks old. Placements restored from browser.`;
+          `Ready — ${allCards.length} cards · ${legalN} legal matters · ${Object.keys(assignments).length} placed` +
+          (nReg + nDrop ? ` · loaded ${nReg + nDrop} from repo JSON` : "") +
+          `. Hard-refresh keeps browser placements.`;
         document.getElementById("main").hidden = false;
         placeCards();
       } catch (err) {
