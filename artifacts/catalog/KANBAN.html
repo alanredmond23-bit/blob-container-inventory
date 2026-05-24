@@ -9,7 +9,7 @@
     :root {
       --bg: #0b0f14; --panel: #141b24; --border: #2a3544; --text: #e8eef5; --muted: #8b9cb3;
       --accent: #38bdf8; --devops: #a78bfa; --finance: #34d399; --legal: #fbbf24;
-      --cold: #94a3b8; --dup: #f472b6; --org: #fb923c;
+      --cold: #94a3b8; --dup: #f472b6; --org: #fb923c; --delete: #ef4444;
     }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
@@ -85,6 +85,10 @@
     .card .meta { color: var(--muted); font-size: 0.62rem; }
     .card.hidden { display: none; }
     .card.selected { outline: 2px solid var(--accent); background: #1a2f4a; }
+    .card.marked-delete { border-color: var(--delete); background: #2a1515; }
+    .domain-col[data-domain="delete-queue"] .domain-head { border-color: var(--delete); background: #1f1010; }
+    .domain-col[data-domain="delete-queue"] .swim-inbox-head { color: #fca5a5; background: rgba(239, 68, 68, 0.12); }
+    .domain-col[data-domain="delete-queue"] .swim-inbox-head .badge { background: var(--delete); color: #fff; }
     .sortable-ghost { opacity: 0.35; }
     .mini-btn { font-size: 0.6rem; padding: 0.1rem 0.25rem; border-radius: 3px; }
     .status { padding: 0.35rem 0.55rem; color: var(--muted); font-size: 0.72rem; }
@@ -95,10 +99,12 @@
 <body>
   <header>
     <h1>Blob organization Kanban</h1>
-    <p>Domains → L1 → L2 → L3 · <strong>Shift+right-click</strong> multi-select · drag one to move all · ORGANIZATION at bottom.</p>
+    <p><strong>Shift/Ctrl+click</strong> or <strong>Shift+right-click</strong> to multi-select · drag one moves all · <strong>DELETE QUEUE</strong> then Export for agent.</p>
     <div class="toolbar">
       <input type="search" id="filter" placeholder="Filter…" />
       <button type="button" id="btn-add-domain">+ Domain</button>
+      <button type="button" id="btn-select-inbox">Select inbox</button>
+      <button type="button" id="btn-to-delete" class="danger">→ Delete queue</button>
       <button type="button" id="btn-export">Export</button>
       <button type="button" id="btn-import">Import</button>
       <button type="button" id="btn-save-reg">Copy for register</button>
@@ -187,6 +193,13 @@
             ],
           },
           {
+            id: "delete-queue", title: "DELETE QUEUE", color: "delete",
+            children: [
+              { id: "approved", title: "Approved — export to run delete", children: [] },
+              { id: "staged", title: "Staged / review", children: [] },
+            ],
+          },
+          {
             id: "organization", title: "ORGANIZATION", color: "org",
             children: [
               { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
@@ -200,7 +213,35 @@
       };
     }
 
-    const DOMAIN_ORDER = ["devops", "finance", "legal", "dup-likely", "cold", "organization"];
+    function ensureDeleteQueueDomain() {
+      const dq = {
+        id: "delete-queue",
+        title: "DELETE QUEUE",
+        color: "delete",
+        children: [
+          { id: "approved", title: "Approved — export to run delete", children: [] },
+          { id: "staged", title: "Staged / review", children: [] },
+        ],
+      };
+      const i = board.domains.findIndex((d) => d.id === "delete-queue");
+      if (i >= 0) board.domains[i] = { ...dq, children: board.domains[i].children || dq.children };
+      else {
+        const orgIdx = board.domains.findIndex((d) => d.id === "organization");
+        if (orgIdx >= 0) board.domains.splice(orgIdx, 0, dq);
+        else board.domains.push(dq);
+      }
+      sortDomains();
+    }
+
+    function deleteQueueCount() {
+      return Object.values(assignments).filter((a) => {
+        const p = a.path || [];
+        return p[0] === "delete-queue" && p[1] === "approved";
+      }).length;
+    }
+
+    const DOMAIN_ORDER = ["devops", "finance", "legal", "dup-likely", "delete-queue", "cold", "organization"];
+    const DELETE_APPROVED = ["delete-queue", "approved"];
 
     function sortDomains() {
       board.domains.sort(
@@ -387,6 +428,8 @@
         div.innerHTML = `<div class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</div><div class="meta">${card.blobs.toLocaleString()} · ${card.bytes_human}</div>`;
       }
       bindCardSelect(div);
+      const ap = assignments[card.id]?.path;
+      if (ap && ap[0] === "delete-queue") div.classList.add("marked-delete");
       return div;
     }
 
@@ -402,16 +445,48 @@
       updateSelectionMeta();
     }
 
+    function toggleSelect(cardEl, additive) {
+      const id = cardEl.dataset.id;
+      if (!additive) {
+        clearSelection();
+      }
+      if (selected.has(id)) selected.delete(id);
+      else selected.add(id);
+      cardEl.classList.toggle("selected", selected.has(id));
+      updateSelectionMeta();
+    }
+
     function bindCardSelect(cardEl) {
+      cardEl.addEventListener("click", (e) => {
+        if (!(e.shiftKey || e.ctrlKey || e.metaKey)) return;
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSelect(cardEl, e.ctrlKey || e.metaKey);
+      });
       cardEl.addEventListener("contextmenu", (e) => {
         if (!e.shiftKey) return;
         e.preventDefault();
-        const id = cardEl.dataset.id;
-        if (selected.has(id)) selected.delete(id);
-        else selected.add(id);
-        cardEl.classList.toggle("selected", selected.has(id));
-        updateSelectionMeta();
+        toggleSelect(cardEl, true);
       });
+    }
+
+    function assignPath(ids, path) {
+      const ts = new Date().toISOString();
+      ids.forEach((cid) => {
+        if (!path) delete assignments[cid];
+        else assignments[cid] = { path, moved_at: ts };
+      });
+      saveState();
+      placeCards();
+    }
+
+    function moveSelectedToDelete() {
+      if (!selected.size) {
+        alert("Select cards first (Shift/Ctrl+click)");
+        return;
+      }
+      assignPath([...selected], DELETE_APPROVED);
+      clearSelection();
     }
 
     function getNodesAtPath(path) {
@@ -591,16 +666,10 @@
       const id = evt.item.dataset.id;
       const zone = evt.to.dataset.zone;
       if (!id || !zone) return;
-      const ids =
-        selected.size > 0 && selected.has(id) ? [...selected] : [id];
+      const ids = selected.size > 0 && selected.has(id) ? [...selected] : [id];
       const path = zone === "inbox" ? null : pathFromZone(zone);
-      ids.forEach((cid) => {
-        if (zone === "inbox") delete assignments[cid];
-        else assignments[cid] = { path, moved_at: new Date().toISOString() };
-      });
+      assignPath(ids, path);
       clearSelection();
-      saveState();
-      placeCards();
     }
 
     function updateInboxMeta() {
@@ -618,6 +687,8 @@
           Sortable.create(el, {
             group: "kanban",
             animation: 100,
+            delay: 80,
+            delayOnTouchOnly: true,
             ghostClass: "sortable-ghost",
             onEnd: onSortEnd,
           })
@@ -633,12 +704,24 @@
     }
 
     function exportAll() {
-      const out = { version: 2, exported_at: new Date().toISOString(), board, assignments };
+      const dq = deleteQueueCount();
+      const out = {
+        version: 2,
+        exported_at: new Date().toISOString(),
+        board,
+        assignments,
+        delete_queue_count: dq,
+      };
       const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = "blob_homes_assignments.json";
       a.click();
+      alert(
+        dq
+          ? `Exported ${Object.keys(assignments).length} placements · ${dq} in DELETE QUEUE (approved). Upload/drop file for agent to run deletes.`
+          : `Exported ${Object.keys(assignments).length} placements.`
+      );
     }
 
     function copyForRegister() {
@@ -647,6 +730,21 @@
     }
 
     document.getElementById("btn-export").onclick = exportAll;
+    document.getElementById("btn-to-delete").onclick = moveSelectedToDelete;
+    document.getElementById("btn-select-inbox").onclick = () => {
+      clearSelection();
+      document.querySelectorAll("#inbox .card:not(.hidden)").forEach((c) => {
+        selected.add(c.dataset.id);
+        c.classList.add("selected");
+      });
+      updateSelectionMeta();
+    };
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Delete" && selected.size) {
+        e.preventDefault();
+        moveSelectedToDelete();
+      }
+    });
     document.getElementById("btn-save-reg").onclick = copyForRegister;
     document.getElementById("btn-reset").onclick = () => {
       if (confirm("Clear card placements only? (keeps board structure)")) {
@@ -694,8 +792,10 @@
 
     async function init() {
       loadState();
+      ensureDeleteQueueDomain();
       ensureOrganizationDomain();
       await mergeBoardSeed();
+      ensureDeleteQueueDomain();
       ensureOrganizationDomain();
       const nDrop = await mergeRemoteJson("blob_homes_assignments.json", true);
       if (nDrop) saveState();
@@ -706,10 +806,12 @@
         const data = await res.json();
         allCards = data.cards || [];
         const legalN = (board.domains.find((d) => d.id === "legal") || {}).children?.length || 0;
+        const dq = deleteQueueCount();
         document.getElementById("load-status").textContent =
-          `Ready — ${allCards.length} cards · ${legalN} legal matters · ${Object.keys(assignments).length} placed` +
-          (nDrop ? ` · loaded ${nDrop} placements from server` : "") +
-          `. Hard-refresh keeps browser placements.`;
+          `Ready — ${allCards.length} cards · ${Object.keys(assignments).length} placed` +
+          (dq ? ` · ${dq} queued for DELETE` : "") +
+          (nDrop ? ` · synced server export` : "") +
+          ` · Export after moving to DELETE QUEUE → Approved`;
         document.getElementById("main").hidden = false;
         placeCards();
       } catch (err) {
