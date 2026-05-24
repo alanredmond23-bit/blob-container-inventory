@@ -84,6 +84,7 @@
     .card .label { font-weight: 600; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom; }
     .card .meta { color: var(--muted); font-size: 0.62rem; }
     .card.hidden { display: none; }
+    .card.selected { outline: 2px solid var(--accent); background: #1a2f4a; }
     .sortable-ghost { opacity: 0.35; }
     .mini-btn { font-size: 0.6rem; padding: 0.1rem 0.25rem; border-radius: 3px; }
     .status { padding: 0.35rem 0.55rem; color: var(--muted); font-size: 0.72rem; }
@@ -94,7 +95,7 @@
 <body>
   <header>
     <h1>Blob organization Kanban</h1>
-    <p>Domains → L1 → L2 → L3. Placements saved in browser + optional <code>registered_homes.json</code>.</p>
+    <p>Domains → L1 → L2 → L3 · <strong>Shift+right-click</strong> multi-select · drag one to move all · ORGANIZATION at bottom.</p>
     <div class="toolbar">
       <input type="search" id="filter" placeholder="Filter…" />
       <button type="button" id="btn-add-domain">+ Domain</button>
@@ -105,6 +106,7 @@
       <button type="button" class="danger" id="btn-reset">Reset cards</button>
       <label class="btn"><input type="checkbox" id="show-folders" checked /> Folders</label>
       <label class="btn"><input type="checkbox" id="compact-meta" checked /> Compact</label>
+      <span id="sel-meta" class="chip"></span>
     </div>
   </header>
   <div id="load-status" class="status">Loading…</div>
@@ -166,16 +168,6 @@
             ],
           },
           {
-            id: "organization", title: "ORGANIZATION", color: "org",
-            children: [
-              { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
-              { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
-              { id: "super-master", title: "Super-master triage", children: [] },
-              { id: "loose-uploads", title: "Loose / uploads", children: [] },
-              { id: "unfiled", title: "Unfiled", children: [] },
-            ],
-          },
-          {
             id: "dup-likely", title: "DUP LIKELY", color: "dup",
             children: [
               { id: "etag-exact", title: "ETag / size exact", children: [] },
@@ -194,8 +186,28 @@
               { id: "unfiled", title: "Unfiled", children: [] },
             ],
           },
+          {
+            id: "organization", title: "ORGANIZATION", color: "org",
+            children: [
+              { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
+              { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
+              { id: "super-master", title: "Super-master triage", children: [] },
+              { id: "loose-uploads", title: "Loose / uploads", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
         ],
       };
+    }
+
+    const DOMAIN_ORDER = ["devops", "finance", "legal", "dup-likely", "cold", "organization"];
+
+    function sortDomains() {
+      board.domains.sort(
+        (a, b) =>
+          (DOMAIN_ORDER.indexOf(a.id) === -1 ? 99 : DOMAIN_ORDER.indexOf(a.id)) -
+          (DOMAIN_ORDER.indexOf(b.id) === -1 ? 99 : DOMAIN_ORDER.indexOf(b.id))
+      );
     }
 
     const V1_ZONE_MAP = {
@@ -223,30 +235,29 @@
     let assignments = {};
     let allCards = [];
     let containerHints = {};
+    const selected = new Set();
 
     function zoneKey(path) {
       return path.join("|");
     }
 
     function ensureOrganizationDomain() {
-      if (!board.domains.some((d) => d.id === "organization")) {
-        board.domains.splice(
-          board.domains.findIndex((d) => d.id === "dup-likely"),
-          0,
-          {
-            id: "organization",
-            title: "ORGANIZATION",
-            color: "org",
-            children: [
-              { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
-              { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
-              { id: "super-master", title: "Super-master triage", children: [] },
-              { id: "loose-uploads", title: "Loose / uploads", children: [] },
-              { id: "unfiled", title: "Unfiled", children: [] },
-            ],
-          }
-        );
-      }
+      const org = {
+        id: "organization",
+        title: "ORGANIZATION",
+        color: "org",
+        children: [
+          { id: "mirrors", title: "Mirrors / duplicates of hot", children: [] },
+          { id: "onedrive-trees", title: "OneDrive / desktop trees", children: [] },
+          { id: "super-master", title: "Super-master triage", children: [] },
+          { id: "loose-uploads", title: "Loose / uploads", children: [] },
+          { id: "unfiled", title: "Unfiled", children: [] },
+        ],
+      };
+      const i = board.domains.findIndex((d) => d.id === "organization");
+      if (i >= 0) board.domains[i] = { ...org, children: board.domains[i].children || org.children };
+      else board.domains.push(org);
+      sortDomains();
     }
 
     function slug(s) {
@@ -309,8 +320,8 @@
       }
         if (data.board) {
           board = data.board;
-          ensureOrganizationDomain();
         }
+        ensureOrganizationDomain();
       return n;
     }
 
@@ -362,7 +373,32 @@
       } else {
         div.innerHTML = `<div class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</div><div class="meta">${card.blobs.toLocaleString()} · ${card.bytes_human}</div>`;
       }
+      bindCardSelect(div);
       return div;
+    }
+
+    function updateSelectionMeta() {
+      const el = document.getElementById("sel-meta");
+      if (!el) return;
+      el.textContent = selected.size ? `${selected.size} selected` : "";
+    }
+
+    function clearSelection() {
+      selected.clear();
+      document.querySelectorAll(".card.selected").forEach((c) => c.classList.remove("selected"));
+      updateSelectionMeta();
+    }
+
+    function bindCardSelect(cardEl) {
+      cardEl.addEventListener("contextmenu", (e) => {
+        if (!e.shiftKey) return;
+        e.preventDefault();
+        const id = cardEl.dataset.id;
+        if (selected.has(id)) selected.delete(id);
+        else selected.add(id);
+        cardEl.classList.toggle("selected", selected.has(id));
+        updateSelectionMeta();
+      });
     }
 
     function getNodesAtPath(path) {
@@ -482,6 +518,7 @@
     }
 
     function buildBoard() {
+      sortDomains();
       const root = document.getElementById("domains");
       root.innerHTML = "";
       board.domains.forEach((dom) => {
@@ -540,11 +577,17 @@
     function onSortEnd(evt) {
       const id = evt.item.dataset.id;
       const zone = evt.to.dataset.zone;
-      if (!id) return;
-      if (zone === "inbox") delete assignments[id];
-      else assignments[id] = { path: pathFromZone(zone), moved_at: new Date().toISOString() };
+      if (!id || !zone) return;
+      const ids =
+        selected.size > 0 && selected.has(id) ? [...selected] : [id];
+      const path = zone === "inbox" ? null : pathFromZone(zone);
+      ids.forEach((cid) => {
+        if (zone === "inbox") delete assignments[cid];
+        else assignments[cid] = { path, moved_at: new Date().toISOString() };
+      });
+      clearSelection();
       saveState();
-      updateInboxMeta();
+      placeCards();
     }
 
     function updateInboxMeta() {
@@ -558,7 +601,14 @@
       sortables.forEach((s) => s.destroy());
       sortables = [];
       document.querySelectorAll(".card-list").forEach((el) => {
-        sortables.push(Sortable.create(el, { group: "kanban", animation: 100, ghostClass: "sortable-ghost", onEnd: onSortEnd }));
+        sortables.push(
+          Sortable.create(el, {
+            group: "kanban",
+            animation: 100,
+            ghostClass: "sortable-ghost",
+            onEnd: onSortEnd,
+          })
+        );
       });
     }
 
@@ -631,7 +681,9 @@
 
     async function init() {
       loadState();
+      ensureOrganizationDomain();
       await mergeBoardSeed();
+      ensureOrganizationDomain();
       const nReg = await mergeRemoteJson("registered_homes.json");
       const nDrop = await mergeRemoteJson("blob_homes_assignments.json");
       if (nReg || nDrop) saveState();
