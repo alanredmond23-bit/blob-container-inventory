@@ -94,16 +94,45 @@
     .status { padding: 0.35rem 0.55rem; color: var(--muted); font-size: 0.72rem; }
     .error { color: #f87171; }
     .chip { font-size: 0.58rem; color: var(--muted); }
+    .list-wrap { flex: 1; overflow: auto; padding: 0.5rem 0.75rem; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .data-table th, .data-table td { border: 1px solid var(--border); padding: 0.35rem 0.5rem; text-align: left; vertical-align: middle; }
+    .data-table th { background: var(--panel); color: var(--muted); font-weight: 600; position: sticky; top: 0; z-index: 2; }
+    .data-table tbody tr:hover { background: rgba(56, 189, 248, 0.06); }
+    .data-table tbody tr.row-delete { background: rgba(239, 68, 68, 0.08); }
+    .data-table tbody tr.row-checked { background: #1a2f4a; }
+    .data-table .col-check { width: 2.2rem; text-align: center; }
+    .data-table .col-name { min-width: 200px; max-width: 420px; }
+    .data-table .col-name .label { font-weight: 600; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .data-table .col-name .sub { color: var(--muted); font-size: 0.65rem; }
+    .data-table .col-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .data-table .col-zone { color: var(--muted); font-size: 0.68rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .data-table .col-actions { width: 4.5rem; text-align: center; }
+    .btn-row-delete { background: #3f1515; border: 1px solid var(--delete); color: #fecaca; padding: 0.15rem 0.4rem; border-radius: 3px; cursor: pointer; font-size: 0.68rem; }
+    .btn-row-delete:hover { background: var(--delete); color: #fff; }
+    #btn-delete-selected:disabled { opacity: 0.4; cursor: not-allowed; }
+    .layout.list-mode { grid-template-columns: 1fr; }
+    .layout.list-mode .inbox-panel, .layout.list-mode .board-wrap { display: none; }
+    .layout.kanban-mode .list-wrap { display: none; }
+    select.sort-select { background: #1e293b; border: 1px solid var(--border); color: var(--text); padding: 0.25rem 0.4rem; border-radius: 4px; font-size: 0.72rem; }
   </style>
 </head>
 <body>
   <header>
     <h1>Blob organization Kanban</h1>
-    <p><strong>Shift/Ctrl+click</strong> or <strong>Shift+right-click</strong> to multi-select · drag one moves all · <strong>DELETE QUEUE</strong> then Export for agent.</p>
+    <p>List view: check rows · <strong>Delete</strong> per row or <strong>Delete selected</strong> → DELETE QUEUE (Approved) · then <strong>Export</strong>.</p>
     <div class="toolbar">
       <input type="search" id="filter" placeholder="Filter…" />
+      <label class="btn">Sort
+        <select id="sort-by" class="sort-select">
+          <option value="name">Name (A–Z)</option>
+          <option value="size">Size (largest)</option>
+        </select>
+      </label>
+      <button type="button" id="btn-view-kanban">Kanban board</button>
+      <button type="button" id="btn-delete-selected" class="danger" disabled>Delete selected</button>
       <button type="button" id="btn-add-domain">+ Domain</button>
-      <button type="button" id="btn-select-inbox">Select inbox</button>
+      <button type="button" id="btn-select-all">Select all</button>
       <button type="button" id="btn-to-delete" class="danger">→ Delete queue</button>
       <button type="button" id="btn-export">Export</button>
       <button type="button" id="btn-import">Import</button>
@@ -116,7 +145,23 @@
     </div>
   </header>
   <div id="load-status" class="status">Loading…</div>
-  <div class="layout" id="main" hidden>
+  <div class="layout list-mode" id="main" hidden>
+    <div class="list-wrap">
+      <table class="data-table" id="card-table">
+        <thead>
+          <tr>
+            <th class="col-check"><input type="checkbox" id="check-all" title="Select all visible" /></th>
+            <th class="col-name">Name</th>
+            <th>Type</th>
+            <th class="col-zone">Zone</th>
+            <th class="col-num">Blobs</th>
+            <th class="col-num">Size</th>
+            <th class="col-actions">Delete</th>
+          </tr>
+        </thead>
+        <tbody id="card-tbody"></tbody>
+      </table>
+    </div>
     <aside class="inbox-panel">
       <h2>Inbox</h2>
       <div class="inbox-meta" id="inbox-meta"></div>
@@ -129,6 +174,8 @@
   <script>
     const STORAGE_V2 = "blob_kanban_board_v2";
     const STORAGE_V1 = "blob_kanban_homes_v1";
+    const STORAGE_SORT = "blob_kanban_sort";
+    const STORAGE_VIEW = "blob_kanban_view";
 
     const MATTER_L2 = [
       { id: "evidence", title: "Evidence" },
@@ -277,6 +324,141 @@
     let allCards = [];
     let containerHints = {};
     const selected = new Set();
+    let listView = true;
+
+    function pathLabel(path) {
+      if (!path || !path.length) return "inbox";
+      return path.join(" → ");
+    }
+
+    function isDeleteQueued(path) {
+      return path && path[0] === "delete-queue";
+    }
+
+    function getVisibleCards() {
+      const showFolders = document.getElementById("show-folders").checked;
+      const q = document.getElementById("filter").value.trim().toLowerCase();
+      return allCards.filter((card) => {
+        if (card.type === "folder" && !showFolders) return false;
+        const search = (card.label + " " + card.container).toLowerCase();
+        if (q && !search.includes(q)) return false;
+        return true;
+      });
+    }
+
+    function sortCards(cards) {
+      const mode = document.getElementById("sort-by").value;
+      const sorted = [...cards];
+      if (mode === "size") {
+        sorted.sort((a, b) => b.bytes - a.bytes || a.label.localeCompare(b.label));
+      } else {
+        sorted.sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+      }
+      return sorted;
+    }
+
+    function updateDeleteSelectedBtn() {
+      const btn = document.getElementById("btn-delete-selected");
+      const n = selected.size;
+      btn.disabled = n === 0;
+      btn.textContent = n ? `Delete selected (${n})` : "Delete selected";
+      updateSelectionMeta();
+    }
+
+    function syncCheckAllState() {
+      const boxes = [...document.querySelectorAll("#card-tbody .row-check")];
+      const all = document.getElementById("check-all");
+      if (!all || !boxes.length) {
+        if (all) all.checked = false;
+        return;
+      }
+      const checked = boxes.filter((b) => b.checked).length;
+      all.checked = checked === boxes.length;
+      all.indeterminate = checked > 0 && checked < boxes.length;
+    }
+
+    function moveIdsToDelete(ids) {
+      if (!ids.length) return;
+      if (!confirm(`Move ${ids.length} item(s) to DELETE QUEUE → Approved? Export afterward for agent.`)) return;
+      assignPath(ids, DELETE_APPROVED);
+      selected.clear();
+      updateDeleteSelectedBtn();
+      syncCheckAllState();
+    }
+
+    function renderListView() {
+      const tbody = document.getElementById("card-tbody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      const cards = sortCards(getVisibleCards());
+      let queued = 0;
+      cards.forEach((card) => {
+        const a = assignments[card.id];
+        const path = a?.path;
+        const zone = pathLabel(path);
+        const tr = document.createElement("tr");
+        if (isDeleteQueued(path)) {
+          tr.classList.add("row-delete");
+          queued++;
+        }
+        const checked = selected.has(card.id);
+        if (checked) tr.classList.add("row-checked");
+        tr.dataset.id = card.id;
+        tr.dataset.search = (card.label + " " + card.container).toLowerCase();
+        const blobs = card.blobs.toLocaleString();
+        tr.innerHTML = `
+          <td class="col-check"><input type="checkbox" class="row-check" data-id="${escapeHtml(card.id)}" ${checked ? "checked" : ""} /></td>
+          <td class="col-name">
+            <span class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</span>
+            <span class="sub">${escapeHtml(card.container)}${card.folder ? " / " + escapeHtml(card.folder) : ""}</span>
+          </td>
+          <td>${card.type === "container" ? "container" : "folder"}</td>
+          <td class="col-zone" title="${escapeHtml(zone)}">${escapeHtml(zone)}</td>
+          <td class="col-num">${blobs}</td>
+          <td class="col-num">${escapeHtml(card.bytes_human)}</td>
+          <td class="col-actions"><button type="button" class="btn-row-delete" data-id="${escapeHtml(card.id)}">Delete</button></td>`;
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll(".row-check").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          const id = cb.dataset.id;
+          if (cb.checked) selected.add(id);
+          else selected.delete(id);
+          const row = cb.closest("tr");
+          row?.classList.toggle("row-checked", cb.checked);
+          updateDeleteSelectedBtn();
+          syncCheckAllState();
+        });
+      });
+      tbody.querySelectorAll(".btn-row-delete").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          moveIdsToDelete([btn.dataset.id]);
+        });
+      });
+
+      const placed = Object.keys(assignments).length;
+      document.getElementById("load-status").textContent =
+        `${cards.length} shown · ${allCards.length} total · ${placed} placed · ${queued} in delete queue · sort: ${document.getElementById("sort-by").value}`;
+      if (document.getElementById("inbox-meta")) {
+        document.getElementById("inbox-meta").textContent =
+          `${allCards.length - placed} inbox · ${placed} placed`;
+      }
+      syncCheckAllState();
+      updateDeleteSelectedBtn();
+    }
+
+    function setViewMode(kanban) {
+      listView = !kanban;
+      const layout = document.getElementById("main");
+      layout.classList.toggle("list-mode", listView);
+      layout.classList.toggle("kanban-mode", !listView);
+      document.getElementById("btn-view-kanban").textContent = listView ? "Kanban board" : "List view";
+      localStorage.setItem(STORAGE_VIEW, listView ? "list" : "kanban");
+      if (listView) renderListView();
+      else placeCards();
+    }
 
     function zoneKey(path) {
       return path.join("|");
@@ -477,16 +659,16 @@
         else assignments[cid] = { path, moved_at: ts };
       });
       saveState();
-      placeCards();
+      if (listView) renderListView();
+      else placeCards();
     }
 
     function moveSelectedToDelete() {
       if (!selected.size) {
-        alert("Select cards first (Shift/Ctrl+click)");
+        alert("Check one or more rows first");
         return;
       }
-      assignPath([...selected], DELETE_APPROVED);
-      clearSelection();
+      moveIdsToDelete([...selected]);
     }
 
     function getNodesAtPath(path) {
@@ -636,6 +818,10 @@
     }
 
     function placeCards() {
+      if (listView) {
+        renderListView();
+        return;
+      }
       document.querySelectorAll(".card-list").forEach((el) => (el.innerHTML = ""));
       const showFolders = document.getElementById("show-folders").checked;
       const inbox = document.getElementById("inbox");
@@ -697,10 +883,15 @@
     }
 
     function applyFilter() {
+      if (listView) {
+        renderListView();
+        return;
+      }
       const q = document.getElementById("filter").value.trim().toLowerCase();
       document.querySelectorAll(".card").forEach((el) => {
         el.classList.toggle("hidden", q && !el.dataset.search.includes(q));
       });
+      updateZoneBadges();
     }
 
     function exportAll() {
@@ -731,13 +922,26 @@
 
     document.getElementById("btn-export").onclick = exportAll;
     document.getElementById("btn-to-delete").onclick = moveSelectedToDelete;
-    document.getElementById("btn-select-inbox").onclick = () => {
-      clearSelection();
-      document.querySelectorAll("#inbox .card:not(.hidden)").forEach((c) => {
-        selected.add(c.dataset.id);
-        c.classList.add("selected");
+    document.getElementById("btn-delete-selected").onclick = moveSelectedToDelete;
+    document.getElementById("btn-view-kanban").onclick = () => setViewMode(listView);
+    document.getElementById("sort-by").onchange = () => {
+      localStorage.setItem(STORAGE_SORT, document.getElementById("sort-by").value);
+      renderListView();
+    };
+    document.getElementById("check-all").onchange = (e) => {
+      const on = e.target.checked;
+      document.querySelectorAll("#card-tbody .row-check").forEach((cb) => {
+        cb.checked = on;
+        const id = cb.dataset.id;
+        if (on) selected.add(id);
+        else selected.delete(id);
+        cb.closest("tr")?.classList.toggle("row-checked", on);
       });
-      updateSelectionMeta();
+      updateDeleteSelectedBtn();
+    };
+    document.getElementById("btn-select-all").onclick = () => {
+      document.getElementById("check-all").checked = true;
+      document.getElementById("check-all").dispatchEvent(new Event("change"));
     };
     document.addEventListener("keydown", (e) => {
       if (e.key === "Delete" && selected.size) {
@@ -792,6 +996,9 @@
 
     async function init() {
       loadState();
+      const savedSort = localStorage.getItem(STORAGE_SORT);
+      if (savedSort) document.getElementById("sort-by").value = savedSort;
+      listView = localStorage.getItem(STORAGE_VIEW) !== "kanban";
       ensureDeleteQueueDomain();
       ensureOrganizationDomain();
       await mergeBoardSeed();
@@ -805,15 +1012,22 @@
         if (!res.ok) throw new Error(res.statusText);
         const data = await res.json();
         allCards = data.cards || [];
-        const legalN = (board.domains.find((d) => d.id === "legal") || {}).children?.length || 0;
         const dq = deleteQueueCount();
-        document.getElementById("load-status").textContent =
-          `Ready — ${allCards.length} cards · ${Object.keys(assignments).length} placed` +
-          (dq ? ` · ${dq} queued for DELETE` : "") +
-          (nDrop ? ` · synced server export` : "") +
-          ` · Export after moving to DELETE QUEUE → Approved`;
         document.getElementById("main").hidden = false;
-        placeCards();
+        setViewMode(!listView);
+        if (!listView) {
+          document.getElementById("load-status").textContent =
+            `Ready — ${allCards.length} cards · ${Object.keys(assignments).length} placed` +
+            (dq ? ` · ${dq} queued for DELETE` : "") +
+            (nDrop ? ` · synced server export` : "");
+          placeCards();
+        } else {
+          renderListView();
+          if (dq || nDrop) {
+            const extra = (dq ? ` · ${dq} queued for DELETE` : "") + (nDrop ? ` · synced export` : "");
+            document.getElementById("load-status").textContent += extra;
+          }
+        }
       } catch (err) {
         document.getElementById("load-status").innerHTML = `<span class="error">${escapeHtml(err)}</span>`;
       }
