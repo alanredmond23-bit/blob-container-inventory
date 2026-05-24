@@ -7,294 +7,408 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
   <style>
     :root {
-      --bg: #0b0f14;
-      --panel: #141b24;
-      --border: #2a3544;
-      --text: #e8eef5;
-      --muted: #8b9cb3;
-      --accent: #38bdf8;
-      --devops: #a78bfa;
-      --finance: #34d399;
-      --legal: #fbbf24;
-      --cold: #94a3b8;
-      --unassigned: #64748b;
+      --bg: #0b0f14; --panel: #141b24; --border: #2a3544; --text: #e8eef5; --muted: #8b9cb3;
+      --accent: #38bdf8; --devops: #a78bfa; --finance: #34d399; --legal: #fbbf24;
+      --cold: #94a3b8; --dup: #f472b6;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+    body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
     header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--panel);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); background: var(--panel);
+      position: sticky; top: 0; z-index: 20;
     }
-    header h1 { margin: 0 0 0.35rem; font-size: 1.25rem; }
-    header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
-      align-items: center;
-    }
+    header h1 { margin: 0; font-size: 1rem; }
+    header p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.72rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; align-items: center; }
     button, label.btn {
-      background: #1e293b;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.45rem 0.75rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.85rem;
+      background: #1e293b; border: 1px solid var(--border); color: var(--text);
+      padding: 0.28rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.72rem;
     }
     button:hover { border-color: var(--accent); }
+    button.danger:hover { border-color: #f87171; }
     input[type="search"] {
-      flex: 1;
-      min-width: 200px;
-      max-width: 360px;
-      padding: 0.45rem 0.6rem;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: #0f172a;
-      color: var(--text);
+      min-width: 140px; max-width: 220px; padding: 0.28rem 0.45rem; border-radius: 4px;
+      border: 1px solid var(--border); background: #0f172a; color: var(--text); font-size: 0.72rem;
     }
-    .layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 0;
-      min-height: calc(100vh - 120px);
-    }
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .inbox-panel { max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border); }
-    }
-    .inbox-panel {
-      border-right: 1px solid var(--border);
-      background: #0f1419;
-      display: flex;
-      flex-direction: column;
-    }
-    .inbox-panel h2 {
-      margin: 0;
-      padding: 0.75rem 1rem;
-      font-size: 0.95rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .inbox-meta {
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-    .card-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 0.5rem;
-      min-height: 120px;
-    }
-    .board-wrap {
-      overflow-x: auto;
-      padding: 1rem;
-    }
-    .domains {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 88px); }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+    .inbox-panel { border-right: 1px solid var(--border); background: #0f1419; display: flex; flex-direction: column; }
+    .inbox-panel h2 { margin: 0; padding: 0.4rem 0.55rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+    .inbox-meta { padding: 0.3rem 0.55rem; font-size: 0.68rem; color: var(--muted); }
+    .card-list { flex: 1; overflow-y: auto; padding: 0.25rem; min-height: 80px; max-height: calc(100vh - 140px); }
+    .board-wrap { overflow: auto; padding: 0.5rem; }
+    .domains { display: flex; gap: 0.5rem; align-items: flex-start; }
     .domain-col {
-      min-width: 300px;
-      max-width: 340px;
-      background: var(--panel);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
+      min-width: 248px; max-width: 280px; background: var(--panel); border-radius: 6px;
+      border: 1px solid var(--border); flex-shrink: 0;
     }
-    .domain-col h2 {
-      margin: 0;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border-bottom: 3px solid var(--unassigned);
-      border-radius: 10px 10px 0 0;
+    .domain-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.25rem;
+      padding: 0.35rem 0.45rem; border-bottom: 2px solid var(--muted); border-radius: 6px 6px 0 0;
     }
-    .domain-col[data-domain="devops"] h2 { border-color: var(--devops); }
-    .domain-col[data-domain="finance"] h2 { border-color: var(--finance); }
-    .domain-col[data-domain="legal"] h2 { border-color: var(--legal); }
-    .domain-col[data-domain="cold"] h2 { border-color: var(--cold); }
-    .subzone {
-      margin: 0.5rem;
-      border: 1px dashed var(--border);
-      border-radius: 8px;
-      background: rgba(0,0,0,0.2);
+    .domain-head h2 { margin: 0; font-size: 0.78rem; font-weight: 700; }
+    .domain-body { padding: 0.25rem; max-height: calc(100vh - 130px); overflow-y: auto; }
+    .domain-col[data-domain="devops"] .domain-head { border-color: var(--devops); }
+    .domain-col[data-domain="finance"] .domain-head { border-color: var(--finance); }
+    .domain-col[data-domain="legal"] .domain-head { border-color: var(--legal); }
+    .domain-col[data-domain="cold"] .domain-head { border-color: var(--cold); }
+    .domain-col[data-domain="dup-likely"] .domain-head { border-color: var(--dup); }
+    .node-l1 { margin: 0.2rem 0; border: 1px solid var(--border); border-radius: 4px; background: rgba(0,0,0,0.15); }
+    .node-l1 > summary, .node-l2 > summary {
+      cursor: pointer; padding: 0.2rem 0.35rem; font-size: 0.68rem; font-weight: 600;
+      color: var(--muted); list-style: none; display: flex; justify-content: space-between; align-items: center;
     }
-    .subzone-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      padding: 0.4rem 0.6rem;
-      border-bottom: 1px solid var(--border);
-    }
+    .node-l1 > summary::-webkit-details-marker, .node-l2 > summary::-webkit-details-marker { display: none; }
+    .node-l2 { margin: 0.15rem 0.25rem; border-left: 2px solid var(--border); padding-left: 0.2rem; }
+    .node-l3-wrap { margin: 0.1rem 0.2rem 0.1rem 0.5rem; }
+    .node-l3-title { font-size: 0.62rem; color: var(--muted); padding: 0.1rem 0.2rem; }
     .card {
-      margin: 0.4rem;
-      padding: 0.55rem 0.65rem;
-      background: #1a2332;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      cursor: grab;
-      font-size: 0.82rem;
-      line-height: 1.35;
+      margin: 0.12rem; padding: 0.2rem 0.35rem; background: #1a2332; border: 1px solid var(--border);
+      border-radius: 4px; cursor: grab; line-height: 1.2;
     }
     .card:active { cursor: grabbing; }
-    .card.container-card { border-left: 3px solid var(--accent); }
-    .card.folder-card { border-left: 3px solid var(--muted); margin-left: 0.75rem; }
-    .card .label { font-weight: 600; word-break: break-word; }
-    .card .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+    .card.container-card { border-left: 2px solid var(--accent); }
+    .card.folder-card { border-left: 2px solid #475569; opacity: 0.95; }
+    .card .label { font-weight: 600; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom; }
+    .card .meta { color: var(--muted); font-size: 0.62rem; }
     .card.hidden { display: none; }
-    .sortable-ghost { opacity: 0.35; background: #334155; }
-    .status { padding: 0.5rem 1rem; color: var(--muted); font-size: 0.85rem; }
+    .sortable-ghost { opacity: 0.35; }
+    .mini-btn { font-size: 0.6rem; padding: 0.1rem 0.25rem; border-radius: 3px; }
+    .status { padding: 0.35rem 0.55rem; color: var(--muted); font-size: 0.72rem; }
     .error { color: #f87171; }
+    .chip { font-size: 0.58rem; color: var(--muted); }
   </style>
 </head>
 <body>
   <header>
     <h1>Blob organization Kanban</h1>
-    <p>Drag containers and top-level folders into a domain and sub-zone. Export your “homes” when done.</p>
+    <p>Domains → L1 → L2 → L3. Placements saved in browser + optional <code>registered_homes.json</code>.</p>
     <div class="toolbar">
-      <input type="search" id="filter" placeholder="Filter cards…" />
-      <button type="button" id="btn-export">Export homes JSON</button>
-      <button type="button" id="btn-import">Import homes JSON</button>
-      <button type="button" id="btn-reset">Reset board</button>
-      <label class="btn">
-        <input type="checkbox" id="show-folders" checked style="margin-right:0.35rem" />
-        Show L1 folders
-      </label>
+      <input type="search" id="filter" placeholder="Filter…" />
+      <button type="button" id="btn-add-domain">+ Domain</button>
+      <button type="button" id="btn-export">Export</button>
+      <button type="button" id="btn-import">Import</button>
+      <button type="button" id="btn-save-reg">Copy for register</button>
+      <button type="button" class="danger" id="btn-reset">Reset cards</button>
+      <label class="btn"><input type="checkbox" id="show-folders" checked /> Folders</label>
+      <label class="btn"><input type="checkbox" id="compact-meta" checked /> Compact</label>
     </div>
   </header>
-
-  <div id="load-status" class="status">Loading kanban_data.json…</div>
-
+  <div id="load-status" class="status">Loading…</div>
   <div class="layout" id="main" hidden>
     <aside class="inbox-panel">
-      <h2>Inbox — unassigned</h2>
+      <h2>Inbox</h2>
       <div class="inbox-meta" id="inbox-meta"></div>
-      <div class="card-list" id="inbox" data-zone="inbox:unassigned"></div>
+      <div class="card-list" id="inbox" data-zone="inbox"></div>
     </aside>
-    <main class="board-wrap">
-      <div class="domains" id="domains"></div>
-    </main>
+    <main class="board-wrap"><div class="domains" id="domains"></div></main>
   </div>
-
-  <input type="file" id="file-import" accept="application/json" hidden />
+  <input type="file" id="file-import" accept="application/json" hidden" />
 
   <script>
-    const STORAGE_KEY = "blob_kanban_homes_v1";
+    const STORAGE_V2 = "blob_kanban_board_v2";
+    const STORAGE_V1 = "blob_kanban_homes_v1";
 
-    const DOMAIN_CONFIG = [
-      {
-        id: "devops",
-        title: "DEVOPS",
-        subzones: [
-          { id: "hot-active", title: "Hot / active" },
-          { id: "backups-caches", title: "Backups & caches" },
-          { id: "tooling-repos", title: "Tooling & repos" },
-          { id: "unfiled", title: "Unfiled" },
-        ],
-      },
-      {
-        id: "finance",
-        title: "FINANCE / CASH",
-        subzones: [
-          { id: "banking-cash", title: "Banking & cash" },
-          { id: "tax", title: "Tax" },
-          { id: "verticals", title: "Money verticals" },
-          { id: "unfiled", title: "Unfiled" },
-        ],
-      },
-      {
-        id: "legal",
-        title: "LEGAL",
-        subzones: [
-          { id: "matters-active", title: "Active matters" },
-          { id: "discovery", title: "Discovery (incl. 2018+)" },
-          { id: "filings", title: "Filings" },
-          { id: "evidence", title: "Evidence" },
-          { id: "calls-audio", title: "Calls & audio" },
-          { id: "unfiled", title: "Unfiled" },
-        ],
-      },
-      {
-        id: "cold",
-        title: "COLD ARCHIVE",
-        subzones: [
-          { id: "legal-cold", title: "Legal cold" },
-          { id: "finance-cold", title: "Finance cold" },
-          { id: "devops-cold", title: "DevOps cold" },
-          { id: "unfiled", title: "Unfiled" },
-        ],
-      },
+    const MATTER_L2 = [
+      { id: "evidence", title: "Evidence" },
+      { id: "discovery", title: "Discovery" },
+      { id: "filings", title: "Filings" },
+      { id: "strategy", title: "Strategy" },
+      { id: "unfiled", title: "Unfiled" },
     ];
 
-    let allCards = [];
+    function matterNode(id, title) {
+      return { id, title, children: MATTER_L2.map((x) => ({ ...x, children: [] })) };
+    }
+
+    function defaultBoard() {
+      return {
+        version: 2,
+        domains: [
+          {
+            id: "devops", title: "DEVOPS", color: "devops",
+            children: [
+              { id: "hot-active", title: "Hot / active", children: [] },
+              { id: "backups-caches", title: "Backups & caches", children: [] },
+              { id: "tooling-repos", title: "Tooling & repos", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
+          {
+            id: "finance", title: "FINANCE / CASH", color: "finance",
+            children: [
+              { id: "banking-cash", title: "Banking & cash", children: [] },
+              { id: "tax", title: "Tax", children: [] },
+              { id: "verticals", title: "Money verticals", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
+          {
+            id: "legal", title: "LEGAL", color: "legal",
+            children: [
+              matterNode("bk-24-13093", "BK 24-13093"),
+              matterNode("ap-25-00254", "AP 25-00254"),
+              matterNode("foreclosure-25-13446", "Foreclosure 25-13446"),
+              matterNode("general-legal", "General / cross-matter"),
+            ],
+          },
+          {
+            id: "dup-likely", title: "DUP LIKELY", color: "dup",
+            children: [
+              { id: "etag-exact", title: "ETag / size exact", children: [] },
+              { id: "md5-pending", title: "MD5 pending", children: [] },
+              { id: "structural-mirror", title: "Structural mirror", children: [] },
+              { id: "review-before-delete", title: "Review before delete", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
+          {
+            id: "cold", title: "COLD ARCHIVE", color: "cold",
+            children: [
+              { id: "legal-cold", title: "Legal cold", children: [] },
+              { id: "finance-cold", title: "Finance cold", children: [] },
+              { id: "devops-cold", title: "DevOps cold", children: [] },
+              { id: "unfiled", title: "Unfiled", children: [] },
+            ],
+          },
+        ],
+      };
+    }
+
+    const V1_ZONE_MAP = {
+      "devops:hot-active": ["devops", "hot-active"],
+      "devops:backups-caches": ["devops", "backups-caches"],
+      "devops:tooling-repos": ["devops", "tooling-repos"],
+      "devops:unfiled": ["devops", "unfiled"],
+      "finance:banking-cash": ["finance", "banking-cash"],
+      "finance:tax": ["finance", "tax"],
+      "finance:verticals": ["finance", "verticals"],
+      "finance:unfiled": ["finance", "unfiled"],
+      "legal:matters-active": ["legal", "general-legal", "strategy"],
+      "legal:discovery": ["legal", "general-legal", "discovery"],
+      "legal:filings": ["legal", "general-legal", "filings"],
+      "legal:evidence": ["legal", "general-legal", "evidence"],
+      "legal:calls-audio": ["legal", "general-legal", "evidence"],
+      "legal:unfiled": ["legal", "general-legal", "unfiled"],
+      "cold:legal-cold": ["cold", "legal-cold"],
+      "cold:finance-cold": ["cold", "finance-cold"],
+      "cold:devops-cold": ["cold", "devops-cold"],
+      "cold:unfiled": ["cold", "unfiled"],
+    };
+
+    let board = defaultBoard();
     let assignments = {};
+    let allCards = [];
 
-    function zoneKey(domain, sub) {
-      return `${domain}:${sub}`;
+    function zoneKey(path) {
+      return path.join("|");
     }
 
-    function loadAssignments() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        assignments = raw ? JSON.parse(raw) : {};
-      } catch {
-        assignments = {};
+    function slug(s) {
+      return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48) || "node";
+    }
+
+    function migrateV1Entry(entry) {
+      if (entry.path && Array.isArray(entry.path)) return entry;
+      if (entry.domain && entry.sub) {
+        const k = `${entry.domain}:${entry.sub}`;
+        const path = V1_ZONE_MAP[k] || [entry.domain, entry.sub];
+        return { path, moved_at: entry.moved_at };
       }
+      return entry;
     }
 
-    function saveAssignments() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(assignments, null, 2));
+    function loadState() {
+      let v2 = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_V2);
+        if (raw) v2 = JSON.parse(raw);
+      } catch (_) {}
+      if (v2 && v2.board) board = v2.board;
+      if (v2 && v2.assignments) {
+        assignments = {};
+        for (const [id, a] of Object.entries(v2.assignments)) {
+          assignments[id] = migrateV1Entry(a);
+        }
+        return;
+      }
+      try {
+        const raw1 = localStorage.getItem(STORAGE_V1);
+        if (raw1) {
+          const old = JSON.parse(raw1);
+          assignments = {};
+          for (const [id, a] of Object.entries(old)) {
+            assignments[id] = migrateV1Entry(a);
+          }
+        }
+      } catch (_) {}
+    }
+
+    function saveState() {
+      localStorage.setItem(
+        STORAGE_V2,
+        JSON.stringify({ board, assignments, saved_at: new Date().toISOString() }, null, 2)
+      );
+    }
+
+    async function mergeRegistered() {
+      try {
+        const res = await fetch("registered_homes.json", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.board && (!board.domains || !localStorage.getItem(STORAGE_V2))) {
+          board = data.board;
+        }
+        const reg = data.assignments || {};
+        for (const [id, a] of Object.entries(reg)) {
+          if (!assignments[id]) assignments[id] = migrateV1Entry(a);
+        }
+      } catch (_) {}
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function cardEl(card) {
+      const compact = document.getElementById("compact-meta").checked;
       const div = document.createElement("div");
       div.className = "card " + (card.type === "container" ? "container-card" : "folder-card");
       div.dataset.id = card.id;
       div.dataset.search = (card.label + " " + card.container).toLowerCase();
-      div.innerHTML =
-        `<div class="label">${escapeHtml(card.label)}</div>` +
-        `<div class="meta">${card.blobs.toLocaleString()} files · ${card.bytes_human}</div>`;
+      const meta = `${(card.blobs / 1000).toFixed(0)}k · ${card.bytes_human}`;
+      if (compact) {
+        div.innerHTML = `<span class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</span> <span class="meta">${meta}</span>`;
+      } else {
+        div.innerHTML = `<div class="label" title="${escapeHtml(card.label)}">${escapeHtml(card.label)}</div><div class="meta">${card.blobs.toLocaleString()} · ${card.bytes_human}</div>`;
+      }
       return div;
     }
 
-    function escapeHtml(s) {
-      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function getNodesAtPath(path) {
+      const dom = board.domains.find((d) => d.id === path[0]);
+      if (!dom) return null;
+      let nodes = dom.children;
+      for (let i = 1; i < path.length; i++) {
+        const n = nodes.find((x) => x.id === path[i]);
+        if (!n) return null;
+        nodes = n.children;
+      }
+      return nodes;
+    }
+
+    function pathExists(path) {
+      if (!path || !path.length) return false;
+      const dom = board.domains.find((d) => d.id === path[0]);
+      if (!dom) return false;
+      let nodes = dom.children;
+      for (let i = 1; i < path.length; i++) {
+        const n = nodes.find((x) => x.id === path[i]);
+        if (!n) return false;
+        nodes = n.children || [];
+      }
+      return true;
+    }
+
+    function renderDropList(path) {
+      const el = document.createElement("div");
+      el.className = "card-list";
+      el.dataset.zone = zoneKey(path);
+      return el;
+    }
+
+    function addChildBtn(path, level, parentEl) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "mini-btn";
+      b.textContent = `+L${level}`;
+      b.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const title = prompt(`Name for L${level}:`);
+        if (!title) return;
+        const id = slug(title);
+        const nodes = getNodesAtPath(path);
+        if (!nodes) return;
+        if (nodes.some((n) => n.id === id)) {
+          alert("Already exists");
+          return;
+        }
+        const child = { id, title, children: [] };
+        if (level === 1 && path.length === 1 && board.domains.find((d) => d.id === path[0])?.id === "legal") {
+          Object.assign(child, { children: MATTER_L2.map((x) => ({ ...x, children: [] })) });
+        }
+        nodes.push(child);
+        saveState();
+        buildBoard();
+        placeCards();
+      };
+      parentEl.appendChild(b);
+    }
+
+    function renderNodeTree(node, path, depth) {
+      const frag = document.createDocumentFragment();
+      const hasKids = node.children && node.children.length > 0;
+      if (!hasKids) {
+        frag.appendChild(renderDropList(path));
+        return frag;
+      }
+      const det = document.createElement("details");
+      det.className = depth === 1 ? "node-l1" : "node-l2";
+      det.open = depth === 1 && (path[1] === "general-legal" || (path[1] || "").startsWith("bk-"));
+      const sum = document.createElement("summary");
+      sum.innerHTML = `<span>${escapeHtml(node.title)}</span>`;
+      if (depth === 1) addChildBtn([path[0]], 2, sum);
+      else if (depth === 2) addChildBtn(path.slice(0, 2), 3, sum);
+      else addChildBtn(path.slice(0, 3), 4, sum);
+      det.appendChild(sum);
+      node.children.forEach((child) => {
+        const childPath = [...path, child.id];
+        if (!child.children || child.children.length === 0) {
+          const row = document.createElement("div");
+          row.style.margin = "0.08rem 0.2rem";
+          const head = document.createElement("div");
+          head.className = "node-l3-title";
+          head.style.fontWeight = depth === 1 ? "600" : "normal";
+          head.textContent = child.title;
+          row.appendChild(head);
+          row.appendChild(renderDropList(childPath));
+          det.appendChild(row);
+        } else {
+          det.appendChild(renderNodeTree(child, childPath, depth + 1));
+        }
+      });
+      frag.appendChild(det);
+      return frag;
     }
 
     function buildBoard() {
-      const domainsEl = document.getElementById("domains");
-      domainsEl.innerHTML = "";
-      DOMAIN_CONFIG.forEach((dom) => {
+      const root = document.getElementById("domains");
+      root.innerHTML = "";
+      board.domains.forEach((dom) => {
         const col = document.createElement("section");
         col.className = "domain-col";
         col.dataset.domain = dom.id;
-        col.innerHTML = `<h2>${dom.title}</h2>`;
-        dom.subzones.forEach((sz) => {
-          const sub = document.createElement("div");
-          sub.className = "subzone";
-          sub.innerHTML = `<div class="subzone-title">${sz.title}</div>`;
-          const list = document.createElement("div");
-          list.className = "card-list";
-          list.id = `zone-${dom.id}-${sz.id}`;
-          list.dataset.zone = zoneKey(dom.id, sz.id);
-          sub.appendChild(list);
-          col.appendChild(sub);
+        const head = document.createElement("div");
+        head.className = "domain-head";
+        head.innerHTML = `<h2>${escapeHtml(dom.title)}</h2>`;
+        const hb = document.createElement("span");
+        addChildBtn([dom.id], 1, hb);
+        head.appendChild(hb);
+        col.appendChild(head);
+        const body = document.createElement("div");
+        body.className = "domain-body";
+        (dom.children || []).forEach((l1) => {
+          body.appendChild(renderNodeTree(l1, [dom.id, l1.id], 1));
         });
-        domainsEl.appendChild(col);
+        col.appendChild(body);
+        root.appendChild(col);
       });
+    }
+
+    function resolveTarget(path) {
+      if (!pathExists(path)) return null;
+      return document.querySelector(`[data-zone="${zoneKey(path)}"]`);
     }
 
     function placeCards() {
@@ -302,47 +416,41 @@
       const showFolders = document.getElementById("show-folders").checked;
       const inbox = document.getElementById("inbox");
       let inboxCount = 0;
-
       allCards.forEach((card) => {
         if (card.type === "folder" && !showFolders) return;
-        const assign = assignments[card.id];
+        const a = assignments[card.id];
         let target = inbox;
-        if (assign && assign.domain && assign.sub) {
-          const sel = document.querySelector(`[data-zone="${zoneKey(assign.domain, assign.sub)}"]`);
-          if (sel) target = sel;
-        } else {
-          inboxCount += 1;
-        }
+        if (a && a.path) {
+          const el = resolveTarget(a.path);
+          if (el) target = el;
+        } else inboxCount++;
         target.appendChild(cardEl(card));
       });
-
       document.getElementById("inbox-meta").textContent =
-        `${inboxCount.toLocaleString()} cards in inbox · ${allCards.length.toLocaleString()} total`;
+        `${inboxCount} inbox · ${Object.keys(assignments).length} placed · ${allCards.length} cards`;
       applyFilter();
       initSortable();
     }
 
+    function pathFromZone(zone) {
+      if (!zone || zone === "inbox") return null;
+      return zone.split("|");
+    }
+
     function onSortEnd(evt) {
-      const item = evt.item;
-      const id = item.dataset.id;
-      const list = evt.to;
-      const zone = list.dataset.zone;
-      if (!id || !zone) return;
-      if (zone.startsWith("inbox:")) {
-        delete assignments[id];
-      } else {
-        const [domain, sub] = zone.split(":");
-        assignments[id] = { domain, sub, moved_at: new Date().toISOString() };
-      }
-      saveAssignments();
+      const id = evt.item.dataset.id;
+      const zone = evt.to.dataset.zone;
+      if (!id) return;
+      if (zone === "inbox") delete assignments[id];
+      else assignments[id] = { path: pathFromZone(zone), moved_at: new Date().toISOString() };
+      saveState();
       updateInboxMeta();
     }
 
     function updateInboxMeta() {
-      const inbox = document.getElementById("inbox");
-      const n = inbox.querySelectorAll(".card").length;
+      const n = document.getElementById("inbox").querySelectorAll(".card").length;
       document.getElementById("inbox-meta").textContent =
-        `${n.toLocaleString()} cards in inbox · ${allCards.length.toLocaleString()} total`;
+        `${n} inbox · ${Object.keys(assignments).length} placed · ${allCards.length} cards`;
     }
 
     let sortables = [];
@@ -350,14 +458,7 @@
       sortables.forEach((s) => s.destroy());
       sortables = [];
       document.querySelectorAll(".card-list").forEach((el) => {
-        sortables.push(
-          Sortable.create(el, {
-            group: "kanban",
-            animation: 150,
-            ghostClass: "sortable-ghost",
-            onEnd: onSortEnd,
-          })
-        );
+        sortables.push(Sortable.create(el, { group: "kanban", animation: 100, ghostClass: "sortable-ghost", onEnd: onSortEnd }));
       });
     }
 
@@ -368,12 +469,8 @@
       });
     }
 
-    function exportHomes() {
-      const out = {
-        exported_at: new Date().toISOString(),
-        assignments,
-        summary: summarize(),
-      };
+    function exportAll() {
+      const out = { version: 2, exported_at: new Date().toISOString(), board, assignments };
       const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -381,63 +478,74 @@
       a.click();
     }
 
-    function summarize() {
-      const byDomain = {};
-      Object.entries(assignments).forEach(([id, a]) => {
-        const key = `${a.domain}/${a.sub}`;
-        byDomain[key] = (byDomain[key] || 0) + 1;
-      });
-      return byDomain;
+    function copyForRegister() {
+      const text = JSON.stringify({ version: 2, board, assignments }, null, 2);
+      navigator.clipboard.writeText(text).then(() => alert("Copied! Paste into registered_homes.json or run register_kanban_homes.py"));
     }
 
-    document.getElementById("btn-export").addEventListener("click", exportHomes);
-    document.getElementById("btn-reset").addEventListener("click", () => {
-      if (confirm("Clear all assignments and put everything back in the inbox?")) {
+    document.getElementById("btn-export").onclick = exportAll;
+    document.getElementById("btn-save-reg").onclick = copyForRegister;
+    document.getElementById("btn-reset").onclick = () => {
+      if (confirm("Clear card placements only? (keeps board structure)")) {
         assignments = {};
-        saveAssignments();
+        saveState();
         placeCards();
       }
-    });
-    document.getElementById("btn-import").addEventListener("click", () => {
-      document.getElementById("file-import").click();
-    });
-    document.getElementById("file-import").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
+    };
+    document.getElementById("btn-import").onclick = () => document.getElementById("file-import").click();
+    document.getElementById("file-import").onchange = (e) => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => {
         try {
-          const data = JSON.parse(reader.result);
-          assignments = data.assignments || data;
-          saveAssignments();
+          const data = JSON.parse(r.result);
+          if (data.board) board = data.board;
+          const incoming = data.assignments || data;
+          for (const [id, a] of Object.entries(incoming)) assignments[id] = migrateV1Entry(a);
+          saveState();
+          buildBoard();
           placeCards();
         } catch (err) {
-          alert("Invalid JSON: " + err.message);
+          alert(err.message);
         }
       };
-      reader.readAsText(file);
-    });
-    document.getElementById("filter").addEventListener("input", applyFilter);
-    document.getElementById("show-folders").addEventListener("change", placeCards);
+      r.readAsText(f);
+    };
+    document.getElementById("btn-add-domain").onclick = () => {
+      const title = prompt("New domain name:");
+      if (!title) return;
+      const id = slug(title);
+      if (board.domains.some((d) => d.id === id)) {
+        alert("Exists");
+        return;
+      }
+      board.domains.push({ id, title, color: "cold", children: [{ id: "unfiled", title: "Unfiled", children: [] }] });
+      saveState();
+      buildBoard();
+      placeCards();
+    };
+    document.getElementById("filter").oninput = applyFilter;
+    document.getElementById("show-folders").onchange = placeCards;
+    document.getElementById("compact-meta").onchange = placeCards;
 
     async function init() {
-      loadAssignments();
+      loadState();
+      await mergeRegistered();
       buildBoard();
       try {
         const res = await fetch("kanban_data.json", { cache: "no-store" });
-        if (!res.ok) throw new Error(res.status + " " + res.statusText);
+        if (!res.ok) throw new Error(res.statusText);
         const data = await res.json();
         allCards = data.cards || [];
         document.getElementById("load-status").textContent =
-          `Loaded ${allCards.length.toLocaleString()} cards from inventory (${data.rows?.toLocaleString() || "?"} blobs)`;
+          `Ready — ${allCards.length} cards. Hard-refresh (Ctrl+Shift+R) if board looks old. Placements restored from browser.`;
         document.getElementById("main").hidden = false;
         placeCards();
       } catch (err) {
-        document.getElementById("load-status").innerHTML =
-          `<span class="error">Failed to load kanban_data.json — run: python3 scripts/export_kanban_data.py</span><br>${escapeHtml(String(err))}`;
+        document.getElementById("load-status").innerHTML = `<span class="error">${escapeHtml(err)}</span>`;
       }
     }
-
     init();
   </script>
 </body>
