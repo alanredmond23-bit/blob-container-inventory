@@ -1,4 +1,10 @@
 {
   "overseer": "ready_for_approval",
-  "delete_rows": 14953
+  "delete_rows": 56422,
+  "bytes_reclaimable": 991373320,
+  "sources": [
+    "artifacts/dedup/ag2-live/shard_0/delete_candidates.csv",
+    "artifacts/dedup/ag2-live/shard_1/delete_candidates.csv",
+    "artifacts/dedup/ag3b/delete_candidates.csv"
+  ]
 }

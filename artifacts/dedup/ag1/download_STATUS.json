@@ -1,0 +1,29 @@
+{
+  "status": "success",
+  "storage_account": "menageriesa36965",
+  "container": "localtriage4162026admincomp",
+  "started_at_utc": "2026-05-24T16:34:36.340193+00:00",
+  "completed_at_utc": "2026-05-24T16:34:46.983684+00:00",
+  "total_bytes_downloaded": 2856893826,
+  "total_duration_seconds": 10.643,
+  "files": [
+    {
+      "blob": "2026/05/10/22-57-55/Alansinv/Alansinv_1000000_0.csv",
+      "local_path": "/workspace/artifacts/dedup/ag1/Alansinv_1000000_0.csv",
+      "status": "success",
+      "expected_bytes": 2153963883,
+      "bytes_downloaded": 2153963883,
+      "duration_seconds": 8.692,
+      "mb_per_second": 236.34
+    },
+    {
+      "blob": "2026/05/10/22-57-55/Alansinv/Alansinv_1000000_1.csv",
+      "local_path": "/workspace/artifacts/dedup/ag1/Alansinv_1000000_1.csv",
+      "status": "success",
+      "expected_bytes": 702929943,
+      "bytes_downloaded": 702929943,
+      "duration_seconds": 1.952,
+      "mb_per_second": 343.49
+    }
+  ]
+}
