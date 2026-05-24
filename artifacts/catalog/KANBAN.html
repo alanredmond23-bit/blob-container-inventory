@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blob organization — Kanban</title>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #141b24;
+      --border: #2a3544;
+      --text: #e8eef5;
+      --muted: #8b9cb3;
+      --accent: #38bdf8;
+      --devops: #a78bfa;
+      --finance: #34d399;
+      --legal: #fbbf24;
+      --cold: #94a3b8;
+      --unassigned: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 { margin: 0 0 0.35rem; font-size: 1.25rem; }
+    header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      align-items: center;
+    }
+    button, label.btn {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    button:hover { border-color: var(--accent); }
+    input[type="search"] {
+      flex: 1;
+      min-width: 200px;
+      max-width: 360px;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 120px);
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .inbox-panel { max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    .inbox-panel {
+      border-right: 1px solid var(--border);
+      background: #0f1419;
+      display: flex;
+      flex-direction: column;
+    }
+    .inbox-panel h2 {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .inbox-meta {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .card-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+      min-height: 120px;
+    }
+    .board-wrap {
+      overflow-x: auto;
+      padding: 1rem;
+    }
+    .domains {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .domain-col {
+      min-width: 300px;
+      max-width: 340px;
+      background: var(--panel);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .domain-col h2 {
+      margin: 0;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-bottom: 3px solid var(--unassigned);
+      border-radius: 10px 10px 0 0;
+    }
+    .domain-col[data-domain="devops"] h2 { border-color: var(--devops); }
+    .domain-col[data-domain="finance"] h2 { border-color: var(--finance); }
+    .domain-col[data-domain="legal"] h2 { border-color: var(--legal); }
+    .domain-col[data-domain="cold"] h2 { border-color: var(--cold); }
+    .subzone {
+      margin: 0.5rem;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+    }
+    .subzone-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card {
+      margin: 0.4rem;
+      padding: 0.55rem 0.65rem;
+      background: #1a2332;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: grab;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+    .card:active { cursor: grabbing; }
+    .card.container-card { border-left: 3px solid var(--accent); }
+    .card.folder-card { border-left: 3px solid var(--muted); margin-left: 0.75rem; }
+    .card .label { font-weight: 600; word-break: break-word; }
+    .card .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+    .card.hidden { display: none; }
+    .sortable-ghost { opacity: 0.35; background: #334155; }
+    .status { padding: 0.5rem 1rem; color: var(--muted); font-size: 0.85rem; }
+    .error { color: #f87171; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Blob organization Kanban</h1>
+    <p>Drag containers and top-level folders into a domain and sub-zone. Export your “homes” when done.</p>
+    <div class="toolbar">
+      <input type="search" id="filter" placeholder="Filter cards…" />
+      <button type="button" id="btn-export">Export homes JSON</button>
+      <button type="button" id="btn-import">Import homes JSON</button>
+      <button type="button" id="btn-reset">Reset board</button>
+      <label class="btn">
+        <input type="checkbox" id="show-folders" checked style="margin-right:0.35rem" />
+        Show L1 folders
+      </label>
+    </div>
+  </header>
+
+  <div id="load-status" class="status">Loading kanban_data.json…</div>
+
+  <div class="layout" id="main" hidden>
+    <aside class="inbox-panel">
+      <h2>Inbox — unassigned</h2>
+      <div class="inbox-meta" id="inbox-meta"></div>
+      <div class="card-list" id="inbox" data-zone="inbox:unassigned"></div>
+    </aside>
+    <main class="board-wrap">
+      <div class="domains" id="domains"></div>
+    </main>
+  </div>
+
+  <input type="file" id="file-import" accept="application/json" hidden />
+
+  <script>
+    const STORAGE_KEY = "blob_kanban_homes_v1";
+
+    const DOMAIN_CONFIG = [
+      {
+        id: "devops",
+        title: "DEVOPS",
+        subzones: [
+          { id: "hot-active", title: "Hot / active" },
+          { id: "backups-caches", title: "Backups & caches" },
+          { id: "tooling-repos", title: "Tooling & repos" },
+          { id: "unfiled", title: "Unfiled" },
+        ],
+      },
+      {
+        id: "finance",
+        title: "FINANCE / CASH",
+        subzones: [
+          { id: "banking-cash", title: "Banking & cash" },
+          { id: "tax", title: "Tax" },
+          { id: "verticals", title: "Money verticals" },
+          { id: "unfiled", title: "Unfiled" },
+        ],
+      },
+      {
+        id: "legal",
+        title: "LEGAL",
+        subzones: [
+          { id: "matters-active", title: "Active matters" },
+          { id: "discovery", title: "Discovery (incl. 2018+)" },
+          { id: "filings", title: "Filings" },
+          { id: "evidence", title: "Evidence" },
+          { id: "calls-audio", title: "Calls & audio" },
+          { id: "unfiled", title: "Unfiled" },
+        ],
+      },
+      {
+        id: "cold",
+        title: "COLD ARCHIVE",
+        subzones: [
+          { id: "legal-cold", title: "Legal cold" },
+          { id: "finance-cold", title: "Finance cold" },
+          { id: "devops-cold", title: "DevOps cold" },
+          { id: "unfiled", title: "Unfiled" },
+        ],
+      },
+    ];
+
+    let allCards = [];
+    let assignments = {};
+
+    function zoneKey(domain, sub) {
+      return `${domain}:${sub}`;
+    }
+
+    function loadAssignments() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        assignments = raw ? JSON.parse(raw) : {};
+      } catch {
+        assignments = {};
+      }
+    }
+
+    function saveAssignments() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(assignments, null, 2));
+    }
+
+    function cardEl(card) {
+      const div = document.createElement("div");
+      div.className = "card " + (card.type === "container" ? "container-card" : "folder-card");
+      div.dataset.id = card.id;
+      div.dataset.search = (card.label + " " + card.container).toLowerCase();
+      div.innerHTML =
+        `<div class="label">${escapeHtml(card.label)}</div>` +
+        `<div class="meta">${card.blobs.toLocaleString()} files · ${card.bytes_human}</div>`;
+      return div;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function buildBoard() {
+      const domainsEl = document.getElementById("domains");
+      domainsEl.innerHTML = "";
+      DOMAIN_CONFIG.forEach((dom) => {
+        const col = document.createElement("section");
+        col.className = "domain-col";
+        col.dataset.domain = dom.id;
+        col.innerHTML = `<h2>${dom.title}</h2>`;
+        dom.subzones.forEach((sz) => {
+          const sub = document.createElement("div");
+          sub.className = "subzone";
+          sub.innerHTML = `<div class="subzone-title">${sz.title}</div>`;
+          const list = document.createElement("div");
+          list.className = "card-list";
+          list.id = `zone-${dom.id}-${sz.id}`;
+          list.dataset.zone = zoneKey(dom.id, sz.id);
+          sub.appendChild(list);
+          col.appendChild(sub);
+        });
+        domainsEl.appendChild(col);
+      });
+    }
+
+    function placeCards() {
+      document.querySelectorAll(".card-list").forEach((el) => (el.innerHTML = ""));
+      const showFolders = document.getElementById("show-folders").checked;
+      const inbox = document.getElementById("inbox");
+      let inboxCount = 0;
+
+      allCards.forEach((card) => {
+        if (card.type === "folder" && !showFolders) return;
+        const assign = assignments[card.id];
+        let target = inbox;
+        if (assign && assign.domain && assign.sub) {
+          const sel = document.querySelector(`[data-zone="${zoneKey(assign.domain, assign.sub)}"]`);
+          if (sel) target = sel;
+        } else {
+          inboxCount += 1;
+        }
+        target.appendChild(cardEl(card));
+      });
+
+      document.getElementById("inbox-meta").textContent =
+        `${inboxCount.toLocaleString()} cards in inbox · ${allCards.length.toLocaleString()} total`;
+      applyFilter();
+      initSortable();
+    }
+
+    function onSortEnd(evt) {
+      const item = evt.item;
+      const id = item.dataset.id;
+      const list = evt.to;
+      const zone = list.dataset.zone;
+      if (!id || !zone) return;
+      if (zone.startsWith("inbox:")) {
+        delete assignments[id];
+      } else {
+        const [domain, sub] = zone.split(":");
+        assignments[id] = { domain, sub, moved_at: new Date().toISOString() };
+      }
+      saveAssignments();
+      updateInboxMeta();
+    }
+
+    function updateInboxMeta() {
+      const inbox = document.getElementById("inbox");
+      const n = inbox.querySelectorAll(".card").length;
+      document.getElementById("inbox-meta").textContent =
+        `${n.toLocaleString()} cards in inbox · ${allCards.length.toLocaleString()} total`;
+    }
+
+    let sortables = [];
+    function initSortable() {
+      sortables.forEach((s) => s.destroy());
+      sortables = [];
+      document.querySelectorAll(".card-list").forEach((el) => {
+        sortables.push(
+          Sortable.create(el, {
+            group: "kanban",
+            animation: 150,
+            ghostClass: "sortable-ghost",
+            onEnd: onSortEnd,
+          })
+        );
+      });
+    }
+
+    function applyFilter() {
+      const q = document.getElementById("filter").value.trim().toLowerCase();
+      document.querySelectorAll(".card").forEach((el) => {
+        el.classList.toggle("hidden", q && !el.dataset.search.includes(q));
+      });
+    }
+
+    function exportHomes() {
+      const out = {
+        exported_at: new Date().toISOString(),
+        assignments,
+        summary: summarize(),
+      };
+      const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "blob_homes_assignments.json";
+      a.click();
+    }
+
+    function summarize() {
+      const byDomain = {};
+      Object.entries(assignments).forEach(([id, a]) => {
+        const key = `${a.domain}/${a.sub}`;
+        byDomain[key] = (byDomain[key] || 0) + 1;
+      });
+      return byDomain;
+    }
+
+    document.getElementById("btn-export").addEventListener("click", exportHomes);
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      if (confirm("Clear all assignments and put everything back in the inbox?")) {
+        assignments = {};
+        saveAssignments();
+        placeCards();
+      }
+    });
+    document.getElementById("btn-import").addEventListener("click", () => {
+      document.getElementById("file-import").click();
+    });
+    document.getElementById("file-import").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          assignments = data.assignments || data;
+          saveAssignments();
+          placeCards();
+        } catch (err) {
+          alert("Invalid JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+    document.getElementById("filter").addEventListener("input", applyFilter);
+    document.getElementById("show-folders").addEventListener("change", placeCards);
+
+    async function init() {
+      loadAssignments();
+      buildBoard();
+      try {
+        const res = await fetch("kanban_data.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(res.status + " " + res.statusText);
+        const data = await res.json();
+        allCards = data.cards || [];
+        document.getElementById("load-status").textContent =
+          `Loaded ${allCards.length.toLocaleString()} cards from inventory (${data.rows?.toLocaleString() || "?"} blobs)`;
+        document.getElementById("main").hidden = false;
+        placeCards();
+      } catch (err) {
+        document.getElementById("load-status").innerHTML =
+          `<span class="error">Failed to load kanban_data.json — run: python3 scripts/export_kanban_data.py</span><br>${escapeHtml(String(err))}`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
