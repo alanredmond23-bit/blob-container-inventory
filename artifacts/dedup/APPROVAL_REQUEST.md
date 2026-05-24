@@ -1,6 +1,6 @@
 # Approval request — blob dedup (inventory merge)
 
-**Status:** Ready for your approval. **No deletes executed.**
+**Status:** **Approved** — merge to `main` pushed; delete execution in progress or complete (see `DELETE_EXECUTION.jsonl`, `STATUS.json`).
 
 ## Metrics
 
@@ -18,7 +18,7 @@
 
 ## Approve
 
-- [ ] **Execute deletes** from `artifacts/dedup/MASTER_DEDUP_MANIFEST.csv` (after spot-check below)
+- [x] **Execute deletes** from `artifacts/dedup/MASTER_DEDUP_MANIFEST.csv` (approved 2026-05-23)
 
 ## Top containers (delete count)
 

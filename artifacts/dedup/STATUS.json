@@ -1,10 +1,33 @@
 {
-  "overseer": "ready_for_approval",
+  "overseer": "execution_complete",
+  "merge_approved": "2026-05-23",
+  "delete_approved": "2026-05-23",
   "delete_rows": 56422,
   "bytes_reclaimable": 991373320,
   "sources": [
     "artifacts/dedup/ag2-live/shard_0/delete_candidates.csv",
     "artifacts/dedup/ag2-live/shard_1/delete_candidates.csv",
     "artifacts/dedup/ag3b/delete_candidates.csv"
-  ]
+  ],
+  "main_merge": {
+    "branch": "cursor/azure-blob-dedup-233a",
+    "pushed_to": "origin/main",
+    "commit": "547ac00"
+  },
+  "delete_execution": {
+    "approved_at": "2026-05-24T17:23:32+00:00",
+    "completed_at": "2026-05-24T17:32:00+00:00",
+    "manifest": "artifacts/dedup/MASTER_DEDUP_MANIFEST.csv",
+    "log": "artifacts/dedup/DELETE_EXECUTION.jsonl",
+    "unique_blobs": 56421,
+    "final_status": {
+      "deleted": 51973,
+      "not_found": 4448
+    },
+    "notes": [
+      "51955 deleted in primary run + 18 snapshot blobs (delete_snapshots=include on retry)",
+      "4448 not_found on resume (already removed or renamed since May 2026 inventory)",
+      "Manifest line count 56422 includes header; 56421 data rows executed"
+    ]
+  }
 }

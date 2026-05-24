@@ -2,3 +2,5 @@ scripts/__pycache__/
 artifacts/dedup/ag3b-full/
 artifacts/dedup/ag1/Alansinv_*.csv
 artifacts/dedup/ag2-live/shard_*/delete_candidates.csv
+artifacts/dedup/DELETE_EXECUTION.jsonl
+artifacts/dedup/delete_run.log
