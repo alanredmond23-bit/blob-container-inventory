@@ -1,36 +1,16 @@
 {
   "agent": "AG-1",
-  "status": "blocked",
-  "outputs": [
-    "Azure blob dedup/policies/blob-inventory-dedup.json",
-    "artifacts/dedup/ag1/DEPLOY.md",
-    "scripts/ag1_ensure_inventory_container.py"
-  ],
+  "status": "partial",
+  "container_created": true,
+  "inventory_reports_container": "inventory-reports",
   "inventory_csv_downloaded": false,
-  "inventory_latest_csv_exists": false,
-  "inventory_container_created": false,
-  "account": "menageriesa36965",
-  "containers_scanned": 43,
-  "inventory_containers_found": 0,
-  "inventory_csv_blobs_found": 0,
-  "keys_tried": ["AZURE_STORAGE_KEY", "AZURE_STORAGE_KEY_2"],
-  "ag1_runs": [
-    {
-      "key": "AZURE_STORAGE_KEY",
-      "container_create_error": "container_create_ResourceNotFound: The specified resource does not exist.",
-      "inventory_csv_found": false
-    },
-    {
-      "key": "AZURE_STORAGE_KEY_2",
-      "container_create_error": "container_create_ResourceNotFound: The specified resource does not exist.",
-      "inventory_csv_found": false
-    }
-  ],
-  "ag2_live_ran": false,
-  "ag2_live_delete_candidates_rows": null,
+  "inventory_policy_applied": false,
   "errors": [
-    "Both account keys can list containers (43) but cannot create inventory-reports (ResourceNotFound).",
-    "No inventory CSV blobs found: inventory-related containers empty; prefix scan (blob-inventory, BlobInventory, inventory) across all 43 containers returned 0 CSV files."
+    "Blob inventory policy requires Azure CLI management-plane login (az login). Run scripts/apply_inventory_policy.sh after login."
   ],
-  "next_step": "Deploy blob inventory policy and create destination container with Portal or az CLI (see artifacts/dedup/ag1/DEPLOY.md): az storage account blob-inventory-policy create --policy @Azure\\ blob\\ dedup/policies/blob-inventory-dedup.json; az storage container create --name inventory-reports; after first daily run re-run ag1_ensure_inventory_container.py then blob_dedup_from_inventory.py --output-dir artifacts/dedup/ag2-live"
+  "next_steps": [
+    "az login && bash scripts/apply_inventory_policy.sh",
+    "Wait for first inventory run (hours on large accounts)",
+    "python3 scripts/ag1_ensure_inventory_container.py && blob_dedup_from_inventory.py --inventory-csv artifacts/dedup/ag1/inventory_latest.csv --output-dir artifacts/dedup/ag2-live"
+  ]
 }

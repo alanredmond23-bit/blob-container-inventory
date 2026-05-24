@@ -1,11 +1,4 @@
 {
-  "agent": "AG-4-MANIFEST",
-  "status": "complete",
-  "summary": {
-    "delete_rows": 14969,
-    "bytes_reclaimable": 360085194,
-    "certainty_breakdown": {
-      "PROVEN_EXACT_COMPUTED": 14969
-    }
-  }
+  "overseer": "ready_for_approval",
+  "delete_rows": 14953
 }

@@ -3,6 +3,5 @@
   "bytes_reclaimable": 360064034,
   "certainty_breakdown": {
     "PROVEN_EXACT_COMPUTED": 14953
-  },
-  "rows_removed_secret_paths": 16
+  }
 }
