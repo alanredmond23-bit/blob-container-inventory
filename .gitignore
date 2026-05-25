@@ -23,3 +23,4 @@ artifacts/catalog/photos/*.jpg
 artifacts/catalog/photos/*.png
 artifacts/catalog/discovery_summary_data.json
 artifacts/catalog/discovery_summary_load.sql
+artifacts/catalog/DISCOVERY_SUMMARY_TAB1.xlsx
