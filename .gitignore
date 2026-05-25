@@ -19,8 +19,3 @@ artifacts/catalog/SECTION_INDEX.md
 artifacts/catalog/blob_catalog_load.csv.gz
 artifacts/catalog/HOMES_V2_SHEET.html
 artifacts/catalog/home_summary.json
-artifacts/catalog/photos/*.jpg
-artifacts/catalog/photos/*.png
-artifacts/catalog/discovery_summary_data.json
-artifacts/catalog/discovery_summary_load.sql
-artifacts/catalog/DISCOVERY_SUMMARY_TAB1.xlsx
