@@ -19,3 +19,6 @@ artifacts/catalog/SECTION_INDEX.md
 artifacts/catalog/blob_catalog_load.csv.gz
 artifacts/catalog/HOMES_V2_SHEET.html
 artifacts/catalog/home_summary.json
+artifacts/dedup/azdedup/
+azdedup/.pytest_cache/
+**/__pycache__/

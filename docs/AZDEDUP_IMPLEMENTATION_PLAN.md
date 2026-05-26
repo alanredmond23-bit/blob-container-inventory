@@ -304,17 +304,17 @@ optional = { parquet = ["pandas", "pyarrow"] }
 
 ---
 
-### Phase 1 — scan (MVP)
+### Phase 1 — scan (MVP) ✅
 
 | # | Task | Files |
 |---|------|-------|
-| 1.1 | Inventory CSV streamer (reuse `parse_blob_row`) | `inventory.py` |
-| 1.2 | `scan --source inventory --dry-run-tags` → jsonl | `commands/scan.py` |
-| 1.3 | `scan --apply-tags` with concurrency pool | `workers/pool.py` |
-| 1.4 | Incremental etag skip | `pipeline/incremental.py` |
-| 1.5 | Integration test on `tests/fixtures/mini_inventory.csv` | `tests/test_scan_inventory.py` |
+| 1.1 | Inventory CSV streamer (reuse `parse_blob_row`) | `inventory.py` ✅ |
+| 1.2 | `scan --source inventory --dry-run-tags` → jsonl | `commands/scan.py` ✅ |
+| 1.3 | `scan --apply-tags` with concurrency pool | `workers/pool.py` ✅ |
+| 1.4 | Incremental etag skip | `pipeline/incremental.py` ✅ |
+| 1.5 | Integration test on `tests/fixtures/mini_inventory.csv` | `tests/test_scan_inventory.py` ✅ |
 
-**Done when:** 1k-row fixture tagged (mock) or dry-run jsonl valid.
+**Done:** 18 unit tests pass; dry-run + live list paths; apply-tags with checkpoint.
 
 ---
 

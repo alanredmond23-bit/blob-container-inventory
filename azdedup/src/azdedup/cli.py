@@ -6,6 +6,8 @@ import typer
 from rich.console import Console
 
 from azdedup import __version__
+from azdedup.commands.scan import run_scan
+from azdedup.config import load_scan_config_from_env
 
 app = typer.Typer(
     name="azdedup",
@@ -39,9 +41,38 @@ def scan(
     prefix: str = typer.Option("", "--prefix"),
     concurrency: int = typer.Option(64, "--concurrency"),
     source: str = typer.Option("live", "--source", help="live | inventory"),
+    inventory_path: str = typer.Option(
+        "artifacts/dedup/ag1/Alansinv_1000000_*.csv",
+        "--inventory-path",
+        help="Glob for inventory CSV shards when --source inventory",
+    ),
+    apply_tags: bool = typer.Option(
+        False,
+        "--apply-tags/--dry-run-tags",
+        help="Write meta tags to Azure (default: dry-run jsonl only)",
+    ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="Re-tag blobs even when dedup_etag matches",
+    ),
 ) -> None:
     """Discovery & metadata pass (zero blob content reads)."""
-    _stub(f"scan account={account} containers={containers} source={source}")
+    if source not in {"live", "inventory"}:
+        raise typer.BadParameter("--source must be live or inventory")
+
+    inventory_paths = [inventory_path] if source == "inventory" else []
+    config = load_scan_config_from_env(
+        account,
+        containers=containers,
+        prefix=prefix,
+        concurrency=concurrency,
+        source=source,
+        inventory_paths=inventory_paths,
+        apply_tags=apply_tags,
+        force=force,
+    )
+    run_scan(config, console=console)
 
 
 @app.command()
