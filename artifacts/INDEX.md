@@ -6,10 +6,16 @@ Account: see `AZURE_STORAGE_ACCOUNT` / `repos/azure-blob-file-system/config.exam
 
 | File | Rows (approx) | Size |
 |------|---------------|------|
-| `artifacts/dedup/ag1/Alansinv_1000000_0.csv` | 8.37M | ~2.0 GiB |
+| `artifacts/dedup/ag1/Alansinv_1000000_0.0.csv` + `.1.csv` | 8.37M (part 0, split for Git LFS 2GiB limit) | ~1.1 GiB each |
 | `artifacts/dedup/ag1/Alansinv_1000000_1.csv` | 1.99M | ~670 MiB |
 
 **Total ~10,366,934 blob rows** (Azure inventory export, May 2026). Stored via **Git LFS**.
+
+Rejoin part 0 for single-file tools:
+
+```bash
+bash scripts/cat_alansinv_part0.sh
+```
 
 Re-download if missing:
 
