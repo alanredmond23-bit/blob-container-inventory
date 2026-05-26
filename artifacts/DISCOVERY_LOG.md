@@ -5,7 +5,8 @@
 **Defendants:** (1) Alan Redmond, (2) Bene Market LLC, (3) Seguro Medico LLC  
 **Generated:** 2026-05-26  
 **Source of truth:** Azure `menageriesa36965` (Alansinv ~10.4M rows via dedup manifest + AZURE_BLOB_INVENTORY.md)  
-**Priority order:** Azure → OneDrive → Google Drive → iCloud → Local
+**Priority order:** Azure → OneDrive → Google Drive → iCloud → Local  
+**Target container:** `DISCO26` — run `scripts/create_disco26_container.sh` to create the 5-folder structure
 
 > **Note 1 (Gov't):** Many records were produced in native format without bates labels.  
 > Examples: native Excel spreadsheets, native Five-9 sales recordings, Redmond's iPhone download, audio recordings.  
