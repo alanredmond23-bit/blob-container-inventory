@@ -23,6 +23,7 @@ triage/                          # March 2026 -- Full VM implementation package
 
 ## Quick Start
 
+- **Blob indexes (10M-row Alansinv + maps):** `artifacts/INDEX.md`
 - Index and inventory tools: `repos/README.md`
 - Azure blob dedup (100% MD5/SHA-256): `Azure blob dedup/SKILL.md` → `artifacts/dedup/MASTER_DEDUP_MANIFEST.csv`
 - VM deployment: `triage/README.md`
