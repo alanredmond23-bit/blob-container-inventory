@@ -88,6 +88,22 @@ def parse_stage(tags: dict[str, str] | None) -> DedupStage:
     return "none"
 
 
+def canonical_tags_for_blob(
+    *,
+    is_canonical: bool,
+    canonical_id: str,
+    etag: str,
+    size: int,
+) -> dict[str, str]:
+    return {
+        TAG_DEDUP_STAGE: "canonical",
+        TAG_CANONICAL: "true" if is_canonical else "false",
+        TAG_CANONICAL_ID: canonical_id,
+        TAG_DEDUP_ETAG: etag,
+        TAG_SIZE: str(size),
+    }
+
+
 def merge_tags(existing: dict[str, str], updates: dict[str, str]) -> dict[str, str]:
     merged = dict(existing or {})
     merged.update({k: str(v) for k, v in updates.items() if v is not None})

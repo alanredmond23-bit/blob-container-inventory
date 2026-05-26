@@ -98,6 +98,9 @@ def load_scan_config_from_env(account: str, **cli_overrides) -> ScanConfig:
     )
 
 
+CanonicalStrategy = Literal["oldest", "shortest", "container_priority"]
+
+
 @dataclass(frozen=True)
 class DedupConfig:
     account: str
@@ -114,6 +117,32 @@ class DedupConfig:
     dry_run_output: Path | None
     output_dir: Path
     assume_meta: bool
+    canonical_strategy: CanonicalStrategy = "container_priority"
+    mark_only: bool = True
+
+
+@dataclass(frozen=True)
+class ReportConfig:
+    account: str
+    containers: ContainersSpec
+    prefix: str
+    source: Literal["inventory", "dry-run", "checkpoints"]
+    inventory_paths: list[str]
+    input_path: Path | None
+    group_by: Literal["container", "stage", "none"]
+    output_dir: Path
+    sample_rate: float = 1.0
+
+
+@dataclass(frozen=True)
+class VerifyConfig:
+    account: str
+    containers: ContainersSpec
+    prefix: str
+    inventory_paths: list[str]
+    sample_rate: float
+    rehash: Literal["full"]
+    output_dir: Path
 
 
 def load_dedup_config_from_env(account: str, **cli_overrides) -> DedupConfig:
@@ -156,6 +185,10 @@ def load_dedup_config_from_env(account: str, **cli_overrides) -> DedupConfig:
         assume_meta_default,
     )
 
+    strategy_raw = str(pick("canonical_strategy", "AZDEDUP_CANONICAL_STRATEGY", "container_priority")).lower()
+    if strategy_raw not in ("oldest", "shortest", "container_priority"):
+        raise ValueError(f"invalid canonical_strategy: {strategy_raw!r}")
+
     return DedupConfig(
         account=account,
         containers=_parse_containers(containers_raw),
@@ -171,4 +204,60 @@ def load_dedup_config_from_env(account: str, **cli_overrides) -> DedupConfig:
         dry_run_output=_parse_path(dry_run_raw),
         output_dir=Path(output_dir_raw),
         assume_meta=assume_meta,
+        canonical_strategy=strategy_raw,  # type: ignore[arg-type]
+        mark_only=_parse_bool(pick("mark_only", "AZDEDUP_MARK_ONLY", "true"), True),
+    )
+
+
+def load_report_config_from_env(account: str, **cli_overrides) -> ReportConfig:
+    def pick(name: str, env_key: str, default):
+        if name in cli_overrides and cli_overrides[name] is not None:
+            return cli_overrides[name]
+        env_val = os.environ.get(env_key)
+        return env_val if env_val is not None else default
+
+    source_raw = str(pick("source", "AZDEDUP_REPORT_SOURCE", "inventory")).lower()
+    if source_raw not in ("inventory", "dry-run", "checkpoints"):
+        raise ValueError(f"invalid report source: {source_raw!r}")
+
+    group_raw = str(pick("group_by", "AZDEDUP_REPORT_GROUP_BY", "none")).lower()
+    if group_raw not in ("container", "stage", "none"):
+        raise ValueError(f"invalid group_by: {group_raw!r}")
+
+    sample = float(pick("sample_rate", "AZDEDUP_REPORT_SAMPLE_RATE", "1.0"))
+    if not 0 < sample <= 1:
+        raise ValueError(f"sample_rate must be in (0, 1], got {sample}")
+
+    return ReportConfig(
+        account=account,
+        containers=_parse_containers(pick("containers", "AZDEDUP_CONTAINERS", "all")),
+        prefix=str(pick("prefix", "AZDEDUP_PREFIX", "")),
+        source=source_raw,  # type: ignore[arg-type]
+        inventory_paths=_parse_inventory_paths(pick("inventory_paths", "AZDEDUP_INVENTORY_PATHS", "")),
+        input_path=_parse_path(pick("input_path", "AZDEDUP_REPORT_INPUT", None)),
+        group_by=group_raw,  # type: ignore[arg-type]
+        output_dir=Path(pick("output_dir", "AZDEDUP_OUTPUT_DIR", str(DEFAULT_OUTPUT_DIR))),
+        sample_rate=sample,
+    )
+
+
+def load_verify_config_from_env(account: str, **cli_overrides) -> VerifyConfig:
+    def pick(name: str, env_key: str, default):
+        if name in cli_overrides and cli_overrides[name] is not None:
+            return cli_overrides[name]
+        env_val = os.environ.get(env_key)
+        return env_val if env_val is not None else default
+
+    sample = float(pick("sample_rate", "AZDEDUP_VERIFY_SAMPLE_RATE", "0.001"))
+    if not 0 < sample <= 1:
+        raise ValueError(f"sample_rate must be in (0, 1], got {sample}")
+
+    return VerifyConfig(
+        account=account,
+        containers=_parse_containers(pick("containers", "AZDEDUP_CONTAINERS", "all")),
+        prefix=str(pick("prefix", "AZDEDUP_PREFIX", "")),
+        inventory_paths=_parse_inventory_paths(pick("inventory_paths", "AZDEDUP_INVENTORY_PATHS", "")),
+        sample_rate=sample,
+        rehash="full",
+        output_dir=Path(pick("output_dir", "AZDEDUP_OUTPUT_DIR", str(DEFAULT_OUTPUT_DIR))),
     )

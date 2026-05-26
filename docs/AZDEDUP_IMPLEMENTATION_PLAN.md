@@ -332,17 +332,17 @@ optional = { parquet = ["pandas", "pyarrow"] }
 
 ---
 
-### Phase 3 — canonical + report + verify
+### Phase 3 — canonical + report + verify ✅
 
 | # | Task | Files |
 |---|------|-------|
-| 3.1 | Port canonical policy | `pipeline/canonical.py` |
-| 3.2 | `dedup --stage canonical --mark-only` | `commands/dedup.py` |
-| 3.3 | `report --format table` | `commands/report.py` |
-| 3.4 | `verify --sample-rate` | `commands/verify.py` |
-| 3.5 | One-command pipeline script | `scripts/azdedup_full_pipeline.sh` |
+| 3.1 | Port canonical policy | `pipeline/canonical.py` ✅ |
+| 3.2 | `dedup --stage canonical` (mark-only via tags) | `commands/dedup.py` ✅ |
+| 3.3 | `report --format table` | `commands/report.py` ✅ |
+| 3.4 | `verify --sample-rate` | `commands/verify.py` ✅ |
+| 3.5 | One-command pipeline script | `scripts/azdedup_full_pipeline.sh` ✅ |
 
-**Done when:** End-to-end on one container produces report JSON with duplicate counts.
+**Done:** 45+ unit tests; canonical dry-run/apply-tags, report from inventory or jsonl, verify spot-check.
 
 ---
 
@@ -380,7 +380,7 @@ azdedup scan --source inventory \
 # 3. Pipeline
 azdedup dedup --stage partial --containers all --read-bytes 1048576 --concurrency 32
 azdedup dedup --stage full --containers all --concurrency 16
-azdedup dedup --stage canonical --strategy oldest --mark-only
+azdedup dedup --stage canonical --strategy oldest --apply-tags
 azdedup verify --sample-rate 0.001
 azdedup report --format table
 

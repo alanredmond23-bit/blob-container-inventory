@@ -230,7 +230,27 @@ def test_full_dry_run_collision_group_hash_full(
     assert paths == {"data/dup-a.bin", "data/dup-b.bin"}
 
 
-def test_run_dedup_canonical_raises_not_implemented(tmp_path: Path) -> None:
+def test_run_dedup_canonical_dry_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from azdedup.tags import TAG_HASH_FULL
+
+    dup_hash = hashlib.sha256(b"canonical-dup").hexdigest()
+    blobs = [
+        InventoryBlob(container="container-a", blob_path="a.bin", size=100, etag="e1", ext="bin"),
+        InventoryBlob(container="container-a", blob_path="b.bin", size=100, etag="e2", ext="bin"),
+    ]
+
+    def fake_collect(_config: DedupConfig) -> list[InventoryBlob]:
+        return blobs
+
+    def fake_get_tags(_client, container: str, blob_path: str) -> dict[str, str]:
+        return {TAG_HASH_FULL: dup_hash, "size": "100"}
+
+    monkeypatch.setattr(dedup_module, "_collect_blobs", fake_collect)
+    monkeypatch.setattr(dedup_module, "get_blob_tags", fake_get_tags)
+
     config = DedupConfig(
         account="testaccount",
         containers="all",
@@ -247,5 +267,9 @@ def test_run_dedup_canonical_raises_not_implemented(tmp_path: Path) -> None:
         output_dir=tmp_path,
         assume_meta=True,
     )
-    with pytest.raises(NotImplementedError, match="Phase 3"):
-        run_dedup(config, console=QUIET)
+    stats = run_dedup(config, console=QUIET)
+    assert stats.scanned == 2
+    out = tmp_path / "dedup/canonical_dry_run.jsonl"
+    records = [json.loads(line) for line in out.read_text(encoding="utf-8").strip().splitlines()]
+    assert sum(1 for r in records if r["tags"].get("canonical") == "true") == 1
+    assert sum(1 for r in records if r["tags"].get("canonical") == "false") == 1

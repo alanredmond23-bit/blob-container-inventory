@@ -7,8 +7,15 @@ from rich.console import Console
 
 from azdedup import __version__
 from azdedup.commands.dedup import run_dedup
+from azdedup.commands.report import run_report
 from azdedup.commands.scan import run_scan
-from azdedup.config import load_dedup_config_from_env, load_scan_config_from_env
+from azdedup.commands.verify import run_verify
+from azdedup.config import (
+    load_dedup_config_from_env,
+    load_report_config_from_env,
+    load_scan_config_from_env,
+    load_verify_config_from_env,
+)
 
 app = typer.Typer(
     name="azdedup",
@@ -101,6 +108,11 @@ def dedup(
         "--force",
         help="Re-hash blobs even when dedup_etag matches",
     ),
+    strategy: str = typer.Option(
+        "container_priority",
+        "--strategy",
+        help="canonical only: oldest | shortest | container_priority",
+    ),
 ) -> None:
     """Multi-stage hashing pipeline."""
     if stage not in {"partial", "full", "canonical"}:
@@ -121,6 +133,7 @@ def dedup(
         apply_tags=apply_tags,
         incremental=incremental,
         force=force,
+        canonical_strategy=strategy,
     )
     run_dedup(config, console=console)
 
@@ -129,18 +142,43 @@ def dedup(
 def verify(
     account: str = typer.Option(..., "--account"),
     sample_rate: float = typer.Option(0.001, "--sample-rate"),
+    inventory_path: str = typer.Option(
+        "artifacts/dedup/ag1/Alansinv_1000000_*.csv",
+        "--inventory-path",
+    ),
+    containers: str = typer.Option("all", "--containers"),
 ) -> None:
     """Statistical spot verification."""
-    _stub("verify")
+    config = load_verify_config_from_env(
+        account,
+        sample_rate=sample_rate,
+        inventory_paths=[inventory_path],
+        containers=containers,
+    )
+    run_verify(config, console=console)
 
 
 @app.command()
 def report(
     account: str = typer.Option(..., "--account"),
     format: str = typer.Option("table", "--format", help="table | json"),
+    group_by: str = typer.Option("none", "--group-by", help="container | stage | none"),
+    source: str = typer.Option("inventory", "--source", help="inventory | dry-run"),
+    inventory_path: str = typer.Option(
+        "artifacts/dedup/ag1/Alansinv_1000000_*.csv",
+        "--inventory-path",
+    ),
+    sample_rate: float = typer.Option(1.0, "--sample-rate"),
 ) -> None:
     """Visibility & confidence metrics."""
-    _stub(f"report format={format}")
+    config = load_report_config_from_env(
+        account,
+        source=source,
+        group_by=group_by,
+        inventory_paths=[inventory_path],
+        sample_rate=sample_rate,
+    )
+    run_report(config, fmt=format, console=console)
 
 
 @app.command()

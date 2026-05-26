@@ -11,7 +11,7 @@ Hyperscale incremental Azure Blob deduplication.
 | 0 Scaffold | Done |
 | **1 scan** | **Done** |
 | **2 dedup partial/full** | **Done** |
-| 3 canonical/report/verify | Planned |
+| **3 canonical/report/verify** | **Done** |
 | 4 cleanup + sharding | Planned |
 
 ## Install
@@ -83,6 +83,32 @@ Outputs:
 - Checkpoints: `artifacts/dedup/azdedup/checkpoints/dedup_partial.jsonl`, `dedup_full.jsonl`
 
 Inventory **Content-MD5** short-circuit: identical MD5 within a collision group skips full byte read (`hash_full` stored as `md5:<hex>`).
+
+## Phase 3: canonical, report, verify
+
+Canonical pass groups by `(size, hash_full)`, picks one winner (`--strategy oldest|shortest|container_priority`), and sets `canonical=true|false` tags only — **no deletes**.
+
+```bash
+azdedup dedup --stage canonical \
+  --account "$AZURE_STORAGE_ACCOUNT" \
+  --source inventory \
+  --strategy container_priority \
+  --dry-run-tags
+
+azdedup verify --account "$AZURE_STORAGE_ACCOUNT" \
+  --sample-rate 0.001
+
+azdedup report --account "$AZURE_STORAGE_ACCOUNT" \
+  --source inventory --format table
+```
+
+Full pipeline: `bash scripts/azdedup_full_pipeline.sh` (requires credentials).
+
+Outputs:
+
+- Canonical dry-run: `artifacts/dedup/azdedup/dedup/canonical_dry_run.jsonl`
+- Report JSON: `artifacts/dedup/azdedup/reports/latest.json`
+- Verify JSON: `artifacts/dedup/azdedup/verify/verify_*.json`
 
 ## Tests
 

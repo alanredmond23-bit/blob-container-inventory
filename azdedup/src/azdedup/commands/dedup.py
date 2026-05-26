@@ -16,12 +16,15 @@ from azdedup.azure_client import get_blob_service_client, get_blob_tags, set_blo
 from azdedup.config import ContainersSpec, DedupConfig
 from azdedup.inventory import iter_inventory, resolve_inventory_paths
 from azdedup.models.blob_ref import InventoryBlob
-from azdedup.pipeline.full_hash import CollisionGrouper, resolve_full_hash
+from azdedup.pipeline.canonical import FullHashGrouper, pick_canonical
+from azdedup.pipeline.full_hash import CollisionGrouper, md5_shortcut_hash, resolve_full_hash
 from azdedup.pipeline.incremental import needs_full_scan, needs_partial_scan
 from azdedup.pipeline.partial_hash import compute_partial_hash
 from azdedup.tags import (
     STAGE_ORDER,
     TAG_HASH_FAST,
+    TAG_HASH_FULL,
+    canonical_tags_for_blob,
     full_tags_for_blob,
     merge_tags,
     parse_stage,
@@ -32,6 +35,7 @@ from azdedup.workers.pool import ScanStats, run_scan_workers
 
 PARTIAL_DRY_RUN_NAME = "dedup/partial_dry_run.jsonl"
 FULL_DRY_RUN_NAME = "dedup/full_dry_run.jsonl"
+CANONICAL_DRY_RUN_NAME = "dedup/canonical_dry_run.jsonl"
 
 
 @dataclass
@@ -61,6 +65,8 @@ def _dry_run_output_path(config: DedupConfig) -> Path:
         return config.dry_run_output
     if config.stage == "partial":
         return config.output_dir / PARTIAL_DRY_RUN_NAME
+    if config.stage == "canonical":
+        return config.output_dir / CANONICAL_DRY_RUN_NAME
     return config.output_dir / FULL_DRY_RUN_NAME
 
 
@@ -476,12 +482,104 @@ def _run_full(config: DedupConfig, console: Console) -> ScanStats:
     return stats
 
 
+def _hash_full_for_blob(blob: InventoryBlob, tags: dict[str, str]) -> str | None:
+    hf = tags.get(TAG_HASH_FULL)
+    if hf:
+        return hf
+    if blob.content_md5:
+        return md5_shortcut_hash(blob.content_md5)
+    return None
+
+
+def _run_canonical(config: DedupConfig, console: Console) -> ScanStats:
+    blobs = _collect_blobs(config)
+    total = len(blobs)
+    client = get_blob_service_client(config.account)
+    grouper = FullHashGrouper()
+    stats = ScanStats()
+
+    for blob in blobs:
+        tags = get_blob_tags(client, blob.container, blob.blob_path)
+        if config.assume_meta and not tags.get(TAG_HASH_FULL) and blob.content_md5:
+            tags = dict(tags)
+            tags[TAG_HASH_FULL] = md5_shortcut_hash(blob.content_md5)
+        hash_full = _hash_full_for_blob(blob, tags)
+        if not hash_full:
+            stats.skipped += 1
+            continue
+        grouper.add(blob, hash_full)
+
+    groups = grouper.duplicate_groups()
+    records: list[_DryRunRecord] = []
+
+    if config.apply_tags:
+        checkpoint_path = _checkpoint_path(config)
+        with CheckpointWriter(checkpoint_path) as checkpoint:
+            for canonical_id, members in groups:
+                winner = pick_canonical(members, config.canonical_strategy)
+                for member in members:
+                    is_can = member is winner
+                    updates = canonical_tags_for_blob(
+                        is_canonical=is_can,
+                        canonical_id=canonical_id,
+                        etag=member.etag,
+                        size=member.size,
+                    )
+                    existing = get_blob_tags(client, member.container, member.blob_path)
+                    merged = merge_tags(existing, updates)
+                    set_blob_tags(client, member.container, member.blob_path, merged)
+                    checkpoint.write(
+                        container=member.container,
+                        blob_path=member.blob_path,
+                        action="canonical" if is_can else "duplicate",
+                        tags=merged,
+                    )
+                    stats.tagged += 1
+        _print_summary(
+            console,
+            stats,
+            stage="canonical",
+            mode="apply-tags (mark-only)",
+            total=total,
+            output=checkpoint_path,
+            extra={"Duplicate groups": str(len(groups)), "Members marked": str(stats.tagged)},
+        )
+        return stats
+
+    for canonical_id, members in groups:
+        winner = pick_canonical(members, config.canonical_strategy)
+        for member in members:
+            is_can = member is winner
+            tags = canonical_tags_for_blob(
+                is_canonical=is_can,
+                canonical_id=canonical_id,
+                etag=member.etag,
+                size=member.size,
+            )
+            records.append(_DryRunRecord(blob=member, tags=tags))
+            stats.scanned += 1
+
+    output_path = _dry_run_output_path(config)
+    if records:
+        _write_dry_run_jsonl(records, output_path)
+    _print_summary(
+        console,
+        stats,
+        stage="canonical",
+        mode="dry-run (mark-only)",
+        total=total,
+        output=output_path,
+        extra={"Duplicate groups": str(len(groups))},
+    )
+    return stats
+
+
 def run_dedup(config: DedupConfig, *, console: Console | None = None) -> ScanStats:
     """Run partial, full, or canonical dedup for inventory or live sources."""
     out = console or Console()
 
     if config.stage == "canonical":
-        raise NotImplementedError("Phase 3")
+        return _run_canonical(config, out)
 
     if config.stage == "partial":
         return _run_partial(config, out)
