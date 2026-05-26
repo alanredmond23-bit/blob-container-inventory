@@ -318,17 +318,17 @@ optional = { parquet = ["pandas", "pyarrow"] }
 
 ---
 
-### Phase 2 — dedup partial + full
+### Phase 2 — dedup partial + full ✅
 
 | # | Task | Files |
 |---|------|-------|
-| 2.1 | xxhash partial reader (range download) | `pipeline/partial_hash.py` |
-| 2.2 | `dedup --stage partial` | `commands/dedup.py` |
-| 2.3 | Collision grouper (spill large groups to sqlite?) | `pipeline/full_hash.py` |
-| 2.4 | SHA-256 full hash + MD5 short-circuit from inventory | `pipeline/full_hash.py` |
-| 2.5 | `dedup --stage full` | `commands/dedup.py` |
+| 2.1 | xxhash partial reader (range download) | `pipeline/partial_hash.py` ✅ |
+| 2.2 | `dedup --stage partial` | `commands/dedup.py` ✅ |
+| 2.3 | Collision grouper | `pipeline/full_hash.py` ✅ |
+| 2.4 | SHA-256 full hash + MD5 short-circuit | `pipeline/full_hash.py` ✅ |
+| 2.5 | `dedup --stage full` | `commands/dedup.py` ✅ |
 
-**Done when:** Two identical test blobs get same `hash_full`; different content diverges.
+**Done:** 40 unit tests pass; partial xxhash + full SHA-256 on collision groups only.
 
 ---
 
