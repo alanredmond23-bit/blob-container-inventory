@@ -49,3 +49,7 @@ python3 scripts/build_blob_catalog_sql.py
 ```
 
 Outputs under `artifacts/catalog/` (BLOB_HIERARCHY, kanban_data, blob_catalog_load.csv.gz, etc.).
+
+## azdedup CLI (planned)
+
+Hyperscale incremental dedup with blob Index Tags — see `docs/AZDEDUP_IMPLEMENTATION_PLAN.md` and `azdedup/`.
