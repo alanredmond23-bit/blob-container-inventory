@@ -8,6 +8,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 from azdedup.models.blob_ref import InventoryBlob
+from azdedup.pipeline.full_hash import normalize_inventory_md5
 
 
 def _norm_etag(raw: str | None) -> str | None:
@@ -51,6 +52,9 @@ def _parse_row(row: dict[str, str]) -> InventoryBlob | None:
         etag=_norm_etag(row.get("Etag") or row.get("ETag")) or "",
         ext=InventoryBlob.ext_from_path(blob_path),
         last_modified=(row.get("Last-Modified") or row.get("LastModified") or None),
+        content_md5=normalize_inventory_md5(
+            row.get("Content-MD5") or row.get("ContentMD5") or row.get("content_md5")
+        ),
     )
 
 

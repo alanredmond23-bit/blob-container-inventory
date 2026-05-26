@@ -39,6 +39,26 @@ def file_extension(blob_path: str) -> str:
     return PurePosixPath(blob_path).suffix.lstrip(".")
 
 
+def partial_tags_for_blob(hash_fast: str, etag: str, size: int) -> dict[str, str]:
+    """Tags written by the dedup (partial) pass."""
+    return {
+        TAG_DEDUP_STAGE: "partial",
+        TAG_HASH_FAST: hash_fast,
+        TAG_DEDUP_ETAG: etag,
+        TAG_SIZE: str(size),
+    }
+
+
+def full_tags_for_blob(hash_full: str, etag: str, size: int) -> dict[str, str]:
+    """Tags written by the dedup (full) pass."""
+    return {
+        TAG_DEDUP_STAGE: "full",
+        TAG_HASH_FULL: hash_full,
+        TAG_DEDUP_ETAG: etag,
+        TAG_SIZE: str(size),
+    }
+
+
 def meta_tags_for_blob(size_or_blob: int | InventoryBlob, ext: str = "", etag: str = "") -> dict[str, str]:
     """Tags written by the scan (meta) pass."""
     if isinstance(size_or_blob, InventoryBlob):

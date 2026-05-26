@@ -39,3 +39,39 @@ def should_apply_meta(
     if STAGE_ORDER.get(stage, 0) < STAGE_ORDER["meta"]:
         return True, "stage_below_meta"
     return False, "skip"
+
+
+def needs_partial_scan(
+    existing_tags: dict[str, str] | None,
+    current_etag: str,
+    force: bool = False,
+) -> bool:
+    """Return True when the blob needs a partial hash scan and tag update."""
+    if force:
+        return True
+    existing = existing_tags or {}
+    stage = parse_stage(existing)
+    if (
+        existing.get(TAG_DEDUP_ETAG) == current_etag
+        and STAGE_ORDER.get(stage, 0) >= STAGE_ORDER["partial"]
+    ):
+        return False
+    return True
+
+
+def needs_full_scan(
+    existing_tags: dict[str, str] | None,
+    current_etag: str,
+    force: bool = False,
+) -> bool:
+    """Return True when the blob needs a full hash scan and tag update."""
+    if force:
+        return True
+    existing = existing_tags or {}
+    stage = parse_stage(existing)
+    if (
+        existing.get(TAG_DEDUP_ETAG) == current_etag
+        and STAGE_ORDER.get(stage, 0) >= STAGE_ORDER["full"]
+    ):
+        return False
+    return True

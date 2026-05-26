@@ -52,3 +52,16 @@ def set_blob_tags(
     """Replace blob index tags."""
     blob_client = client.get_blob_client(container=container, blob=blob_path)
     blob_client.set_blob_tags(tags)
+
+
+def download_blob_bytes(
+    client: BlobServiceClient,
+    container: str,
+    blob_path: str,
+    offset: int = 0,
+    length: int | None = None,
+) -> bytes:
+    """Download blob bytes, optionally constrained to a byte range."""
+    blob_client = client.get_blob_client(container=container, blob=blob_path)
+    download = blob_client.download_blob(offset=offset, length=length)
+    return download.readall()

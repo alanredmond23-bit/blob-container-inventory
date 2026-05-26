@@ -14,6 +14,7 @@ class InventoryBlob(BaseModel):
     etag: str
     ext: str
     last_modified: str | None = None
+    content_md5: str | None = None
 
     @property
     def name(self) -> str:
