@@ -1,3 +1,4 @@
+.claude/
 scripts/__pycache__/
 artifacts/dedup/ag3b-full/
 # Alansinv_*.csv tracked via Git LFS (see .gitattributes)
