@@ -1,0 +1,67 @@
+{
+  "azure_confirmed": {
+    "PROD01_distinct_RedmondTax_1-8835": 0,
+    "PROD01_blob_rows_in_range": 0,
+    "PROD02_distinct_RedmondTax_836-693308": 2085,
+    "PROD02_blob_rows_in_range": 262864,
+    "PROD03_distinct_RedmondOvertActs_1-722": 0,
+    "PROD04_distinct_RedmondiPhone_1-9698": 0,
+    "five9_wav_blobs_total": 523129,
+    "five9_02_tagged_wavs": 319608,
+    "five9_03_tagged_wavs": 198317,
+    "distinct_AR_ids_on_wavs": 152136
+  },
+  "deficit_summary": {
+    "federal_bates_declared_total": 711728,
+    "distinct_bates_confirmed_in_azure": 2085,
+    "distinct_bates_deficit": 709643,
+    "prod05_index_rows_in_repo": 108017,
+    "prod05_index_deficit": 1,
+    "note": "Use distinct_bates for production completeness; blob_rows counts duplicate mirrors."
+  },
+  "federal_declared": {
+    "PROD01_RedmondTax_000001-008835": 8835,
+    "PROD02_RedmondTax_000836-693308": 692473,
+    "PROD03_RedmondOvertActs_0001-0722": 722,
+    "PROD04_RedmondiPhone_00001-09698": 9698,
+    "PROD05_deep_v4_index_rows": 108018
+  },
+  "path_leads": {
+    "heim_disc_paths": 3175,
+    "fed_2026_disco_paths": 372369,
+    "memorex_blobs": 2208,
+    "unnumbered_iphone_paths": 390
+  },
+  "top_containers": {
+    "PROD02": {
+      "organization": 85555,
+      "uploads": 82985,
+      "super-master-triage": 81981,
+      "discovery": 6424,
+      "backups": 5091,
+      "workhorse-docs": 380,
+      "45gb-final-onedrive": 222,
+      "five9-calls": 222
+    }
+  },
+  "samples": {
+    "RedmondTax": [
+      "123triageonedrive/onedrive/RedmondTax687543.xlsx",
+      "1triageworkhorse/123triageonedrive/onedrive/RedmondTax687543.xlsx",
+      "45gb-final-onedrive/LEGAL/BANKRUPTCY AND FORECLOSURE/_archive/BANKRUPTCY_DOCS_GATHERED/FROM_ADMIN/Users/alanredmond/mcsw"
+    ],
+    "five9": [
+      "1triageworkhorse/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/FIVE9_01_CONFIDENTIAL_AR-0000000001.wav",
+      "1triageworkhorse/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/FIVE9_01_CONFIDENTIAL_AR-0000121951.wav",
+      "1triageworkhorse/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/FIVE9_01_CONFIDENTIAL_AR-0000126941.wav",
+      "1triageworkhorse/Music/Music/Media.localized/Music/Unknown Artist/Unknown Album/FIVE9_01_CONFIDENTIAL_AR-0000129138.wav",
+      "45gb-final-onedrive/FIVE9_02_CONFIDENTIAL_AR-0000132430 6.wav/.DS_Store"
+    ],
+    "Memorex": [
+      "45gb-final-onedrive/LEGAL/BANKRUPTCY AND FORECLOSURE/_archive/BANKRUPTCY_DOCS_GATHERED/FROM_ADMIN/Users/alanredmond/mcsw",
+      "45gb-final-onedrive/LEGAL/BANKRUPTCY AND FORECLOSURE/_archive/BANKRUPTCY_DOCS_GATHERED/FROM_ADMIN/Users/alanredmond/mcsw",
+      "45gb-final-onedrive/LEGAL/BANKRUPTCY AND FORECLOSURE/_archive/BANKRUPTCY_DOCS_GATHERED/FROM_ADMIN/Users/alanredmond/mcsw"
+    ]
+  },
+  "prod05_deep_v4_rows_in_repo": 108017
+}
