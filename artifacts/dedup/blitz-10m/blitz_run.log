@@ -1,0 +1,111 @@
+=== 10-agent inventory blitz (proven pass only) ===
+Shards: 10 | Output: artifacts/dedup/blitz-10m
+=== Step 1/3: split inventory (~2-4 min, one-time per export) ===
+Wrote 10 shards under artifacts/dedup/shards (10,366,935 data rows)
+=== Step 2/3: 10 parallel analyzers ===
+{
+  "shard": "05",
+  "rows_read": 891704,
+  "groups_md5": 0,
+  "groups_etag": 835,
+  "delete_candidates": 908,
+  "bytes_reclaimable": 3287157
+}
+{
+  "shard": "06",
+  "rows_read": 891737,
+  "groups_md5": 0,
+  "groups_etag": 836,
+  "delete_candidates": 892,
+  "bytes_reclaimable": 2436185
+}
+{
+  "shard": "04",
+  "rows_read": 891778,
+  "groups_md5": 0,
+  "groups_etag": 788,
+  "delete_candidates": 839,
+  "bytes_reclaimable": 3313439
+}
+{
+  "shard": "07",
+  "rows_read": 891778,
+  "groups_md5": 0,
+  "groups_etag": 815,
+  "delete_candidates": 884,
+  "bytes_reclaimable": 2156948
+}
+{
+  "shard": "01",
+  "rows_read": 891726,
+  "groups_md5": 0,
+  "groups_etag": 810,
+  "delete_candidates": 860,
+  "bytes_reclaimable": 4215361
+}
+{
+  "shard": "09",
+  "rows_read": 891820,
+  "groups_md5": 0,
+  "groups_etag": 793,
+  "delete_candidates": 852,
+  "bytes_reclaimable": 2808504
+}
+{
+  "shard": "00",
+  "rows_read": 891747,
+  "groups_md5": 0,
+  "groups_etag": 803,
+  "delete_candidates": 856,
+  "bytes_reclaimable": 2242848
+}
+{
+  "shard": "02",
+  "rows_read": 891720,
+  "groups_md5": 0,
+  "groups_etag": 808,
+  "delete_candidates": 860,
+  "bytes_reclaimable": 1980039
+}
+{
+  "shard": "03",
+  "rows_read": 891767,
+  "groups_md5": 0,
+  "groups_etag": 805,
+  "delete_candidates": 862,
+  "bytes_reclaimable": 2167237
+}
+{
+  "shard": "08",
+  "rows_read": 891750,
+  "groups_md5": 0,
+  "groups_etag": 808,
+  "delete_candidates": 878,
+  "bytes_reclaimable": 2203992
+}
+=== Step 3/3: merge master manifest ===
+{
+  "delete_rows": 8659,
+  "bytes_reclaimable": 26768147,
+  "certainty_breakdown": {
+    "PROVEN_EXACT_ETAG": 8659
+  },
+  "sources": [
+    "artifacts/dedup/blitz-10m/shard_00/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_01/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_02/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_03/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_04/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_05/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_06/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_07/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_08/delete_candidates.csv",
+    "artifacts/dedup/blitz-10m/shard_09/delete_candidates.csv"
+  ]
+}
+=== Done in 25s ===
+Master manifest: artifacts/dedup/MASTER_DEDUP_MANIFEST_v2.csv
+Per-shard stats: artifacts/dedup/blitz-10m/shard_*/stats.json
+Rows scanned: 8,917,527
+Delete candidates (proven): 8,691
+Reclaimable bytes: 26,811,710 (0.02 GiB)

@@ -1,0 +1,8 @@
+{
+  "shard": "02",
+  "rows_read": 891720,
+  "groups_md5": 0,
+  "groups_etag": 808,
+  "delete_candidates": 860,
+  "bytes_reclaimable": 1980039
+}
