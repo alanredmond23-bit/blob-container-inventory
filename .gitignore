@@ -25,3 +25,4 @@ azdedup/.pytest_cache/
 prod_indexes/creamsam/index.csv
 prod_indexes/graysan/index.csv
 prod_indexes/usbmemorex/index.csv
+artifacts/scan_results/*.jsonl
