@@ -227,7 +227,11 @@ def hunt_prod05_join(paths: list[Path], out: Path, deep_v4: Path, sample_search:
 
 
 def hunt_prod03(paths: list[Path], out: Path) -> dict:
-    """PROD03 not uploaded — collect leads only."""
+    """PROD03: filename regex is invalid — Overt Acts Bates are on-page stamps.
+
+    Use scripts/prod03_document_census.py + prod03_bates_corner_ocr.py instead.
+    This mode only collects path leads (Heim, overt_act_matrix, delivery CSV).
+    """
     overt: dict[int, list[str]] = defaultdict(list)
     heim_csv: list[str] = []
     heim_disc = 0

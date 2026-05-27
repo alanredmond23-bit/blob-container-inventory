@@ -1,0 +1,32 @@
+{
+  "method": "document_census_filename_agnostic",
+  "total_scannable_blobs": 757372,
+  "priority_path_blobs": 122040,
+  "overt_pattern_in_path": 0,
+  "by_extension": {
+    "jpg": 143248,
+    "pdf": 121974,
+    "xlsx": 115295,
+    "txt": 108215,
+    "png": 92509,
+    "jpeg": 83450,
+    "eml": 68888,
+    "tif": 13206,
+    "docx": 9061,
+    "tiff": 800,
+    "msg": 438,
+    "doc": 288
+  },
+  "by_bucket": {
+    "other": 635332,
+    "natives": 105943,
+    "text": 10724,
+    "heim_disc": 2596,
+    "superseding": 2348,
+    "03_heim_disk": 400,
+    "david_heim": 19,
+    "discovery_part_2": 10
+  },
+  "note": "PROD03 Bates 1-722 require corner OCR; see prod03_bates_corner_ocr.py",
+  "federal_declared": 722
+}
