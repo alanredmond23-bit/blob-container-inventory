@@ -1,0 +1,17 @@
+{
+  "range": "350001-693308",
+  "distinct_found": 653,
+  "blob_rows": 69706,
+  "top_containers": {
+    "organization": 20938,
+    "uploads": 20822,
+    "super-master-triage": 20518,
+    "onedrive-personal": 2356,
+    "legal": 2053,
+    "discovery": 1786,
+    "backups": 658,
+    "legal-filings": 264,
+    "workhorse-docs": 170,
+    "45gb-final-onedrive": 70
+  }
+}

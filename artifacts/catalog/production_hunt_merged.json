@@ -1,0 +1,81 @@
+{
+  "prod01_distinct": 0,
+  "prod02_distinct": 2085,
+  "prod02_part_a": 1432,
+  "prod02_part_b": 653,
+  "prod04_iphone_distinct": 0,
+  "bates_deficit_01_04": 709643,
+  "summaries": {
+    "prod01": {
+      "distinct_found": 0,
+      "missing": 8835,
+      "memorex_blobs": 2208,
+      "fed_2026_disco_blobs": 372369
+    },
+    "prod02a": {
+      "range": "836-350000",
+      "distinct_found": 1432,
+      "blob_rows": 69829,
+      "top_containers": {
+        "organization": 21946,
+        "uploads": 20677,
+        "super-master-triage": 20467,
+        "backups": 1888,
+        "onedrive-personal": 1811,
+        "legal": 1471,
+        "discovery": 1425,
+        "legal-filings": 43,
+        "45gb-final-onedrive": 42,
+        "five9-calls": 40
+      }
+    },
+    "prod02b": {
+      "range": "350001-693308",
+      "distinct_found": 653,
+      "blob_rows": 69706,
+      "top_containers": {
+        "organization": 20938,
+        "uploads": 20822,
+        "super-master-triage": 20518,
+        "onedrive-personal": 2356,
+        "legal": 2053,
+        "discovery": 1786,
+        "backups": 658,
+        "legal-filings": 264,
+        "workhorse-docs": 170,
+        "45gb-final-onedrive": 70
+      }
+    },
+    "prod03": {
+      "distinct_overt_in_azure": 0,
+      "heim_disc_blobs": 3175,
+      "heim_csv_paths": 7,
+      "federal_declared": 722
+    },
+    "prod04_five9": {
+      "prod": "FIVE9_02",
+      "wav_blob_rows": 4093927,
+      "distinct_ar_ids": 152139
+    },
+    "prod04_docs": {
+      "iphone_distinct": 0,
+      "iphone_unnumbered_paths": 390,
+      "confidential_path_hits": 0
+    },
+    "prod05": {
+      "deep_v4_rows_scanned": 107577,
+      "rows_with_azure_match": 23423,
+      "match_pct": 21.77
+    }
+  },
+  "five9_03": {
+    "prod": "FIVE9_03",
+    "wav_blob_rows": 4093927,
+    "distinct_ar_ids": 152139
+  },
+  "prod05_join": {
+    "deep_v4_rows_scanned": 107577,
+    "rows_with_azure_match": 23423,
+    "match_pct": 21.77
+  }
+}
