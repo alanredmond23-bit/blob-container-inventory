@@ -1,0 +1,5 @@
+id,folder_relative,filename,ext,size_bytes,size_hr,mtime_iso,btime_iso,is_archive,specialty_bucket,compression_bucket,folder,path
+1,.,REDMOND008836.zip,.zip,322034317873,299.9 GB,2025-01-12T09:34:21Z,2025-01-11T22:19:38Z,1,,already_compressed,/Volumes/T7,/Volumes/T7/REDMOND008836.zip
+2,$RECYCLE.BIN/S-1-5-21-3765106760-4187861411-1892654968-151541,desktop.ini,.ini,129,129.0 B,2025-01-14T21:29:54Z,2025-01-14T21:29:54Z,0,,high,/Volumes/T7/$RECYCLE.BIN/S-1-5-21-3765106760-4187861411-1892654968-151541,/Volumes/T7/$RECYCLE.BIN/S-1-5-21-3765106760-4187861411-1892654968-151541/desktop.ini
+3,System Volume Information,IndexerVolumeGuid,(none),76,76.0 B,2025-01-14T21:26:38Z,2025-01-14T21:26:38Z,0,,unknown,/Volumes/T7/System Volume Information,/Volumes/T7/System Volume Information/IndexerVolumeGuid
+4,System Volume Information,WPSettings.dat,.dat,12,12.0 B,2025-01-14T21:26:38Z,2025-01-14T21:26:38Z,0,,unknown,/Volumes/T7/System Volume Information,/Volumes/T7/System Volume Information/WPSettings.dat
