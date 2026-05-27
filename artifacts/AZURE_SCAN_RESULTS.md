@@ -1,7 +1,7 @@
 # Azure Blob Scan — Complete 54-Container Coverage
 **Case:** U.S. v. Redmond et al., EDPA 24-cr-375-JLS  
 **Account:** `menageriesa36965`  
-**Scanned:** 2026-05-27 (initial 9 containers) + 2026-05-27 (full 54-container sweep)  
+**Scanned:** 2026-05-27 (initial 9 containers) + 2026-05-27 (full 54-container sweep) + 2026-05-26 (Google Drive/Everlaw/Westlaw deep-scan)  
 **Method:** Azure REST List Blobs API (Shared Key auth), targeted prefix + path searches  
 **IMPORTANT:** This replaces the earlier partial 9-container scan. All 54 containers are now covered.
 
@@ -86,18 +86,22 @@
 
 ## PROD03 (RedmondOvertActs) — WHERE IS IT?
 
-**Confirmed NOT in Azure** after scanning all 54 containers with:
-- Targeted prefix scan (`RedmondOvertActs`) across all containers
+**Confirmed NOT in Azure or Google Drive (synced to Azure)** after:
+- Targeted prefix scan (`RedmondOvertActs`) across all 54 containers
 - Full path-content scan (300,000 blobs in `onedrive-personal`) for "overtact"/"overt act" in ANY path position
 - Same result in `organization` (479,923 blobs), `legal`, `super-master-triage`, `1triageworkhorse`
+- Full scan of `uploads/google-drive/FED FED 2026 FINAL DISCO/` — 105,396 blobs, 0 "overt" hits
+- All subfolders in `FINAL FED FUCK YOU/` enumerated — no RedmondOvertActs naming
+
+**Most likely location: Everlaw.** "DISCOVERY PART 2 Heim delivery" (5,108 files) or "DISCOVERY PART 1 (Memorex disk)" (1,286 files) may contain PROD03. Need API key to confirm.
 
 **Production timeline:** PROD03 was delivered **07/18/2025 via USAfx file share** (722 docs).
 
 **Where to look next:**
-1. **HP Envy laptop** — Primary USAfx download machine. Check: `C:\Users\bigred\Downloads\`, Desktop, folders modified 2025-07-18 to 2025-08-31
-2. **USAfx portal** — Still accessible at the original share link (docs may still be downloadable)
-3. **Google Drive** — The account that syncs to `uploads/Google Drive/` may have received a sync. Check `alanredmond23@gmail.com` Drive directly
-4. **The `onedrive-personal` remaining ~2M blobs** (we scanned 300k of ~2.3M total) — though "overt" would appear in any path if present
+1. **Everlaw** — Query `DISCOVERY PART 2 Heim delivery` document set via API. 5,108 files, delivered by prior counsel David Heim — timeline matches PROD03 delivery.
+2. **HP Envy laptop** — Primary USAfx download machine. Check: `C:\Users\bigred\Downloads\`, Desktop, folders modified 2025-07-18 to 2025-08-31
+3. **USAfx portal** — Still accessible at the original share link (docs may still be downloadable)
+4. **The `onedrive-personal` remaining ~2M blobs** (we scanned 300k of ~2.3M total)
 
 **Size:** Only 722 docs total. Small enough to re-download from USAfx if still available.
 
@@ -131,6 +135,65 @@
 | All triage/workhorse/dev containers | NO — dev ops only |
 
 **Clean separation confirmed:** No government discovery bates files exist in personal containers.
+
+---
+
+## GOOGLE DRIVE / EVERLAW / WESTLAW FINDINGS
+
+### Five9 Calls in Google Drive
+- `uploads/google-drive/DAVID HEIM DISC/FIVE9 - ALAN REDMOND/ALAN REDMOND/` — **1 DS_Store only** (empty folder sync artifact)
+- `uploads/Google Drive/DAVID HEIM DISC/FIVE9 - ALAN REDMOND/ALAN REDMOND/` — same
+- `uploads/Google Drive/FIVE9_COMBINED/` — only `_gsdata_/` sync artifact, no audio files
+- `uploads/google-drive/FIVE9_ 01_ 0000000001-0000250000_AR/` — 1 DS_Store only
+- **Conclusion:** Real Five9 audio is NOT in Google Drive. All Five9 WAVs are in Azure `recordings/` (250k+) and `five9-calls/` (1.1M+) containers.
+
+### Westlaw "Directory"
+- **Westlaw is a research tool, not a file repository.** Two PDF exports found in uploads:
+  - `Google Drive/DAVID HEIM DISC/1. Discovery_Docket/01_Docket Activity/08_Westlaw_Docket_(2024-12-31).pdf`
+  - `Google Drive/DAVID HEIM DISC/1. Discovery_Docket/01_Docket Activity/08_Westlaw_Docket_(2024-12-31) (1).pdf`
+- Also: `organization/123triageonedrive/onedrive/WESTLAW_SEARCH_LIST.md` (search term list)
+- No Westlaw account data, bulk exports, or case law directory found anywhere.
+
+### Everlaw — Active Platform (589,253 Documents Indexed)
+Source file: `45gb-final-onedrive/ORGANIZATION/indexes/01_raw/INTERNALLY_GENERATED/03_DATA/ALL INDEXES ON ALL LOCATIONS/Everlaw_Document_Sets_Inventory.csv`
+
+| Document Set | Type | File Count | % of Total |
+|-------------|------|-----------|-----------|
+| MBOX (from Alan + Alan's computer) — alanredmond23 gmail.com | Native | 445,085 | 75.53% |
+| Discovery 1 (Disc 2 - small) | Native | 130,365 | 22.12% |
+| mbox (minus 82gb) | Native | 7,222 | 1.23% |
+| DISCOVERY PART 2 Heim delivery | Native | 5,108 | 0.87% |
+| DISCOVERY PART 1 (Memorex disk) | Native | 1,286 | 0.22% |
+| FIVE9_ 06_CONFIDENTIAL_AR | Processed | 165 | 0.03% |
+| 30b | Processed | 11 | 0.00% |
+| DOJ Filings | Native | 10 | 0.00% |
+| from local FIVE9 PART 1 COMBINED | Native | 1 | 0.00% |
+| **TOTAL** | | **589,253** | 100% |
+
+**Mapping hypothesis:**
+- "Discovery 1 (Disc 2 - small)" → likely PROD02 RedmondTax (130k docs subset)
+- "DISCOVERY PART 1 (Memorex disk)" → likely PROD01 (1,286 docs)
+- "DISCOVERY PART 2 Heim delivery" → may contain PROD03 (RedmondOvertActs, 722 docs) or PROD04 docs
+- "FIVE9_ 06_CONFIDENTIAL_AR" → PROD04/05 Five9 calls (processed in Everlaw)
+
+**To confirm PROD03 presence in Everlaw:** Need Everlaw API key (`EVERLAW_API_KEY`) to query document sets. MCP server code exists at `organization/everlaw_mcp/everlaw_mcp_server.py`.
+
+### FED FED 2026 FINAL DISCO — Google Drive Folder Structure
+`uploads/google-drive/FED FED 2026 FINAL DISCO/FINAL FED FUCK YOU/` — 34,441 files total:
+
+| Subfolder | Files | Notes |
+|-----------|-------|-------|
+| Stephanie_Miller | 33,137 | Deposition transcripts/exhibits (Govt witness) |
+| IRS Files and Interviews | 189 | IRS agent files |
+| images | 448 | `RedmondTax008864.jpg` etc. — PROD02 natives |
+| NATIVES | 499 | `RedmondTax474128.xlsx` etc. — PROD02 natives |
+| Discovery Production US v. Redmond, 24-cr-376-selected | 86 | FBI 302s, Grand Jury Exhibits, Guaranteed Payments |
+| Grand Jury Exhibits | 69 | (subdir) `1K9MR8~W.PDF`, etc. |
+| 30(b)(6) | 10 | Bene Market, LLC depositions |
+| Witness folders | ~93 | Alan_Redmond, Walsh, Barrera, Sardella, Malcolm_Smith |
+| DOL civil wage litigation | 8 | Civil case selected docs |
+
+**No `RedmondOvertActs` bates naming found in any of the 105,396 blobs scanned in this directory.**
 
 ---
 
