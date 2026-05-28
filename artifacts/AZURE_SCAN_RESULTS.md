@@ -11,48 +11,64 @@
 
 Sources: 5-worker server-side copy migration (2026-05-28) + prior scans
 
-### Destination Container Counts (confirmed enumeration — 2026-05-28T09:51Z)
+### Destination Container Counts (confirmed enumeration — 2026-05-28T16:09Z)
 
-| Container | Blobs | Notes |
-|-----------|-------|-------|
-| **`five9-01`** | **807** | Sales calls (ALL_CALL_RECORDINGS) |
-| **`five9-02`** | **102,091** | FIVE9_02_CONFIDENTIAL_AR-* |
-| **`five9-03`** | **79,720** | FIVE9_03_CONFIDENTIAL_AR-* |
-| **`five9-04`** | **469** | FIVE9_04_CONFIDENTIAL_AR-* |
-| **`five9-05`** | **20,341** | FIVE9_05_CONFIDENTIAL_AR-* (confirmed in legal/recordings) |
-| **`five9-06`** | **551** | FIVE9_06_CONFIDENTIAL_AR-* (Cellebrite tiles) |
-| **TOTAL** | **203,979** | All Five9 WAVs confirmed in Azure and deduplicated |
+| Container | Blobs | % of Declared | Status |
+|-----------|-------|---------------|--------|
+| **`five9-01`** | **250,482** | 100.2% | ✅ **COMPLETE** |
+| **`five9-02`** | **251,992** | 100.8% | ✅ **COMPLETE** |
+| **`five9-03`** | **79,739** | 31.9% | ⚠️ ~170k gap — WORKHORSE upload needed |
+| **`five9-04`** | **180,327** | 72.1% | ⚠️ ~70k gap — WORKHORSE upload needed |
+| **`five9-05`** | **20,347** | 5.2% | 🔴 ~368k gap — WORKHORSE upload needed |
+| **`five9-06`** | **551** | 333% | ✅ **COMPLETE** (more than declared) |
+| **TOTAL** | **783,438** | | Up from 61,888 at session start (+721,550) |
 
 ### Per-Part Analysis
 
-| Part | Gov't Bates Prefix | WAVs Declared | In Azure Now (`five9-0X`) | Deficit | Physical Location |
-|------|--------------------|--------------|--------------------------|---------|-------------------|
-| **FIVE9_01** | `FIVE9_01_CONFIDENTIAL_AR-*` | ~250,000 | **807** | ~249,193 | WORKHORSE (hydrated, 232 GB) |
-| **FIVE9_02** | `FIVE9_02_CONFIDENTIAL_AR-*` | ~250,000 | **102,091** | ~147,909 | Sources: five9-calls, legal, recordings, onedrive-personal |
-| **FIVE9_03** | `FIVE9_03_CONFIDENTIAL_AR-*` | ~250,000 | **79,720** | ~170,280 | 81,347 Trash WAVs still need WORKHORSE upload |
-| **FIVE9_04** | `FIVE9_04_CONFIDENTIAL_AR-*` | ~250,000 | **469** | ~249,531 | WORKHORSE (hydrated) |
-| **FIVE9_05** | `FIVE9_05_CONFIDENTIAL_AR-*` | ~388,471 | **20,341** ✅ confirmed | ~368,130 | Confirmed in legal/recordings; bulk on WORKHORSE |
-| **FIVE9_06** | `FIVE9_06_CONFIDENTIAL_AR-*` | 165 | **551** ✅ | 0+ (more than declared) | Cellebrite UFED image tiles |
-| **TOTAL** | | **~1,388,471** | **203,979** | **~1,184,492** (mostly WORKHORSE-local) | |
+| Part | Gov't Bates Prefix | WAVs Declared | In Azure (`five9-0X`) | Deficit | Action |
+|------|--------------------|--------------|----------------------|---------|--------|
+| **FIVE9_01** | `FIVE9_01_CONFIDENTIAL_AR-*` | ~250,000 | **250,482 ✅** | ~0 | **DONE** — sourced from `onedrive-personal/…/1. FULL EXTRACTION OF CALL PART 1/` |
+| **FIVE9_02** | `FIVE9_02_CONFIDENTIAL_AR-*` | ~250,000 | **251,992 ✅** | ~0 | **DONE** — sourced from five9-calls + legal + recordings + onedrive-personal |
+| **FIVE9_03** | `FIVE9_03_CONFIDENTIAL_AR-*` | ~250,000 | **79,739** | ~170,261 | Run `scripts/workhorse_upload_five9_03.sh` on WORKHORSE |
+| **FIVE9_04** | `FIVE9_04_CONFIDENTIAL_AR-*` | ~250,000 | **180,327** | ~69,673 | Run WORKHORSE upload for Part 4 (sourced from `onedrive-personal/…/4.FULL EXTRACTION CALL PART 4/`) |
+| **FIVE9_05** | `FIVE9_05_CONFIDENTIAL_AR-*` | ~388,471 | **20,347** | ~368,124 | Run WORKHORSE upload for Part 5 |
+| **FIVE9_06** | `FIVE9_06_CONFIDENTIAL_AR-*` | 165 | **551 ✅** | 0 | **DONE** |
+| **TOTAL** | | **~1,388,471** | **783,438** | **~607,058** (WORKHORSE-local only) | |
 
-### Migration Run Summary — 2026-05-28 (5 parallel workers, `If-None-Match: *` dedup guard)
+### Migration Run Summary — 2026-05-28
+
+#### Round 1: Cross-container sweep (5 workers, 09:27–09:51Z)
 
 | Worker | Source | New Copies | Parts |
 |--------|--------|-----------|-------|
-| W1 | `recordings` (partial, killed at sub=1,016,000) | 420 | f02:414, f03:6 |
+| W1 | `recordings` (partial) | 420 | f02:414, f03:6 |
 | W2 | `five9-calls/FIVE9_02_folder/` + `trash-series02/` | 117 | f06:117 |
 | W3 | `five9-calls/trash-series03/.Trash/` | 52,872 | f03:52,872 |
-| W4 | `legal/recordings/` | **84,822** | f02:57,754, f03:7,068, **f05:20,000** |
+| W4 | `legal/recordings/` | 84,822 | f02:57,754, f03:7,068, f05:20,000 |
 | W5 | `onedrive-personal` + `backups` | 2,012 | f02:1,915, f06:97 |
-| **TOTAL** | | **~140,243 new copies** | |
+| **R1 TOTAL** | | **140,243** | |
 
-**Key finding:** W4 confirmed 20,000 FIVE9_05 files in `legal/recordings/` — part 05 IS present in Azure, not only on WORKHORSE. Five9_05 was previously believed to be zero in Azure.
+#### Round 2: onedrive-personal FULL EXTRACTIONS (3 workers, 15:47–16:09Z)
+
+| Worker | Source | New Copies | Parts |
+|--------|--------|-----------|-------|
+| R2W1 | `onedrive-personal/…/1. FULL EXTRACTION OF CALL PART 1/` | **249,666** | f01:249,666 |
+| R2W2 | `onedrive-personal/…/4.FULL EXTRACTION CALL PART 4/` | **179,844** | f04:179,844 |
+| R2W3 | `onedrive-personal/…/2. FULL EXTRACTION CALL PART 2/` + ALL_CALL_RECORDINGS | **149,949** | f02:149,901, f01:9, f04:14, f03:19 |
+| **R2 TOTAL** | | **579,459** | |
+
+**Grand total: ~719,702 new copies. `five9-0X` containers: 783,438 blobs (was 61,888).**
+
+**Key discoveries this session:**
+- FIVE9_01 and FIVE9_04 were hiding in `onedrive-personal/OneDrive-Personal/01_LEGAL/LEGAL DOMAIN/FULL EXTRACTIONS/` — not at top-level prefixes
+- FIVE9_05 confirmed present (20,347) in `legal/recordings/` — previously believed zero
+- All `If-None-Match: *` — zero overwrites across all concurrent sessions
 
 ### Key Clarifications
-- **`five9-0X` containers are the authoritative destination** — all Five9 files from all known Azure source containers have been server-side copied here with `If-None-Match: *` (no overwrites, safe for concurrent sessions).
-- **FIVE9_01/04** deficit is real: only 807 and 469 blobs respectively. The bulk of parts 01, 04, and remaining 05 are on WORKHORSE local OneDrive (hydrated, 232 GB), not yet uploaded to Azure.
+- **`five9-0X` containers are the authoritative destination** — all Five9 files from all known Azure source containers have been server-side copied here.
+- **FIVE9_01 and FIVE9_02 are now complete** (100%+ of declared count).
 - **DO NOT EMPTY TRASH** on WORKHORSE: 81,347 WAVs in `~/.Trash/` are the sole local copy of some FIVE9_03 records. Run `scripts/workhorse_recover_trash_five9.sh` before any Trash operation.
-- **Remaining gap to close**: Run `scripts/workhorse_upload_five9_03.sh` and corresponding scripts for FIVE9_01, _04, _05 from WORKHORSE.
+- **Remaining gap**: FIVE9_03 (~170k), FIVE9_04 (~70k), FIVE9_05 (~368k) need WORKHORSE uploads. Run the upload scripts on WORKHORSE.
 
 ### Five9 Fleet Status (WORKHORSE machine — confirmed 2026-03-31 fleet sweep)
 - **WORKHORSE**: 1,929,095 Five9 files total; **1,638,471 WAVs hydrated** (232 GB on disk); 81,347 in Trash
@@ -73,7 +89,7 @@ Sources: 5-worker server-side copy migration (2026-05-28) + prior scans
 | **PROD04 (Walsh email)** | awalsh413 records | 09/29/25 | Hard Drive | ✅ **YES** | `backups/onedrive-acct1/` | 160,425 blobs | Complete |
 | **PROD04 (QPH1 notebook)** | QPH1 HP records | 09/29/25 | Hard Drive | ✅ **YES** | `backups/admin-2026-04-17/` + `backups/ai-data-admin-2026-04-17/` | 15,230 + 153,802 blobs | Complete |
 | **PROD04 (iPhone)** | RedmondiPhone 00001–09698 | 09/29/25 | Hard Drive | ✅ **YES** | `backups/onedrive-acct1/.../FIVE9_06.../IMAGES/` (Cellebrite tiles) + `backups/admin-2026-04-17/rclone-staging/iphone_forensic_20250821T052231Z/` | 165 UFED tiles + run.log | Bates prefix `RedmondiPhone_*` not in filenames — stored as Cellebrite UFED image |
-| **PROD05 (Five9)** | Prod03_Confidential (FIVE9_03) | 03/23/26 | Flash Drive | ⚠️ **PARTIAL** | `five9-03` container (79,720 blobs after migration) | 79,720 in Azure; **~170,280 AR-IDs local-only** | CRITICAL: Upload FIVE9_03 from WORKHORSE to Azure |
+| **PROD05 (Five9)** | Prod03_Confidential (FIVE9_03) | 03/23/26 | Flash Drive | ⚠️ **PARTIAL** | `five9-03` container (79,739 blobs) | 79,739 in Azure; **~170,261 AR-IDs local-only** | Run `workhorse_upload_five9_03.sh` on WORKHORSE |
 | **PROD05 (FBI/GJ docs)** | Prod03_Confidential FBI serials | 03/23/26 | Flash Drive | ✅ **YES** | `discovery/EVIDENCE_PULL_ROOT/` (6,961) + `discovery/EVIDENCE_PULL_LEGAL/` (1,720) + `evidence-federal/` | 8,681+ blobs | Complete |
 | **PROD05 (Seguro Medico)** | Prod03_Confidential | 03/23/26 | Flash Drive | ✅ **YES** | `discovery/EVIDENCE_PULL_ROOT/EVIDENCE_PULL/` + `legal-filings/RUSH_SANCTIONS/` | 8,004+ blobs | Complete |
 
