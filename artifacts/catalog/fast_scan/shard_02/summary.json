@@ -1,0 +1,23 @@
+{
+  "shard": 2,
+  "queued": 30329,
+  "processed": 30329,
+  "hits_total": 19664,
+  "distinct": {
+    "PROD02": 1510,
+    "PROD01": 420,
+    "PROD03": 2
+  },
+  "stats": {
+    "queued": 30329,
+    "processed": 30329,
+    "hit_PROD02": 3051,
+    "via_path": 2148,
+    "download_errors": 487,
+    "via_fulltext": 903,
+    "hit_PROD01": 16609,
+    "via_pdf_headfoot": 16609,
+    "hit_PROD03": 4,
+    "via_docx_xml": 4
+  }
+}
