@@ -176,14 +176,31 @@ def main() -> int:
     ap.add_argument("--num-shards", type=int, default=5)
     ap.add_argument("--priority-only", action="store_true", default=True)
     ap.add_argument("--all-fast", action="store_true", help="Include non-priority paths")
+    ap.add_argument("--non-priority-only", action="store_true", help="Skip priority paths")
+    ap.add_argument(
+        "--extensions",
+        default="",
+        help="Comma list e.g. txt,md (default: all fast extensions)",
+    )
+    ap.add_argument(
+        "--path-contains",
+        default="",
+        help="Comma substrings; blob path must match at least one",
+    )
     ap.add_argument("--workers", type=int, default=24)
     ap.add_argument("--max-files", type=int, default=0, help="0 = no cap")
     ap.add_argument("--account", default=os.environ.get("AZURE_STORAGE_ACCOUNT", ""))
     ap.add_argument("--out", type=Path, default=Path("artifacts/catalog/fast_scan"))
     args = ap.parse_args()
 
-    if args.all_fast:
+    if args.all_fast or args.non_priority_only:
         args.priority_only = False
+
+    allowed_ext = FAST_EXT
+    if args.extensions.strip():
+        allowed_ext = {f".{e.strip().lstrip('.')}" for e in args.extensions.split(",") if e.strip()}
+
+    path_filters = [s.strip().lower() for s in args.path_contains.split(",") if s.strip()]
 
     inv = resolve_inventory_paths("artifacts/dedup/ag1/Alansinv_1000000_*.csv")
     if not args.account:
@@ -197,10 +214,15 @@ def main() -> int:
         if i % args.num_shards != args.shard:
             continue
         ext = ext_of(blob.blob_path)
-        if ext not in FAST_EXT:
+        if ext not in allowed_ext:
             continue
         path = f"{blob.container}/{blob.blob_path}"
-        if args.priority_only and not is_priority(path):
+        pri = is_priority(path)
+        if args.priority_only and not pri:
+            continue
+        if args.non_priority_only and pri:
+            continue
+        if path_filters and not any(f in path.lower() for f in path_filters):
             continue
         work.append((blob.container, blob.blob_path, blob.size, ext))
         if args.max_files and len(work) >= args.max_files:

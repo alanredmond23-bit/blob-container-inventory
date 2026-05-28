@@ -1,0 +1,17 @@
+{
+  "shard": 3,
+  "queued": 9325,
+  "processed": 9325,
+  "hits_total": 3008,
+  "distinct": {
+    "PROD02": 1514
+  },
+  "stats": {
+    "queued": 9325,
+    "processed": 9325,
+    "hit_PROD02": 3008,
+    "via_path": 2100,
+    "via_fulltext": 908,
+    "download_errors": 93
+  }
+}

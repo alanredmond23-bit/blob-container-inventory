@@ -1,0 +1,12 @@
+{
+  "shard": 4,
+  "queued": 33,
+  "processed": 33,
+  "hits_total": 0,
+  "distinct": {},
+  "stats": {
+    "queued": 33,
+    "processed": 33,
+    "download_errors": 1
+  }
+}

@@ -1,125 +1,208 @@
 {
-  "hits_total": 98975,
+  "hits_total": 22488,
   "distinct_bates": {
-    "PROD02": 1566,
-    "PROD03": 3,
-    "PROD01": 428
+    "PROD02": 1597,
+    "PROD01": 63
+  },
+  "overt_act_matrix": {
+    "bytes": 69753,
+    "distinct_overt_in_matrix": 0,
+    "sample_ids": []
   },
   "shard_summaries": [
     {
       "shard": 0,
-      "queued": 30305,
-      "processed": 30305,
-      "hits_total": 19407,
+      "queued": 9244,
+      "processed": 9244,
+      "hits_total": 2759,
       "distinct": {
-        "PROD02": 691,
-        "PROD03": 3,
-        "PROD01": 418
+        "PROD02": 688,
+        "PROD01": 3
       },
       "stats": {
-        "queued": 30305,
-        "processed": 30305,
-        "hit_PROD02": 2803,
-        "via_path": 2152,
-        "hit_PROD03": 11,
-        "via_docx_xml": 11,
+        "queued": 9244,
+        "processed": 9244,
+        "hit_PROD02": 2750,
+        "via_path": 2099,
         "via_fulltext": 660,
-        "download_errors": 507,
-        "hit_PROD01": 16593,
-        "via_pdf_headfoot": 16584
+        "download_errors": 104,
+        "hit_PROD01": 9
       }
     },
     {
       "shard": 1,
-      "queued": 30306,
-      "processed": 30306,
-      "hits_total": 18784,
+      "queued": 9253,
+      "processed": 9253,
+      "hits_total": 2099,
       "distinct": {
-        "PROD02": 634,
-        "PROD03": 2,
-        "PROD01": 418
+        "PROD02": 631
       },
       "stats": {
-        "queued": 30306,
-        "processed": 30306,
-        "hit_PROD02": 2160,
-        "via_path": 2159,
-        "hit_PROD03": 8,
-        "via_docx_xml": 8,
-        "download_errors": 495,
-        "hit_PROD01": 16616,
-        "via_pdf_headfoot": 16616,
+        "queued": 9253,
+        "processed": 9253,
+        "hit_PROD02": 2099,
+        "via_path": 2098,
+        "download_errors": 100,
         "via_fulltext": 1
       }
     },
     {
       "shard": 2,
-      "queued": 30329,
-      "processed": 30329,
-      "hits_total": 19664,
+      "queued": 9285,
+      "processed": 9285,
+      "hits_total": 2998,
       "distinct": {
-        "PROD02": 1510,
-        "PROD01": 420,
-        "PROD03": 2
+        "PROD02": 1508
       },
       "stats": {
-        "queued": 30329,
-        "processed": 30329,
-        "hit_PROD02": 3051,
-        "via_path": 2148,
-        "download_errors": 487,
-        "via_fulltext": 903,
-        "hit_PROD01": 16609,
-        "via_pdf_headfoot": 16609,
-        "hit_PROD03": 4,
-        "via_docx_xml": 4
+        "queued": 9285,
+        "processed": 9285,
+        "hit_PROD02": 2998,
+        "via_path": 2095,
+        "download_errors": 96,
+        "via_fulltext": 903
       }
     },
     {
       "shard": 3,
-      "queued": 30294,
-      "processed": 30294,
-      "hits_total": 19645,
+      "queued": 9325,
+      "processed": 9325,
+      "hits_total": 3008,
       "distinct": {
-        "PROD02": 1516,
-        "PROD01": 421,
-        "PROD03": 2
+        "PROD02": 1514
       },
       "stats": {
-        "queued": 30294,
-        "processed": 30294,
-        "hit_PROD02": 3064,
-        "via_path": 2156,
-        "download_errors": 497,
+        "queued": 9325,
+        "processed": 9325,
+        "hit_PROD02": 3008,
+        "via_path": 2100,
         "via_fulltext": 908,
-        "hit_PROD01": 16578,
-        "via_pdf_headfoot": 16578,
-        "hit_PROD03": 3,
-        "via_docx_xml": 3
+        "download_errors": 93
       }
     },
     {
       "shard": 4,
-      "queued": 30280,
-      "processed": 30280,
-      "hits_total": 21475,
+      "queued": 9249,
+      "processed": 9249,
+      "hits_total": 4821,
       "distinct": {
-        "PROD02": 1439,
-        "PROD01": 421,
-        "PROD03": 2
+        "PROD02": 1437,
+        "PROD01": 3
       },
       "stats": {
-        "queued": 30280,
-        "processed": 30280,
-        "hit_PROD02": 4866,
-        "via_path": 2151,
-        "download_errors": 493,
-        "hit_PROD01": 16605,
-        "via_pdf_headfoot": 16596,
-        "hit_PROD03": 4,
-        "via_docx_xml": 4,
-        "via_fulltext": 2724
+        "queued": 9249,
+        "processed": 9249,
+        "hit_PROD02": 4812,
+        "via_path": 2097,
+        "download_errors": 99,
+        "via_fulltext": 2724,
+        "hit_PROD01": 9
+      }
+    },
+    {
+      "shard": 0,
+      "queued": 27334,
+      "processed": 27334,
+      "hits_total": 2222,
+      "distinct": {
+        "PROD01": 34,
+        "PROD02": 417
+      },
+      "stats": {
+        "queued": 27334,
+        "processed": 27334,
+        "download_errors": 644,
+        "hit_PROD01": 36,
+        "via_pdf_headfoot": 36,
+        "hit_PROD02": 2186,
+        "via_fulltext": 2186
+      }
+    },
+    {
+      "shard": 1,
+      "queued": 27345,
+      "processed": 27345,
+      "hits_total": 1100,
+      "distinct": {
+        "PROD02": 416,
+        "PROD01": 36
+      },
+      "stats": {
+        "queued": 27345,
+        "processed": 27345,
+        "download_errors": 664,
+        "hit_PROD02": 1062,
+        "via_fulltext": 1069,
+        "hit_PROD01": 38,
+        "via_pdf_headfoot": 31
+      }
+    },
+    {
+      "shard": 2,
+      "queued": 27295,
+      "processed": 27295,
+      "hits_total": 760,
+      "distinct": {
+        "PROD01": 37,
+        "PROD02": 213
+      },
+      "stats": {
+        "queued": 27295,
+        "processed": 27295,
+        "download_errors": 662,
+        "hit_PROD01": 38,
+        "via_pdf_headfoot": 36,
+        "hit_PROD02": 722,
+        "via_fulltext": 724
+      }
+    },
+    {
+      "shard": 3,
+      "queued": 27301,
+      "processed": 27301,
+      "hits_total": 1000,
+      "distinct": {
+        "PROD01": 37,
+        "PROD02": 329
+      },
+      "stats": {
+        "queued": 27301,
+        "processed": 27301,
+        "download_errors": 652,
+        "hit_PROD01": 38,
+        "via_pdf_headfoot": 35,
+        "hit_PROD02": 962,
+        "via_fulltext": 965
+      }
+    },
+    {
+      "shard": 4,
+      "queued": 27273,
+      "processed": 27273,
+      "hits_total": 1721,
+      "distinct": {
+        "PROD02": 430,
+        "PROD01": 37
+      },
+      "stats": {
+        "queued": 27273,
+        "processed": 27273,
+        "download_errors": 631,
+        "hit_PROD02": 1683,
+        "via_fulltext": 1686,
+        "hit_PROD01": 38,
+        "via_pdf_headfoot": 35
       }
     }
+  ],
+  "phases_merged": [
+    "artifacts/catalog/fast_scan_p1_txt",
+    "artifacts/catalog/fast_scan_p2_rest",
+    "artifacts/catalog/fast_scan/shard_00",
+    "artifacts/catalog/fast_scan/shard_01",
+    "artifacts/catalog/fast_scan/shard_02",
+    "artifacts/catalog/fast_scan/shard_03",
+    "artifacts/catalog/fast_scan/shard_04",
+    "artifacts/catalog/fast_scan_heim_pdf"
   ]
 }
