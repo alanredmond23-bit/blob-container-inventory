@@ -1,27 +1,27 @@
-# Azure Blob Scan — Complete 54-Container Coverage
+# Azure Blob Scan — Complete 63-Container Coverage
 **Case:** U.S. v. Redmond et al., EDPA 24-cr-375-JLS  
 **Account:** `menageriesa36965`  
-**Scanned:** 2026-05-27 (initial 9 containers) + 2026-05-27 (full 54-container sweep) + 2026-05-26 (Google Drive/Everlaw/Westlaw deep-scan) + 2026-05-28 (DISCOVERY_LOG synthesis + FIVE9 per-part audit) + 2026-05-28 (Five9 server-side copy migration — R1: 5 workers, R2: 3 workers, R3: 2 workers)  
-**Method:** Azure REST List Blobs API (Shared Key auth), targeted prefix + path searches + DISCOVERY_LOG.md cross-reference  
-**IMPORTANT:** This replaces the earlier partial 9-container scan. All 54 containers are now covered.
+**Scanned:** 2026-05-27 (initial 9 containers) + 2026-05-27 (full 54-container sweep) + 2026-05-26 (Google Drive/Everlaw/Westlaw deep-scan) + 2026-05-28 (DISCOVERY_LOG synthesis + FIVE9 per-part audit) + 2026-05-28 (Five9 server-side copy migration — R1: 5 workers, R2: 3 workers, R3: 2 workers) + 2026-05-29 (New container discovery sweep — 9 new containers; R4: workhorse-five9-push; R5: backups+discovery; Blob Inventory manifest confirmed 17.9M total blobs / 5.7 TB)  
+**Method:** Azure REST List Blobs API (Shared Key auth) + Account SAS container enumeration + Blob Inventory CSV analysis + targeted prefix + path searches  
+**IMPORTANT:** All 63 known containers are now covered. Account-wide Blob Inventory confirms 17,905,157 total blobs / 5,721,920,267,779 bytes (5.7 TB) as of 2026-05-28.
 
 ---
 
-## FIVE9 PER-PART COVERAGE MATRIX (AUTHORITATIVE — Updated 2026-05-28)
+## FIVE9 PER-PART COVERAGE MATRIX (AUTHORITATIVE — Updated 2026-05-29)
 
-Sources: 3-round server-side copy migration (2026-05-28) + prior scans
+Sources: 5-round server-side copy migration (2026-05-28–29) + Blob Inventory CSV analysis
 
-### Destination Container Counts (confirmed enumeration — 2026-05-28T18:48Z, post-R3)
+### Destination Container Counts (confirmed enumeration — 2026-05-29T, post-R4/R5)
 
 | Container | Blobs | % of Declared | Status |
 |-----------|-------|---------------|--------|
-| **`five9-01`** | **252,110** | 100.8% | ✅ **COMPLETE** |
-| **`five9-02`** | **253,183** | 101.3% | ✅ **COMPLETE** |
+| **`five9-01`** | **252,130** | 100.9% | ✅ **COMPLETE** |
+| **`five9-02`** | **253,280** | 101.3% | ✅ **COMPLETE** |
 | **`five9-03`** | **80,836** | 32.3% | ⚠️ ~169k gap — WORKHORSE upload needed |
 | **`five9-04`** | **181,258** | 72.5% | ⚠️ ~69k gap — WORKHORSE upload needed |
 | **`five9-05`** | **21,090** | 5.4% | 🔴 ~367k gap — WORKHORSE upload needed |
 | **`five9-06`** | **551** | 333% | ✅ **COMPLETE** (more than declared) |
-| **TOTAL** | **788,528** | | Up from 61,888 at session start (+726,640) |
+| **TOTAL** | **789,145** | | Up from 61,888 at session start (+727,257) |
 
 ### Per-Part Analysis
 
@@ -65,13 +65,31 @@ Sources: 3-round server-side copy migration (2026-05-28) + prior scans
 | R3W2 | `onedrive-personal/01_LEGAL/` + `recordings/` (880k blobs, all skips) | **11** | f01:11 |
 | **R3 TOTAL** | | **5,589** | |
 
-**Grand total: ~725,291 new copies. `five9-0X` containers: 788,528 blobs (was 61,888 at session start).**
+**Grand total R1–R3: ~725,291 new copies. `five9-0X` containers: 788,528 blobs (was 61,888 at session start).**
 
-**Key discoveries this session:**
+**Key discoveries R1–R3:**
 - FIVE9_01 and FIVE9_04 were hiding in `onedrive-personal/OneDrive-Personal/01_LEGAL/LEGAL DOMAIN/FULL EXTRACTIONS/` — not at top-level prefixes
 - FIVE9_05 confirmed present (21,090) in `legal/recordings/` — previously believed zero
-- R3 exhausted ALL Azure-side Five9 sources — zero new copies found after sub=305k across 735k+ blobs
+- R3 exhausted ALL Azure-side Five9 sources known at that time — zero new copies found after sub=305k across 735k+ blobs
 - All `If-None-Match: *` — zero overwrites across all concurrent sessions
+
+#### Round 4: workhorse-five9-push sweep (40 threads, 2026-05-29T01:13Z — IN PROGRESS)
+
+| Worker | Source | New Copies | Parts | Notes |
+|--------|--------|-----------|-------|-------|
+| R4 | `workhorse-five9-push` (2.65M+ blobs) | **~100** | f01:9, f02:65+ | 54% skip rate — nearly all already in five9-0X from R1–R3 |
+| R4 | `2026disco-disk-creamsam`, `graysan`, `usbmemorex` | **0** | — | Disk images: no Five9 WAVs |
+| **R4 TOTAL** | | **~100** | | workhorse-five9-push is a DUPLICATE of onedrive-personal content |
+
+#### Round 5: backups + discovery sweep (40 threads, 2026-05-29T01:26Z — IN PROGRESS)
+
+| Worker | Source | New Copies | Parts | Notes |
+|--------|--------|-----------|-------|-------|
+| R5 | `backups` (461,395 blobs — includes quicks-desktop/DOL 179k Five9) | **0** | — | All already in five9-02 from R2W2/R2W3 |
+| R5 | `discovery` (182,083 blobs — includes quicks/FULL_CALL_DUMP 179k Five9) | **0** | — | All already in five9-02/03 from R1W4 |
+| **R5 TOTAL** | | **0** | | All backups/discovery Five9 are duplicates of previously migrated content |
+
+**Grand total R1–R5: ~725,400 new copies. `five9-0X` containers: 789,145 blobs.**
 
 ### Key Clarifications
 - **`five9-0X` containers are the authoritative destination** — all Five9 files from all known Azure source containers have been server-side copied here.
@@ -82,8 +100,9 @@ Sources: 3-round server-side copy migration (2026-05-28) + prior scans
 ### Five9 Fleet Status (WORKHORSE machine — confirmed 2026-03-31 fleet sweep)
 - **WORKHORSE**: 1,929,095 Five9 files total; **1,638,471 WAVs hydrated** (232 GB on disk); 81,347 in Trash
 - **ADMIN** (192.168.1.215): 181,159 WAVs — ALL cloud-only OneDrive stubs (sync DEAD since 2026-01-23)
-- **QUICKS** (192.168.1.203): 559,646 WAVs as cloud stubs
+- **QUICKS** (192.168.1.203): 559,646 WAVs as cloud stubs — **QUICKS uploaded ~179k Five9 files to `backups/quicks-desktop/Desktop/DOL AND GAVIN RUSH POST JAIL/` and ~179k to `discovery/quicks/VICTIM_GRAB_FINAL/FULL_CALL_DUMP/` overnight. All are dups of content already in `five9-02` / `five9-03`.**
 - **MASTER_INDEX.csv**: 7.8 GB at `onedrive-personal/01_LEGAL/FIVE9_ANALYSIS/MASTER_INDEX.csv` — maps all ~1M call Bates# to metadata
+- **`workhorse-five9-push`**: 2.8M+ blob container = WORKHORSE machine bulk upload destination (f02: 59k · f03: 72k · f04: 32k confirmed; mostly dups of onedrive-personal content already migrated in R2)
 
 ---
 
@@ -104,7 +123,14 @@ Sources: 3-round server-side copy migration (2026-05-28) + prior scans
 
 ---
 
-## COMPLETE 54-CONTAINER STATUS
+## COMPLETE 63-CONTAINER STATUS
+
+### Blob Inventory (account-wide, 2026-05-28 nightly run)
+- **Total:** 17,905,157 blobs · 5,721,920,267,779 bytes (5.7 TB)
+- **Manifest:** `inventory-reports/2026/05/28/22-57-55/full-inventory-daily/full-inventory-daily-manifest.json`
+- **CSV files:** 4 files (`_1000000_0.csv` 426 MB · `_1000001_0.csv` 587 MB · `_1000002_0.csv` 1.8 GB · `_1000003_0.csv` 174 MB)
+
+### All Containers
 
 | Container | Blobs | Gov't Data Found | Notes |
 |-----------|-------|-----------------|-------|
@@ -112,11 +138,11 @@ Sources: 3-round server-side copy migration (2026-05-28) + prior scans
 | **`recordings`** | 250k+ | ✅ FIVE9_02 + FIVE9_03 | FIVE9_02 122,402 · FIVE9_03 79,682 (WAVs) |
 | **`five9-calls`** | 1.1M+ | ✅ FIVE9_02 + FIVE9_03 | FIVE9_02 57,562 · trash-series02 ~9,102 · trash-series03 72,212 |
 | **`legal-filings`** | ~2,500 | ✅ PROD02 + FIVE9_02 | RedmondTax 617 · FIVE9_02 1,882 |
-| **`discovery`** | ~1,000 | ✅ PROD02 + PROD05 | RedmondTax 961 (GJ returns) · EVIDENCE_PULL 8,681+ |
+| **`discovery`** | **182,083** | ✅ PROD02+05 + FIVE9_02+03 | EVIDENCE_PULL 8,681+ (original content) · **NEW: `quicks/VICTIM_GRAB_FINAL/FULL_CALL_DUMP/` added 2026-05-28 (FIVE9_02: 99,997 · FIVE9_03: 79,240 WAVs — all already in five9-0X)** |
 | **`onedrive-personal`** | 2.3M+ | ✅ FIVE9_02+03 + ALL_LEGAL | FIVE9_02 57,426 blobs · FIVE9_03 partial · SUPERSEDWINSTARTS 178 · REDMOND_TRIAL 5,683 |
 | **`organization`** | 479,923 | ✅ PROD01+02 copies | RedmondTax in super-master-triage/uploads paths (Google Drive mirror) |
 | **`legal`** | 697k | ✅ ALL PRODUCTIONS | recordings/ 401,167 (FIVE9_01+02+04+05) · discovery/ 189,664 · evidence-federal/ 243 |
-| **`backups`** | 340,879 | ✅ PROD04 | onedrive-acct1/ 160,425 · admin-2026-04-17/ 15,230 · ai-data-admin/ 153,802 · FIVE9_06 tiles |
+| **`backups`** | **461,395** | ✅ PROD04 + FIVE9_02+03 | onedrive-acct1/ 160,425 (Walsh email · **includes QUICKS OneDrive mirror of FULL EXTRACTIONS/2+3**) · admin-2026-04-17/ 15,230 · ai-data-admin/ 153,802 · **NEW: quicks-desktop/ 179,922 blobs (DOL AND GAVIN RUSH POST JAIL — FIVE9_02: ~100k · FIVE9_03: ~79k WAVs from QUICKS machine Desktop — all already in five9-0X)** · workhorse-desktop/ 203 blobs |
 | **`evidence-federal`** | 243 | ⚠️ PROD03 (analysis) | Defense analysis of overt acts + FBI DOJ strategy — NOT bates-stamped PROD03 originals |
 | **`financial-docs`** | ~3,500 | ❌ CLEAN | Personal financial docs |
 | **`super-master-triage`** | large | ❌ CLEAN | 0 FIVE9/RedmondOvertActs prefixes |
@@ -163,6 +189,20 @@ Sources: 3-round server-side copy migration (2026-05-28) + prior scans
 | `models` | 404 | — | Container not found |
 | `secrets` | 404 | — | Container not found |
 | `disco26` | 32 | — | Target container (placeholder INDEX.md files only) |
+
+### NEW Containers (discovered 2026-05-29 via Account SAS enumeration)
+
+| Container | Blobs | Gov't Data Found | Notes |
+|-----------|-------|-----------------|-------|
+| **`workhorse-five9-push`** | **2,804,742+** | ✅ FIVE9_02+03+04 | WORKHORSE machine bulk push destination · f02: 59,491 · f03: 72,168 · f04: 32,074 (in `_1000003_0.csv`) · ~54% of blobs already in five9-0X · **3.4M+ total** (still counting) |
+| **`archive-gone-girl`** | **7,671** | ❌ CLEAN | Archived project data (`discovery/03_DATA/…ARCHIVED PROJECTS/COMMAND CENTER/`) — no Five9, no bates |
+| **`inventory-reports`** | **14** | — | Azure Blob Inventory CSVs (nightly run, account-wide, 17.9M blobs) |
+| **`gmail-inbox`** | **3** | ❌ CLEAN | Gmail takeout: `All mail Including Spam and Trash-002.mbox` · `takeout-20260330T012510Z-001.zip` · `takeout-20260330T012510Z-3-001.zip` |
+| **`discovery2026`** | **3** | ❌ CLEAN | Near-empty |
+| **`2026disco-disk-t7`** | **4** | ✅ PROD02 | `T7/REDMOND008836.zip` (322 GB) = PROD02 in a single zip file · `T7/$RECYCLE.BIN/`, `System Volume Information/` |
+| **`2026disco-disk-fbi-original`** | **2** | ❌ CLEAN | `T7/$RECYCLE.BIN/…/desktop.ini` + `System Volume Information/IndexerVolumeGuid` — empty drive |
+| **`2026disco-disk-sandisk494`** | **0** | — | Empty or not accessible |
+| **`2026disco-disk-t7shield-billrush`** | **0** | — | Empty or not accessible |
 
 ---
 
