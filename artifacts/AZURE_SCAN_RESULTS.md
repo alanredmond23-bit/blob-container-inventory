@@ -77,9 +77,10 @@ Sources: 5-round server-side copy migration (2026-05-28–29) + Blob Inventory C
 
 | Worker | Source | New Copies | Parts | Notes |
 |--------|--------|-----------|-------|-------|
-| R4 | `workhorse-five9-push` (2.65M+ blobs) | **~100** | f01:9, f02:65+ | 54% skip rate — nearly all already in five9-0X from R1–R3 |
-| R4 | `2026disco-disk-creamsam`, `graysan`, `usbmemorex` | **0** | — | Disk images: no Five9 WAVs |
-| **R4 TOTAL** | | **~100** | | workhorse-five9-push is a DUPLICATE of onedrive-personal content |
+| R4 | `workhorse-five9-push` (2.8M+ blobs, complete scan) | **132** | f01:9, f02:106, f04:17 | 54% skip rate — nearly all already in five9-0X from R1–R3 |
+| R4 | `2026disco-disk-creamsam` (846,739 blobs, complete) | **0** | — | Disk image files (RedmondTax USB): no Five9 WAVs |
+| R4 | `2026disco-disk-graysan` (836,692 blobs, IN PROGRESS) | **0** | — | Disk image: no Five9 expected |
+| **R4 TOTAL** | | **132** | | workhorse-five9-push is nearly a full duplicate of onedrive-personal content |
 
 #### Round 5: backups + discovery sweep (40 threads, 2026-05-29T01:26Z — IN PROGRESS)
 
