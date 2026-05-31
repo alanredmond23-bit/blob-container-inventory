@@ -1,3 +1,4 @@
+.claude/
 scripts/__pycache__/
 artifacts/dedup/ag3b-full/
 # Alansinv_*.csv tracked via Git LFS (see .gitattributes)
@@ -21,4 +22,7 @@ artifacts/catalog/HOMES_V2_SHEET.html
 artifacts/catalog/home_summary.json
 artifacts/dedup/azdedup/
 azdedup/.pytest_cache/
-**/__pycache__/
+prod_indexes/creamsam/index.csv
+prod_indexes/graysan/index.csv
+prod_indexes/usbmemorex/index.csv
+artifacts/scan_results/*.jsonl
